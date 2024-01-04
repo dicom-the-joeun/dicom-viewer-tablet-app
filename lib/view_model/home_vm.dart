@@ -99,16 +99,8 @@ class HomeVM extends GetxController {
 
         // 반복문으로 studies 리스트에 study 객체 담기
         for (var study in dataConvertedJSON) {
-          StudyTab tempStudy = StudyTab(
-              PID: study['PID'],
-              PNAME: study['PNAME'] ?? '',
-              MODALITY: study['MODALITY'] ?? '',
-              STUDYDESC: study['STUDYDESC'] ?? '',
-              STUDYDATE: study['STUDYDATE'] ?? '',
-              REPORTSTATUS: study['REPORTSTATUS'] ?? 0,
-              SERIESCNT: study['SERIESCNT'] ?? 0,
-              IMAGECNT: study['IMAGECNT'],
-              EXAMSTATUS: study['EXAMSTATUS']);
+          // study를 Map형식으로 담아주기
+          StudyTab tempStudy = StudyTab.fromMap(study);
           studies.add(tempStudy);
         }
       } else {
@@ -124,15 +116,5 @@ class HomeVM extends GetxController {
     return studies;
     // }
   }
+
 }
-/*
-getJSONData() async {
-    var url = Uri.parse('https://zeushahn.github.io/Test/cards.json');
-    var response = await http.get(url); // http로 정보를 가져올 때까지 기다려라
-    //print(response.body);
-    var dataConvertedJSON = json.decode(response.body);
-    List result = dataConvertedJSON['results'];
-    data.addAll(result);
-    setState(() {});
-  }
-*/

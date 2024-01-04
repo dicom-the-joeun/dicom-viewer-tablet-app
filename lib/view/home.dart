@@ -1,8 +1,8 @@
+import 'package:dicom_image_control_app/component/custom_datatable.dart';
 import 'package:dicom_image_control_app/component/custom_dropdown_button.dart';
 import 'package:dicom_image_control_app/component/custom_textfield.dart';
 import 'package:dicom_image_control_app/component/home_title.dart';
 import 'package:dicom_image_control_app/component/search_button.dart';
-import 'package:dicom_image_control_app/component/study_card.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/view/detail_view.dart';
 import 'package:dicom_image_control_app/view/drawer.dart';
@@ -137,12 +137,12 @@ class Home extends StatelessWidget {
 ///////////////////////// 오른쪽 ///////////////////////////
                       Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.66,
-                              child: Row(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.66,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -167,63 +167,62 @@ class Home extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () => Get.to(() => const DetailView()),
-                              child: const Text('test'),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.66,
-                              height: MediaQuery.of(context).size.height * 0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
+                              TextButton(
+                                onPressed: () =>
+                                    Get.to(() => const DetailView()),
+                                child: const Text('test'),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
                                 child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: DataTable(
-                                    columns: const [
-                                      DataColumn(label: Text('환자 ID')),
-                                      DataColumn(label: Text('환자 이름')),
-                                      DataColumn(label: Text('검사장비')),
-                                      DataColumn(label: Text('검사설명')),
-                                      DataColumn(label: Text('검사일시')),
-                                      DataColumn(label: Text('판독상태')),
-                                      DataColumn(label: Text('시리즈')),
-                                      DataColumn(label: Text('이미지')),
-                                      DataColumn(label: Text('Verify')),
-                                    ],
-                                    rows:
-                                        List.generate(snapshot.data!.length, (index) {
-                                      StudyTab study = snapshot.data![index];
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(Text(study.PID)),
-                                          DataCell(Text(study.PNAME)),
-                                          DataCell(Text(study.MODALITY)),
-                                          DataCell(Text(study.STUDYDESC!)),
-                                          DataCell(Text(study.STUDYDATE.toString())),
-                                          DataCell(
-                                              Text(study.REPORTSTATUS.toString())),
-                                          DataCell(Text(study.SERIESCNT.toString())),
-                                          DataCell(Text(study.IMAGECNT.toString())),
-                                          DataCell(Text(study.EXAMSTATUS.toString())),
-                                        ],
-                                      );
-                                    }),
+                                  scrollDirection: Axis.vertical,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    /////////////////// DataTable ////////////
+                                    child: DataTable(
+                                      columnSpacing: 30,
+                                      headingTextStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      columns: const [
+                                        DataColumn(label: Text('환자 ID')),
+                                        DataColumn(label: Text('환자 이름')),
+                                        DataColumn(label: Text('검사장비')),
+                                        DataColumn(label: Text('검사설명')),
+                                        DataColumn(label: Text('검사일시')),
+                                        DataColumn(label: Text('판독상태')),
+                                        DataColumn(label: Text('시리즈')),
+                                        DataColumn(label: Text('이미지')),
+                                        DataColumn(label: Text('Verify')),
+                                      ],
+                                      rows: List.generate(snapshot.data!.length,
+                                          (index) {
+                                        StudyTab study = snapshot.data![index];
+                                        return DataRow(
+                                          cells: [
+                                            DataCell(Text(study.PID)),
+                                            DataCell(Text(study.PNAME)),
+                                            DataCell(Text(study.MODALITY)),
+                                            DataCell(Text(study.STUDYDESC!)),
+                                            DataCell(Text(
+                                                study.STUDYDATE.toString())),
+                                            DataCell(Text(
+                                                study.REPORTSTATUS.toString())),
+                                            DataCell(Text(
+                                                study.SERIESCNT.toString())),
+                                            DataCell(Text(
+                                                study.IMAGECNT.toString())),
+                                            DataCell(Text(
+                                                study.EXAMSTATUS.toString())),
+                                          ],
+                                        );
+                                      }),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            // SizedBox(
-                            //   width: MediaQuery.of(context).size.width * 0.66,
-                            //   height: MediaQuery.of(context).size.height * 0.7,
-                            //   child: ListView.builder(
-                            //     itemCount: snapshot.data!.length,
-                            //     itemBuilder: (context, index) {
-                            //       return StudyCard(study: snapshot.data![index]);
-                            //     },
-                            //   ),
-                            // ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ],
