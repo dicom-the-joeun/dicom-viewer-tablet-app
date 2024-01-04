@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
               return Scaffold(
                 resizeToAvoidBottomInset: false,
                 appBar: AppBar(
-                  title: const Text('Home'),
+                  title: const Text('PACSPLUS'),
                   actions: [
                     IconButton(
                       onPressed: () => homeVM.resetValues(),
@@ -172,36 +172,46 @@ class Home extends StatelessWidget {
                               onPressed: () => Get.to(() => const DetailView()),
                               child: const Text('test'),
                             ),
-                            DataTable(
-                              columns: const [
-                                DataColumn(label: Text('환자 ID')),
-                                DataColumn(label: Text('환자 이름')),
-                                DataColumn(label: Text('검사장비')),
-                                DataColumn(label: Text('검사설명')),
-                                DataColumn(label: Text('검사일시')),
-                                DataColumn(label: Text('판독상태')),
-                                DataColumn(label: Text('시리즈')),
-                                DataColumn(label: Text('이미지')),
-                                DataColumn(label: Text('Verify')),
-                              ],
-                              rows:
-                                  List.generate(snapshot.data!.length, (index) {
-                                StudyTab study = snapshot.data![index];
-                                return DataRow(
-                                  cells: [
-                                    DataCell(Text(study.PID)),
-                                    DataCell(Text(study.PNAME)),
-                                    DataCell(Text(study.MODALITY)),
-                                    DataCell(Text(study.STUDYDESC)),
-                                    DataCell(Text(study.STUDYDATE.toString())),
-                                    DataCell(
-                                        Text(study.REPORTSTATUS.toString())),
-                                    DataCell(Text(study.SERIESCNT.toString())),
-                                    DataCell(Text(study.IMAGECNT.toString())),
-                                    DataCell(Text(study.EXAMSTATUS.toString())),
-                                  ],
-                                );
-                              }),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.66,
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    columns: const [
+                                      DataColumn(label: Text('환자 ID')),
+                                      DataColumn(label: Text('환자 이름')),
+                                      DataColumn(label: Text('검사장비')),
+                                      DataColumn(label: Text('검사설명')),
+                                      DataColumn(label: Text('검사일시')),
+                                      DataColumn(label: Text('판독상태')),
+                                      DataColumn(label: Text('시리즈')),
+                                      DataColumn(label: Text('이미지')),
+                                      DataColumn(label: Text('Verify')),
+                                    ],
+                                    rows:
+                                        List.generate(snapshot.data!.length, (index) {
+                                      StudyTab study = snapshot.data![index];
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(Text(study.PID)),
+                                          DataCell(Text(study.PNAME)),
+                                          DataCell(Text(study.MODALITY)),
+                                          DataCell(Text(study.STUDYDESC!)),
+                                          DataCell(Text(study.STUDYDATE.toString())),
+                                          DataCell(
+                                              Text(study.REPORTSTATUS.toString())),
+                                          DataCell(Text(study.SERIESCNT.toString())),
+                                          DataCell(Text(study.IMAGECNT.toString())),
+                                          DataCell(Text(study.EXAMSTATUS.toString())),
+                                        ],
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ),
                             ),
                             // SizedBox(
                             //   width: MediaQuery.of(context).size.width * 0.66,

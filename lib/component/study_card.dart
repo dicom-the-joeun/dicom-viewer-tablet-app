@@ -19,7 +19,7 @@ class StudyCard extends StatelessWidget {
             Text(study.PID),
             Text(study.PNAME),
             Text(study.MODALITY),
-            Text(study.STUDYDESC),
+            Text(study.STUDYDESC!),
             Text(study.STUDYDATE.toString()),
             Text(changeReportStatus(study.REPORTSTATUS)),
             Text(study.SERIESCNT.toString()),

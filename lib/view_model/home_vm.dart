@@ -94,18 +94,19 @@ class HomeVM extends GetxController {
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기
-        List dataConvertedJSON = jsonDecode(response.body);
+        String responseBody = utf8.decode(response.bodyBytes);
+        List dataConvertedJSON = jsonDecode(responseBody);
 
         // 반복문으로 studies 리스트에 study 객체 담기
         for (var study in dataConvertedJSON) {
           StudyTab tempStudy = StudyTab(
               PID: study['PID'],
-              PNAME: study['PNAME'],
-              MODALITY: study['MODALITY'],
-              STUDYDESC: study['STUDYDESC'],
-              STUDYDATE: study['STUDYDATE'],
-              REPORTSTATUS: study['REPORTSTATUS'],
-              SERIESCNT: study['SERIESCNT'],
+              PNAME: study['PNAME'] ?? '',
+              MODALITY: study['MODALITY'] ?? '',
+              STUDYDESC: study['STUDYDESC'] ?? '',
+              STUDYDATE: study['STUDYDATE'] ?? '',
+              REPORTSTATUS: study['REPORTSTATUS'] ?? 0,
+              SERIESCNT: study['SERIESCNT'] ?? 0,
               IMAGECNT: study['IMAGECNT'],
               EXAMSTATUS: study['EXAMSTATUS']);
           studies.add(tempStudy);
