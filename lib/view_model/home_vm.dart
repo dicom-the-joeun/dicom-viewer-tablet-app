@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -79,12 +81,57 @@ class HomeVM extends GetxController {
     update();
   }
 
-  // 스터디탭 읽어와 리스트 형식으로 리턴
+  /// 스터디탭 읽어와 리스트 형식으로 리턴
   Future<List<StudyTab>> getStudyTabList() async {
-    // String url = dotenv.env['API_ENDPOINT']!;
-
+    // 스터디 리스트 초기화
     List<StudyTab> studies = [];
+    // endpoint 가져오기
+    String url = dotenv.env['API_ENDPOINT']!;
+
+    try {
+      // 비동기 요청
+      var response = await http.get(Uri.parse('${url}studies'));
+
+      if (response.statusCode == 200) {
+        // 응답 결과(리스트형식)을 담기
+        List dataConvertedJSON = jsonDecode(response.body);
+
+        // 반복문으로 studies 리스트에 study 객체 담기
+        for (var study in dataConvertedJSON) {
+          StudyTab tempStudy = StudyTab(
+              PID: study['PID'],
+              PNAME: study['PNAME'],
+              MODALITY: study['MODALITY'],
+              STUDYDESC: study['STUDYDESC'],
+              STUDYDATE: study['STUDYDATE'],
+              REPORTSTATUS: study['REPORTSTATUS'],
+              SERIESCNT: study['SERIESCNT'],
+              IMAGECNT: study['IMAGECNT'],
+              EXAMSTATUS: study['EXAMSTATUS']);
+          studies.add(tempStudy);
+        }
+      } else {
+        // 200 코드가 아닌 경우 빈 리스트 리턴
+        studies = [];
+      }
+    } catch (e) {
+      // 예외 처리 및 변환
+      // String errorMessage = "서버 요청 중 오류가 발생했습니다: $e";
+      // return Future.error(errorMessage);
+    }
+
     return studies;
     // }
   }
 }
+/*
+getJSONData() async {
+    var url = Uri.parse('https://zeushahn.github.io/Test/cards.json');
+    var response = await http.get(url); // http로 정보를 가져올 때까지 기다려라
+    //print(response.body);
+    var dataConvertedJSON = json.decode(response.body);
+    List result = dataConvertedJSON['results'];
+    data.addAll(result);
+    setState(() {});
+  }
+*/

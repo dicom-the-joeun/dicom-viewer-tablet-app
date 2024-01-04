@@ -1,7 +1,7 @@
 import 'package:dicom_image_control_app/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -14,8 +14,8 @@ void main() async {
       DeviceOrientation.landscapeRight,
     ],
   );
-  // // .env 파일 로드
-  // await dotenv.load();
+  // .env 파일 로드
+  await dotenv.load();
 
   runApp(const MyApp());
 }
