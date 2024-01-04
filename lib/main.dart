@@ -1,4 +1,5 @@
-import 'package:dicom_image_control_app/view/home.dart';
+import 'package:dicom_image_control_app/view/login_view.dart';
+import 'package:dicom_image_control_app/view/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: const LoginView(),
       darkTheme: ThemeData.dark(
         useMaterial3: false
       ),
