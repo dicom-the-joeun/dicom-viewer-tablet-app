@@ -42,8 +42,8 @@ class LoginVM extends GetxController {
 
         idController.text = '';
         pwController.text = '';
-        
-        await saveLoginState();
+
+        await saveLoginState(true);
         await saveTokens(
           accessToken: accessToken,
           refreshToken: refreshToken,
@@ -77,28 +77,19 @@ class LoginVM extends GetxController {
     }
   }
 
-  saveLoginState() async {
+  saveLoginState(bool loginState) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
-      pref.setBool('login_state', true);
+      pref.setBool('login_state', loginState);
     } catch (e) {
       print(e);
     }
   }
 
-  // Future<Map<String, String>> loadTokens() async {
-  //   Map<String, String> tokenMap = {};
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   try {
-  //     String accessToken = pref.getString('access_token')!;
-  //     String refreshToken = pref.getString('refresh_token')!;
-  //     tokenMap = {
-  //       'access_token': accessToken,
-  //       'refresh_token': refreshToken,
-  //     };
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return tokenMap;
-  // }
+  logout(){
+    // 토큰 초기화
+    saveTokens(accessToken: '', refreshToken: '');
+    // 로그인상태 바꾸기
+    saveLoginState(false);
+  }
 }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class HomeVM extends GetxController {
+
   final equipmentList = [
     '선택해주세요',
     'AS',
@@ -43,6 +44,7 @@ class HomeVM extends GetxController {
   /// 검사일자 시작일, 종료일 초기값
   DateTime startDay = DateTime(2000, 1, 1);
   DateTime endDay = DateTime.now();
+
 
   /// 검사일자 변경 함수
   Future<DateTime> updateDatePicker(context, DateTime inputDay) async {
