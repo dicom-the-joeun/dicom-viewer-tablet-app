@@ -23,6 +23,40 @@ class StudyTab {
       required this.IMAGECNT,
       required this.EXAMSTATUS});
 
+  static final studies = [
+    StudyTab(
+        PID: "MS0001",
+        PNAME: "Anonymous",
+        MODALITY: "CR",
+        STUDYDESC: "Chest PA",
+        STUDYDATE: 20210310,
+        REPORTSTATUS: '',
+        SERIESCNT: 1,
+        IMAGECNT: 1,
+        EXAMSTATUS: ''),
+    StudyTab(
+        PID: "MS0001",
+        PNAME: "Anonymous",
+        MODALITY: "CR",
+        STUDYDESC: "Chest PA",
+        STUDYDATE: 20210310,
+        REPORTSTATUS: '',
+        SERIESCNT: 1,
+        IMAGECNT: 1,
+        EXAMSTATUS: ''),
+    StudyTab(
+        PID: "MS0001",
+        PNAME: "Anonymous",
+        MODALITY: "CR",
+        STUDYDESC: "Chest PA",
+        STUDYDATE: 20210310,
+        REPORTSTATUS: '',
+        SERIESCNT: 1,
+        IMAGECNT: 1,
+        EXAMSTATUS: ''),
+  ];
+    
+
   StudyTab.fromMap(Map<String, dynamic> res)
       : PID = res['PID'],
         PNAME = res['PNAME'],
