@@ -8,6 +8,15 @@ import 'package:http/http.dart' as http;
 
 class HomeVM extends GetxController {
 
+  List<StudyTab> studies = [];
+
+  @override
+  void onInit() async {
+    super.onInit();
+    studies = await getStudyTabList();
+    update();
+  }
+
   final equipmentList = [
     '선택해주세요',
     'AS',

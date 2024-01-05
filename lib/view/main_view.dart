@@ -16,23 +16,13 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //List<StudyTab> studies = StudyTab.studies;
 
     Get.put(HomeVM);
-
     return GetBuilder<HomeVM>(
       init: HomeVM(),
       builder: (homeVM) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: FutureBuilder(
-          future: homeVM.getStudyTabList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator(); // 로딩 중이면 로딩 표시
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Scaffold(
+        child: Scaffold(
                 resizeToAvoidBottomInset: false,
                 appBar: AppBar(
                   title: const Text('PACSPLUS'),
@@ -47,7 +37,7 @@ class MainView extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.3,
                         height: MediaQuery.of(context).size.height * 0.9,
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -137,7 +127,7 @@ class MainView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.66,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -194,9 +184,9 @@ class MainView extends StatelessWidget {
                                         DataColumn(label: Text('이미지')),
                                         DataColumn(label: Text('Verify')),
                                       ],
-                                      rows: List.generate(snapshot.data!.length,
+                                      rows: List.generate(homeVM.studies.length,
                                           (index) {
-                                        StudyTab study = snapshot.data![index];
+                                        StudyTab study = homeVM.studies[index];
                                         return DataRow(
                                           cells: [
                                             DataCell(Text(study.PID)),
@@ -228,9 +218,6 @@ class MainView extends StatelessWidget {
                   ),
                 ),
                 drawer: const UserDrawer(),
-              );
-            }
-          },
         ),
       ),
     );
