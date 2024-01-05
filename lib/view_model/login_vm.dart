@@ -11,7 +11,7 @@ class LoginVM extends GetxController {
   String loginResultString = '';
 
   // textField
-  Future<bool> loginCheck(String inputID, String inputPassword) async {
+  Future<bool> login(String inputID, String inputPassword) async {
     // 로그인 성공 여부
     bool result = false;
     // post body
@@ -21,7 +21,7 @@ class LoginVM extends GetxController {
     };
     // 요청 url
     String url = '${dotenv.env['API_ENDPOINT']!}auth/login';
-    // 
+    //
     var validStatusCodes = List.generate(100, (i) => 200 + i);
     try {
       var response = await http.post(
@@ -34,20 +34,25 @@ class LoginVM extends GetxController {
       );
 
       // 로그인 성공 시
-      if (validStatusCodes.contains(response.statusCode)){
+      if (validStatusCodes.contains(response.statusCode)) {
         result = true;
+        String accessToken = response.headers['access_token']!;
+        String refreshToken = response.headers['refresh_token']!;
         resetResultString();
-        // print(response.headers['access_token']);
+
+        idController.text = '';
+        pwController.text = '';
+        
+        await saveLoginState();
         await saveTokens(
-          accessToken: response.headers['access_token']!, 
-          refreshToken: response.headers['refresh_token']!,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
         );
-      }else{
+      } else {
         result = false;
-        loginResultString = '아이디나 패스워드를 확인해주세요';
+        loginResultString = '아이디나 패스워드를 확인해주세요.';
         update();
       }
-
     } catch (e) {
       debugPrint('error: $e');
     }
@@ -55,20 +60,45 @@ class LoginVM extends GetxController {
     return result;
   }
 
-  resetResultString(){
+  resetResultString() {
     loginResultString = '';
     update();
   }
 
   /// 토큰값 sharedPreference에 저장
-  saveTokens({required String accessToken, required String refreshToken}) async {
+  saveTokens(
+      {required String accessToken, required String refreshToken}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    try{
+    try {
       pref.setString('access_token', accessToken);
       pref.setString('refresh_token', refreshToken);
-    }catch(e){
+    } catch (e) {
       print(e);
     }
-    
   }
+
+  saveLoginState() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    try {
+      pref.setBool('login_state', true);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // Future<Map<String, String>> loadTokens() async {
+  //   Map<String, String> tokenMap = {};
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   try {
+  //     String accessToken = pref.getString('access_token')!;
+  //     String refreshToken = pref.getString('refresh_token')!;
+  //     tokenMap = {
+  //       'access_token': accessToken,
+  //       'refresh_token': refreshToken,
+  //     };
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return tokenMap;
+  // }
 }

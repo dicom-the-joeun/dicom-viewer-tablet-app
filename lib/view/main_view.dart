@@ -47,7 +47,7 @@ class MainView extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         height: MediaQuery.of(context).size.height * 0.9,
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -137,7 +137,7 @@ class MainView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.66,
+                          width: MediaQuery.of(context).size.width * 0.7,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [

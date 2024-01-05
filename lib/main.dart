@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // main 비동기 사용 위해
@@ -18,11 +19,16 @@ void main() async {
   // .env 파일 로드
   await dotenv.load();
 
-  runApp(const MyApp());
+  bool isLogin = await checkLogin();
+
+  Widget initialScreen = (isLogin) ? const MainView() : const LoginView();
+
+  runApp(MyApp(initialScreen: initialScreen,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Widget initialScreen;
+  const MyApp({super.key, required this.initialScreen});
 
   // This widget is the root of your application.
   @override
@@ -33,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginView(),
+      home: initialScreen,
       darkTheme: ThemeData.dark(
         useMaterial3: false
       ),
@@ -41,4 +47,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
+}
+
+Future<bool> checkLogin() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLogin = prefs.getBool('login_state') ?? false;
+  return isLogin;
 }

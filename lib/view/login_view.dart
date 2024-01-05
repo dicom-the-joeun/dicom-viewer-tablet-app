@@ -62,7 +62,7 @@ class LoginView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           )),
                       onPressed: () async {
-                        bool result = await loginVM.loginCheck(
+                        bool result = await loginVM.login(
                           loginVM.idController.text,
                           loginVM.pwController.text,
                         );
