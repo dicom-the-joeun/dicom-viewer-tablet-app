@@ -20,7 +20,7 @@ class LoginVM extends GetxController {
       'password': inputPassword.trim(),
     };
     // 요청 url
-    String url = '${dotenv.env['API_ENDPOINT']!}auth/login';
+    String url = '${dotenv.env['API_ENDPOINT']!}auth/login/';
     //
     var validStatusCodes = List.generate(100, (i) => 200 + i);
     try {

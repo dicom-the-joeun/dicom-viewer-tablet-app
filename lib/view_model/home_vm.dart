@@ -88,7 +88,7 @@ class HomeVM extends GetxController {
     // 스터디 리스트 초기화
     List<StudyTab> studies = [];
     // endpoint 가져오기
-    String url = '${dotenv.env['API_ENDPOINT']!}studies';
+    String url = '${dotenv.env['API_ENDPOINT']!}studies/';
 
     try {
       // 비동기 요청
