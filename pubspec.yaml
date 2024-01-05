@@ -47,6 +47,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   # intl
   intl: ^0.18.0
+  # shared_preferences
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
