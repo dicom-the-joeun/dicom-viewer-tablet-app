@@ -36,7 +36,22 @@ class LoginView extends StatelessWidget {
                   hintText: '비밀번호',
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 65),
+                  padding: const EdgeInsets.fromLTRB(50,8,8,8),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.03,
+                    child: Text(
+                      loginVM.loginResultString,
+                      style: const TextStyle(
+                        fontSize: 23,
+                        color: Color.fromARGB(255, 246, 105, 95),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                     height: MediaQuery.of(context).size.height * 0.07,
@@ -47,8 +62,16 @@ class LoginView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         )
                       ),
-                      onPressed: () {
-                        Get.to(() => const MainView());
+                      onPressed: () async {
+                        bool result = await loginVM.loginCheck(
+                          loginVM.idController.text, 
+                          loginVM.pwController.text,
+                        );
+                        if (result == true){
+                          Get.to(() => const MainView());
+                        }else{
+
+                        }
                       },
                       child: const Text(
                         '로그인',

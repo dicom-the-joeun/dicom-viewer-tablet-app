@@ -86,11 +86,11 @@ class HomeVM extends GetxController {
     // 스터디 리스트 초기화
     List<StudyTab> studies = [];
     // endpoint 가져오기
-    String url = dotenv.env['API_ENDPOINT']!;
+    String url = '${dotenv.env['API_ENDPOINT']!}studies';
 
     try {
       // 비동기 요청
-      var response = await http.get(Uri.parse('${url}studies'));
+      var response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기
