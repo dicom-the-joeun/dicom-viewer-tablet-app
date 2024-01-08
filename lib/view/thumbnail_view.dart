@@ -25,25 +25,29 @@ class ThumbnailView extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   height: 300,
-                  child: CachedNetworkImage(
-                    // 요청 url
-                    imageUrl: thumbnailVM.getThumbnailUrl(
-                      seriesList: seriesList,
-                      index: 0,
-                    ),
-                    // 헤더에 토큰 담기
-                    httpHeaders: {
-                      'accept': 'application/json',
-                      'Authorization' : 'Bearer ${thumbnailVM.token}'},
-                      // 'Authorization':
-                      //     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ3MDg5MzcsInN1YiI6ImFkbWluIn0.p1KSebSi4XIp_MOW6BEsWZ1bNt0uxWVcEKsCoCfwTgs'
-                    // },
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                  ),
+                  child: (thumbnailVM.isLoading.value)
+                      ? Center(child: CircularProgressIndicator())
+                      : CachedNetworkImage(
+                          // 요청 url
+                          imageUrl: thumbnailVM.getThumbnailUrl(
+                            seriesList: seriesList,
+                            index: 0,
+                          ),
+                          // 헤더에 토큰 담기
+                          httpHeaders: {
+                            'accept': 'application/json',
+                            'Authorization': 'Bearer ${thumbnailVM.token}'
+                          },
+                          // 'Authorization':
+                          //     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ3MDg5MzcsInN1YiI6ImFkbWluIn0.p1KSebSi4XIp_MOW6BEsWZ1bNt0uxWVcEKsCoCfwTgs'
+                          // },
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
                 )
               ],
             ),

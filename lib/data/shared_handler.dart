@@ -1,15 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedHandler{
-
-  
+class SharedHandler {
   Future<String> getAccessToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    String token = '';
+    late String token;
 
     try {
-       token = pref.getString('access_token')!;
+      token = pref.getString('access_token')!;
     } catch (e) {
       print(e);
     }
