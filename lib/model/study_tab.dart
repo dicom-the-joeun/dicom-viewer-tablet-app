@@ -2,6 +2,7 @@
 
 class StudyTab {
   // field
+  final int STUDYKEY;
   final String PID;
   final String PNAME;
   final String MODALITY;
@@ -13,7 +14,9 @@ class StudyTab {
   final String EXAMSTATUS;
 
   StudyTab(
-      {required this.PID,
+      {
+      required this.STUDYKEY,
+      required this.PID,
       required this.PNAME,
       required this.MODALITY,
       this.STUDYDESC,
@@ -23,42 +26,11 @@ class StudyTab {
       required this.IMAGECNT,
       required this.EXAMSTATUS});
 
-  static final studies = [
-    StudyTab(
-        PID: "MS0001",
-        PNAME: "Anonymous",
-        MODALITY: "CR",
-        STUDYDESC: "Chest PA",
-        STUDYDATE: 20210310,
-        REPORTSTATUS: '',
-        SERIESCNT: 1,
-        IMAGECNT: 1,
-        EXAMSTATUS: ''),
-    StudyTab(
-        PID: "MS0001",
-        PNAME: "Anonymous",
-        MODALITY: "CR",
-        STUDYDESC: "Chest PA",
-        STUDYDATE: 20210310,
-        REPORTSTATUS: '',
-        SERIESCNT: 1,
-        IMAGECNT: 1,
-        EXAMSTATUS: ''),
-    StudyTab(
-        PID: "MS0001",
-        PNAME: "Anonymous",
-        MODALITY: "CR",
-        STUDYDESC: "Chest PA",
-        STUDYDATE: 20210310,
-        REPORTSTATUS: '',
-        SERIESCNT: 1,
-        IMAGECNT: 1,
-        EXAMSTATUS: ''),
-  ];
-    
+  
 
   StudyTab.fromMap(Map<String, dynamic> res)
-      : PID = res['PID'],
+      : STUDYKEY = res['STUDYKEY'],
+        PID = res['PID'],
         PNAME = res['PNAME'],
         MODALITY = res['MODALITY'],
         STUDYDESC = res['STUDYDESC'] ?? '',

@@ -5,6 +5,7 @@ import 'package:dicom_image_control_app/component/search_button.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/view/detail_view.dart';
 import 'package:dicom_image_control_app/view/drawer.dart';
+import 'package:dicom_image_control_app/view/thumbnail_view.dart';
 import 'package:dicom_image_control_app/view_model/home_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -191,12 +192,19 @@ class MainView extends StatelessWidget {
                               DataColumn(label: Text('이미지')),
                               DataColumn(label: Text('Verify')),
                             ],
-                            rows: List.generate(homeVM.filterStudies.length,
+                            rows: List.generate(homeVM.studies.length,
                                 (index) {
-                              StudyTab study = homeVM.filterStudies[index];
+                              StudyTab study = homeVM.studies[index];
                               return DataRow(
                                 cells: [
-                                  DataCell(Text(study.PID)),
+                                  DataCell(
+                                    Text(study.PID),
+                                    onTap: () async {
+                                      // 시리즈 리스트 받아오기
+                                      var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
+                                      Get.to(()=> ThumbnailView(seriesList: seriesList));
+                                    }
+                                  ),
                                   DataCell(Text(study.PNAME)),
                                   DataCell(Text(study.MODALITY)),
                                   DataCell(Text(study.STUDYDESC!)),
@@ -206,6 +214,7 @@ class MainView extends StatelessWidget {
                                   DataCell(Text(study.IMAGECNT.toString())),
                                   DataCell(Text(study.EXAMSTATUS.toString())),
                                 ],
+                                
                               );
                             }),
                           ),
