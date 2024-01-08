@@ -20,18 +20,18 @@ class HomeVM extends GetxController {
     update();
   }
 
-  final equipmentList = staticEquipmentList;
-  final verifyList = staticVerifyList;
-  final decipherList = staticDecipherList;
+  final modalityList = staticEquipmentList;
+  final examStatusList = staticVerifyList;
+  final reportStatusList = staticDecipherList;
 
   /// textField controller
   TextEditingController userIDController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
   /// 드롭다운 선택값 변수 목록
-  String equipmentSelectedValue = staticEquipmentList[0];
-  String verifySelectedValue = staticVerifyList[0];
-  String decipherSelectedValue = staticDecipherList[0];
+  String selectedModality = staticEquipmentList[0];
+  String selectedExamStatus = staticVerifyList[0];
+  String selectedReportStatus = staticDecipherList[0];
 
   /// 캘린더 선택날짜
   DateTime selectedDay = DateTime.utc(
@@ -60,21 +60,21 @@ class HomeVM extends GetxController {
 
   /// 드롭다운 선택 시 선택값 변경 함수
   selectDropDown(String value, List<String> itemList) {
-    if (itemList == equipmentList) {
-      equipmentSelectedValue = value;
-    } else if (itemList == verifyList) {
-      verifySelectedValue = value;
+    if (itemList == modalityList) {
+      selectedModality = value;
+    } else if (itemList == examStatusList) {
+      selectedExamStatus = value;
     } else {
-      decipherSelectedValue = value;
+      selectedReportStatus = value;
     }
     update();
   }
 
   /// 검색 조건 초기화 함수
   resetValues() {
-    equipmentSelectedValue = '선택해주세요';
-    verifySelectedValue = '선택해주세요';
-    decipherSelectedValue = '선택해주세요';
+    selectedModality = '선택해주세요';
+    selectedExamStatus = '선택해주세요';
+    selectedReportStatus = '선택해주세요';
     startDay = DateTime(2000, 1, 1);
     endDay = DateTime.now();
     userIDController.text = '';
@@ -127,15 +127,35 @@ class HomeVM extends GetxController {
     return studies;
   }
 
-  filterData(String pid) {
-    // 누적되지 않게 리셋
-    filterStudies = [];
-    for(var study in studies){
-      if(study.PID.toLowerCase() == pid.toLowerCase()){
-        filterStudies.add(study);
-        update();
-      }
+  filterData({String? pid, String? pname, String? equipment, String? examStatus, String? reportStatus}) {
+  // 누적되지 않게 리셋
+  print('pid: ${userIDController.text}');
+  print('pname: ${userNameController.text}');
+  print('modality: $selectedModality');
+  print('examStatus: $selectedExamStatus');
+  print('reportStatus: $selectedReportStatus');
+  filterStudies = [];
+
+  for (var study in studies) {
+    bool pidCondition = (pid != null) ? study.PID.toLowerCase() == pid.toLowerCase() : true;
+    bool pnameCondition = (pname != null) ? study.PNAME.toLowerCase() == pname.toLowerCase() : true;
+    bool equipmentCondition = (equipment != '검사 장비')
+        ? study.MODALITY.toLowerCase() == equipment!.toLowerCase()
+        : true;
+    bool examStatusCondition = (examStatus != 'Verify')
+        ? study.EXAMSTATUS.toLowerCase() == examStatus!.toLowerCase()
+        : true;
+    bool reportStatusCondition = (reportStatus != '판독 상태')
+        ? study.REPORTSTATUS.toLowerCase() == reportStatus!.toLowerCase()
+        : true;
+
+    if (pidCondition && pnameCondition && equipmentCondition && examStatusCondition && reportStatusCondition) {
+      filterStudies.add(study);
     }
   }
+
+  update(); // 화면 갱신
+}
+
 
 }

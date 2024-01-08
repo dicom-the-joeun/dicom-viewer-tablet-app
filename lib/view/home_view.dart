@@ -52,15 +52,15 @@ class MainView extends StatelessWidget {
                           labelText: '환자 이름',
                         ),
                         CustomDropdownButton(
-                          itemLists: homeVM.equipmentList,
+                          itemLists: homeVM.modalityList,
                           boxWidth: 150,
                         ),
                         CustomDropdownButton(
-                          itemLists: homeVM.verifyList,
+                          itemLists: homeVM.examStatusList,
                           boxWidth: 150,
                         ),
                         CustomDropdownButton(
-                          itemLists: homeVM.decipherList,
+                          itemLists: homeVM.reportStatusList,
                           boxWidth: 150,
                         ),
                         ElevatedButton.icon(
@@ -155,7 +155,13 @@ class MainView extends StatelessWidget {
                         SearchButton(
                           labelText: '검색',
                           backgroundColor: Colors.red,
-                          onPressed: () => homeVM.filterData(homeVM.userIDController.text.trim()),
+                          onPressed: () => homeVM.filterData(
+                            pid: homeVM.userIDController.text.trim(),
+                            pname: homeVM.userNameController.text.trim(),
+                            reportStatus: homeVM.selectedReportStatus,
+                            equipment: homeVM.selectedModality,
+                            examStatus: homeVM.selectedExamStatus,
+                          ),
                         ),
                       ],
                     ),

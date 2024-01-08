@@ -19,11 +19,11 @@ class CustomDropdownButton extends StatelessWidget {
         width: boxWidth,
         child: DropdownButton(
           isExpanded: true,
-          value: (itemLists == homeVM.equipmentList)
-              ? homeVM.equipmentSelectedValue
-              : (itemLists ==homeVM.verifyList)
-                  ? homeVM.verifySelectedValue
-                  : homeVM.decipherSelectedValue
+          value: (itemLists == homeVM.modalityList)
+              ? homeVM.selectedModality
+              : (itemLists ==homeVM.reportStatusList)
+                  ? homeVM.selectedReportStatus
+                  : homeVM.selectedExamStatus
               ,
           items: itemLists.map((String item) {
             return DropdownMenuItem(
