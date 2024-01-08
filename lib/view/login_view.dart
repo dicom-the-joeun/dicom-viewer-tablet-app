@@ -1,5 +1,5 @@
 import 'package:dicom_image_control_app/component/login_textfield.dart';
-import 'package:dicom_image_control_app/view/main_view.dart';
+import 'package:dicom_image_control_app/view/home_view.dart';
 import 'package:dicom_image_control_app/view_model/login_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

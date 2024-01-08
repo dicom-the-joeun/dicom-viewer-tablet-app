@@ -2,7 +2,7 @@ String jsontest =
 '''
 [
   {
-    "PID": "MS0001",
+    "PID": "00",
     "PNAME": "Anonymous",
     "MODALITY": "CR",
     "STUDYDESC": "Chest PA",

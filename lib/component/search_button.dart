@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 class SearchButton extends StatelessWidget {
   final String labelText;
   final Color? backgroundColor;
-  const SearchButton({super.key, required this.labelText, this.backgroundColor});
+  final VoidCallback? onPressed;
+  const SearchButton({super.key, required this.labelText, this.backgroundColor, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: ElevatedButton(
-        onPressed: () {
-          // 검색 기능 추가
-        }, 
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: (backgroundColor == null)
                         ? const Color.fromARGB(255, 61, 52, 52)

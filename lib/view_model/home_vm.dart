@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dicom_image_control_app/model/study_tab.dart';
+import 'package:dicom_image_control_app/static/search_data.dart';
+import 'package:dicom_image_control_app/studies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:http/http.dart' as http;
 class HomeVM extends GetxController {
 
   List<StudyTab> studies = [];
+  List<StudyTab> filterStudies = [];
 
   @override
   void onInit() async {
@@ -17,31 +20,18 @@ class HomeVM extends GetxController {
     update();
   }
 
-  final equipmentList = [
-    '선택해주세요',
-    'AS',
-    'AU',
-    'BI',
-    'CD',
-    'CF',
-  ];
-
-  final verifyList = [
-    '선택해주세요',
-    'Not requested',
-    'Request completed',
-  ];
-
-  final decipherList = ['선택해주세요', '판독 상태', '읽지않음', '열람중', '예비판독', '판독'];
+  final equipmentList = staticEquipmentList;
+  final verifyList = staticVerifyList;
+  final decipherList = staticDecipherList;
 
   /// textField controller
   TextEditingController userIDController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
   /// 드롭다운 선택값 변수 목록
-  String equipmentSelectedValue = '선택해주세요';
-  String verifySelectedValue = '선택해주세요';
-  String decipherSelectedValue = '선택해주세요';
+  String equipmentSelectedValue = staticEquipmentList[0];
+  String verifySelectedValue = staticVerifyList[0];
+  String decipherSelectedValue = staticDecipherList[0];
 
   /// 캘린더 선택날짜
   DateTime selectedDay = DateTime.utc(
@@ -99,13 +89,32 @@ class HomeVM extends GetxController {
     // endpoint 가져오기
     String url = '${dotenv.env['API_ENDPOINT']!}studies/';
 
-    try {
-      // 비동기 요청
-      var response = await http.get(Uri.parse(url));
+    // try {
+    //   // 비동기 요청
+    //   var response = await http.get(Uri.parse(url));
 
-      if (response.statusCode == 200) {
-        // 응답 결과(리스트형식)을 담기
-        String responseBody = utf8.decode(response.bodyBytes);
+    //   if (response.statusCode == 200) {
+    //     // 응답 결과(리스트형식)을 담기
+    //     String responseBody = utf8.decode(response.bodyBytes);
+    //     List dataConvertedJSON = jsonDecode(responseBody);
+
+    //     // 반복문으로 studies 리스트에 study 객체 담기
+    //     for (var study in dataConvertedJSON) {
+    //       // study를 Map형식으로 담아주기
+    //       StudyTab tempStudy = StudyTab.fromMap(study);
+    //       studies.add(tempStudy);
+    //     }
+    //   } else {
+    //     // 200 코드가 아닌 경우 빈 리스트 리턴
+    //     studies = [];
+    //   }
+    // } catch (e) {
+    //   // 예외 처리 및 변환
+    //   // String errorMessage = "서버 요청 중 오류가 발생했습니다: $e";
+    //   // return Future.error(errorMessage);
+    // }
+
+    String responseBody = Test().testStudy;
         List dataConvertedJSON = jsonDecode(responseBody);
 
         // 반복문으로 studies 리스트에 study 객체 담기
@@ -114,18 +123,19 @@ class HomeVM extends GetxController {
           StudyTab tempStudy = StudyTab.fromMap(study);
           studies.add(tempStudy);
         }
-      } else {
-        // 200 코드가 아닌 경우 빈 리스트 리턴
-        studies = [];
-      }
-    } catch (e) {
-      // 예외 처리 및 변환
-      // String errorMessage = "서버 요청 중 오류가 발생했습니다: $e";
-      // return Future.error(errorMessage);
-    }
 
     return studies;
-    // }
+  }
+
+  filterData(String pid) {
+    // 누적되지 않게 리셋
+    filterStudies = [];
+    for(var study in studies){
+      if(study.PID.toLowerCase() == pid.toLowerCase()){
+        filterStudies.add(study);
+        update();
+      }
+    }
   }
 
 }
