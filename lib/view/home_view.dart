@@ -166,57 +166,58 @@ class MainView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    TextButton(
-                      onPressed: () => Get.to(() => const DetailView()),
-                      child: const Text('test'),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 10
+                      ),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          /////////////////// DataTable ////////////
-                          child: DataTable(
-                            columnSpacing: 30,
-                            headingTextStyle:
-                                const TextStyle(fontWeight: FontWeight.bold),
-                            columns: const [
-                              DataColumn(label: Text('환자 ID')),
-                              DataColumn(label: Text('환자 이름')),
-                              DataColumn(label: Text('검사장비')),
-                              DataColumn(label: Text('검사설명')),
-                              DataColumn(label: Text('검사일시')),
-                              DataColumn(label: Text('판독상태')),
-                              DataColumn(label: Text('시리즈')),
-                              DataColumn(label: Text('이미지')),
-                              DataColumn(label: Text('Verify')),
-                            ],
-                            rows: List.generate(homeVM.studies.length,
-                                (index) {
-                              StudyTab study = homeVM.studies[index];
-                              return DataRow(
-                                cells: [
-                                  DataCell(
-                                    Text(study.PID),
-                                    onTap: () async {
-                                      // 시리즈 리스트 받아오기
-                                      var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
-                                      Get.to(()=> ThumbnailView(seriesList: seriesList));
-                                    }
-                                  ),
-                                  DataCell(Text(study.PNAME)),
-                                  DataCell(Text(study.MODALITY)),
-                                  DataCell(Text(study.STUDYDESC!)),
-                                  DataCell(Text(study.STUDYDATE.toString())),
-                                  DataCell(Text(study.REPORTSTATUS.toString())),
-                                  DataCell(Text(study.SERIESCNT.toString())),
-                                  DataCell(Text(study.IMAGECNT.toString())),
-                                  DataCell(Text(study.EXAMSTATUS.toString())),
-                                ],
-                                
-                              );
-                            }),
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            /////////////////// DataTable ////////////
+                            child: DataTable(
+                              columnSpacing: 30,
+                              headingTextStyle: headerTextStyle(),
+                              columns: const [
+                                DataColumn(label: Text('환자 ID')),
+                                DataColumn(label: Text('환자 이름')),
+                                DataColumn(label: Text('검사장비')),
+                                DataColumn(label: Text('검사설명')),
+                                DataColumn(label: Text('검사일시')),
+                                DataColumn(label: Text('판독상태')),
+                                DataColumn(label: Text('시리즈')),
+                                DataColumn(label: Text('이미지')),
+                                DataColumn(label: Text('Verify')),
+                              ],
+                              rows: List.generate(homeVM.studies.length,
+                                  (index) {
+                                StudyTab study = homeVM.studies[index];
+                                return DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Text(study.PID, style: cellTextStyle(),),
+                                      onTap: () async {
+                                        // 시리즈 리스트 받아오기
+                                        var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
+                                        Get.to(()=> ThumbnailView(seriesList: seriesList));
+                                      }
+                                    ),
+                                    DataCell(Text(study.PNAME, style: cellTextStyle(),)),
+                                    DataCell(Text(study.MODALITY, style: cellTextStyle(),)),
+                                    DataCell(Text(study.STUDYDESC!, style: cellTextStyle(),)),
+                                    DataCell(Text(study.STUDYDATE.toString(), style: cellTextStyle(),)),
+                                    DataCell(Text(study.REPORTSTATUS.toString(), style: cellTextStyle(),)),
+                                    DataCell(Text(study.SERIESCNT.toString(), style: cellTextStyle(),)),
+                                    DataCell(Text(study.IMAGECNT.toString(), style: cellTextStyle(),)),
+                                    DataCell(Text(study.EXAMSTATUS.toString(), style: cellTextStyle(),)),
+                                  ],
+                                  
+                                );
+                              }),
+                            ),
                           ),
                         ),
                       ),
@@ -233,86 +234,16 @@ class MainView extends StatelessWidget {
   }
 }
 
+TextStyle cellTextStyle(){
+  return const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 17,
+  );
+}
 
-/*
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.26,
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TableCalendar(
-                                focusedDay: DateTime.now(),
-                                firstDay: DateTime.utc(2022, 1, 1),
-                                lastDay: DateTime.utc(2024, 12, 31),
-                                selectedDayPredicate: (day) =>
-                                    isSameDay(homeVM.selectedDay, day),
-                                onDaySelected: (selectedDay, focusedDay) {
-                                  //
-                                },
-                              ),
-                              const HomeTitle(title: '검사일자'),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  TextButton.icon(
-                                    onPressed: () async {
-                                      homeVM.startDay =
-                                          await homeVM.updateDatePicker(
-                                              context, homeVM.startDay);
-                                      // setState(() {});
-                                    },
-                                    icon: const Icon(
-                                        Icons.calendar_month_outlined),
-                                    label: Text(
-                                      DateFormat('yyyy.MM.dd')
-                                          .format(homeVM.startDay),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  TextButton.icon(
-                                    onPressed: () async {
-                                      homeVM.endDay =
-                                          await homeVM.updateDatePicker(
-                                              context, homeVM.endDay);
-                                      // setState(() {});
-                                    },
-                                    icon: const Icon(
-                                        Icons.calendar_month_outlined),
-                                    label: Text(
-                                      DateFormat('yyyy.MM.dd')
-                                          .format(homeVM.endDay),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const HomeTitle(title: '검사장비'),
-                              CustomDropdownButton(
-                                itemLists: homeVM.equipmentList,
-                                boxWidth:
-                                    MediaQuery.of(context).size.width * 0.3,
-                              ),
-                              const HomeTitle(title: 'Verify'),
-                              CustomDropdownButton(
-                                itemLists: homeVM.verifyList,
-                                boxWidth:
-                                    MediaQuery.of(context).size.width * 0.3,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: const Text('조회'),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
- */
+TextStyle headerTextStyle(){
+  return const TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+  );
+}
