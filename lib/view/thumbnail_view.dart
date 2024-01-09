@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
@@ -17,8 +18,8 @@ class ThumbnailView extends StatelessWidget {
       init: ThumbnailVM(),
       builder: (thumbnailVM) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Series'),
+          appBar: MyAppBar(
+            title: 'SERIES'
           ),
           body: Center(
             child: Column(

@@ -38,7 +38,7 @@ class StudyTab {
         REPORTSTATUS = _convertReportStatus(res['REPORTSTATUS']),
         SERIESCNT = res['SERIESCNT'],
         IMAGECNT = res['IMAGECNT'],
-        EXAMSTATUS = (res['EXAMSTATUS'] == 0) ? '아니오' : '예';
+        EXAMSTATUS = (res['EXAMSTATUS'] == 0) ? '예' : '아니오';
 }
 
 String _convertReportStatus(int status) {

@@ -1,9 +1,10 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:dicom_image_control_app/component/custom_dropdown_button.dart';
 import 'package:dicom_image_control_app/component/custom_textfield.dart';
 import 'package:dicom_image_control_app/component/home_title.dart';
+import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/search_button.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
-import 'package:dicom_image_control_app/view/detail_view.dart';
 import 'package:dicom_image_control_app/view/drawer.dart';
 import 'package:dicom_image_control_app/view/thumbnail_view.dart';
 import 'package:dicom_image_control_app/view_model/home_vm.dart';
@@ -24,8 +25,8 @@ class MainView extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: const Text('PACSPLUS'),
+          appBar: MyAppBar(
+            title: 'PACSPLUS',
             actions: [
               IconButton(
                 onPressed: () => homeVM.resetValues(),
@@ -173,52 +174,45 @@ class MainView extends StatelessWidget {
                       ),
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.7,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            /////////////////// DataTable ////////////
-                            child: DataTable(
-                              columnSpacing: 30,
-                              headingTextStyle: headerTextStyle(),
-                              columns: const [
-                                DataColumn(label: Text('환자 ID')),
-                                DataColumn(label: Text('환자 이름')),
-                                DataColumn(label: Text('검사장비')),
-                                DataColumn(label: Text('검사설명')),
-                                DataColumn(label: Text('검사일시')),
-                                DataColumn(label: Text('판독상태')),
-                                DataColumn(label: Text('시리즈')),
-                                DataColumn(label: Text('이미지')),
-                                DataColumn(label: Text('Verify')),
+                        child: DataTable2(
+                          columnSpacing: 40,
+                          headingTextStyle: headerTextStyle(),
+                          columns: const [
+                            DataColumn2(label: Text('환자 ID'),fixedWidth: 130),
+                            DataColumn2(label: Text('환자 이름'),fixedWidth: 140),
+                            DataColumn2(label: Text('검사장비'), fixedWidth: 110),
+                            DataColumn2(label: Text('검사설명'),),
+                            DataColumn2(label: Text('검사일시'), fixedWidth: 130),
+                            DataColumn2(label: Text('판독상태'), fixedWidth: 110),
+                            DataColumn2(label: Text('시리즈'), fixedWidth: 90),
+                            DataColumn2(label: Text('이미지'), fixedWidth: 90),
+                            DataColumn2(label: Text('Verify'),fixedWidth: 90),
+                          ],
+                          rows: List.generate(homeVM.studies.length,
+                              (index) {
+                            StudyTab study = homeVM.studies[index];
+                            return DataRow(
+                              cells: [
+                                DataCell(
+                                  Text(study.PID, style: cellTextStyle(),),
+                                  onTap: () async {
+                                    // 시리즈 리스트 받아오기
+                                    var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
+                                    Get.to(()=> ThumbnailView(seriesList: seriesList));
+                                  }
+                                ),
+                                DataCell(Text(study.PNAME, style: cellTextStyle(),)),
+                                DataCell(Text(study.MODALITY, style: cellTextStyle(),)),
+                                DataCell(Text(study.STUDYDESC!, style: cellTextStyle(),)),
+                                DataCell(Text(study.STUDYDATE.toString(), style: cellTextStyle(),)),
+                                DataCell(Text(study.REPORTSTATUS.toString(), style: cellTextStyle(),)),
+                                DataCell(Text(study.SERIESCNT.toString(), style: cellTextStyle(),)),
+                                DataCell(Text(study.IMAGECNT.toString(), style: cellTextStyle(),)),
+                                DataCell(Text(study.EXAMSTATUS.toString(), style: cellTextStyle(),)),
                               ],
-                              rows: List.generate(homeVM.studies.length,
-                                  (index) {
-                                StudyTab study = homeVM.studies[index];
-                                return DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Text(study.PID, style: cellTextStyle(),),
-                                      onTap: () async {
-                                        // 시리즈 리스트 받아오기
-                                        var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
-                                        Get.to(()=> ThumbnailView(seriesList: seriesList));
-                                      }
-                                    ),
-                                    DataCell(Text(study.PNAME, style: cellTextStyle(),)),
-                                    DataCell(Text(study.MODALITY, style: cellTextStyle(),)),
-                                    DataCell(Text(study.STUDYDESC!, style: cellTextStyle(),)),
-                                    DataCell(Text(study.STUDYDATE.toString(), style: cellTextStyle(),)),
-                                    DataCell(Text(study.REPORTSTATUS.toString(), style: cellTextStyle(),)),
-                                    DataCell(Text(study.SERIESCNT.toString(), style: cellTextStyle(),)),
-                                    DataCell(Text(study.IMAGECNT.toString(), style: cellTextStyle(),)),
-                                    DataCell(Text(study.EXAMSTATUS.toString(), style: cellTextStyle(),)),
-                                  ],
-                                  
-                                );
-                              }),
-                            ),
-                          ),
+                              
+                            );
+                          }),
                         ),
                       ),
                     ),

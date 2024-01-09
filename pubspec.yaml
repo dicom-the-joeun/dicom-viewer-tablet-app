@@ -51,6 +51,9 @@ dependencies:
   shared_preferences: ^2.2.2
   # 캐시 네트워크 이미지
   cached_network_image: ^3.3.1
+  # 컬럼고정 데이터테이블
+  data_table_2: ^2.5.10
+
 
 dev_dependencies:
   flutter_test:
