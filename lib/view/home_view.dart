@@ -173,7 +173,7 @@ class MainView extends StatelessWidget {
                         horizontal: 10
                       ),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.71,
                         child: DataTable2(
                           columnSpacing: 40,
                           headingTextStyle: headerTextStyle(),
