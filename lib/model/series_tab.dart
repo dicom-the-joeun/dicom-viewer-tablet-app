@@ -8,6 +8,7 @@ class SeriesTab {
   final int IMAGECNT;
   final String PATH;
   final String FNAME;
+  final String HEADERS;
 
   SeriesTab({
     required this.SERIESKEY, 
@@ -15,7 +16,9 @@ class SeriesTab {
     this.SCORE, 
     required this.IMAGECNT, 
     required this.PATH, 
-    required this.FNAME});
+    required this.FNAME,
+    required this.HEADERS,
+    });
 
   SeriesTab.fromMap(Map<String, dynamic> res)
       : SERIESKEY = res['SERIESKEY'],
@@ -23,7 +26,7 @@ class SeriesTab {
         SCORE = res['SCORE'],
         IMAGECNT = res['IMAGECNT'],
         PATH = res['PATH'],
-        FNAME = res['FNAME'];
-
+        FNAME = res['FNAME'],
+        HEADERS = res['HEADERS'];
 
 } // end

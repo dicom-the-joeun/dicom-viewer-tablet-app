@@ -4,23 +4,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 class ThumbnailVM extends GetxController {
-  String token = '';
+  RxString token = ''.obs;
   var isLoading = true.obs; // Loading indicator
 
   @override
   void onInit() async {
     super.onInit();
-    await fetchYourData();
-    print(token);
-    print(isLoading.value);
-  }
-
-  fetchYourData() async {
-    // Fetch your data here
-    token = await SharedHandler().getAccessToken();
+    token.value = await SharedHandler().fetchData();
     isLoading.value = false; // Set loading to false after data is fetched
     update();
+    print(token.value);
   }
+
 
   String getThumbnailUrl(
       {required List<SeriesTab> seriesList, required int index}) {
@@ -29,6 +24,8 @@ class ThumbnailVM extends GetxController {
     String fileName = seriesList[index].FNAME;
 
     url = '$url?filepath=$filePath&filename=$fileName';
+    print('path: $filePath');
+    print('name: $fileName');
     return url;
   }
 }

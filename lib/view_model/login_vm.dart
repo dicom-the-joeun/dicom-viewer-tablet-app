@@ -74,9 +74,11 @@ class LoginVM extends GetxController {
       pref.setString('refresh_token', refreshToken);
     } catch (e) {
       print(e);
+    }finally{
+      print('세이브토큰:  ${pref.getString('access_token')}');
     }
   }
-
+  
   saveLoginState(bool loginState) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
