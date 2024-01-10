@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 
 class ThumbnailView extends StatelessWidget {
   final List<SeriesTab> seriesList;
-  const ThumbnailView({super.key, required this.seriesList});
+  final int studyKey;
+  const ThumbnailView({super.key, required this.seriesList, required this.studyKey});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ThumbnailView extends StatelessWidget {
       builder: (thumbnailVM) {
         return Scaffold(
           appBar: MyAppBar(
-            title: 'SERIES'
+            title: 'STUDY $studyKey'
           ),
           body: Center(
             child: Column(
@@ -37,7 +38,7 @@ class ThumbnailView extends StatelessWidget {
                               crossAxisCount: 2,
                               crossAxisSpacing: 0,
                               mainAxisSpacing: 0,
-                              mainAxisExtent: 520,
+                              mainAxisExtent: 550,
                             ),
                             itemCount: seriesList.length,
                             itemBuilder: (context, index) {
@@ -57,13 +58,13 @@ class ThumbnailView extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '시리즈 번호: ${seriesList[index].SERIESKEY}',
+                                            'Series Num: ${seriesList[index].SERIESKEY}',
                                             style: seriesTextStyle(),
                                           ),
                                           (seriesList[index].SERIESDESC == null)
                                               ? const Text('')
                                               : Text(
-                                                  '설명: ${seriesList[index].SERIESDESC}',
+                                                  'Series Description: ${seriesList[index].SERIESDESC}',
                                                   style: seriesTextStyle(),
                                                 ),
                                           (seriesList[index].SCORE == null ||
