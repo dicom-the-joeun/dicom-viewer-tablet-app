@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/static/search_data.dart';
@@ -12,11 +13,14 @@ class HomeVM extends GetxController {
   List<StudyTab> studies = [];
   List<StudyTab> seriesList = [];
   List<StudyTab> filterStudies = [];
+  String token = '';
+
 
 
   @override
   void onInit() async {
     super.onInit();
+    token = await SharedHandler().fetchData();
     studies = await getStudyTabList();
     update();
   }
@@ -91,7 +95,10 @@ class HomeVM extends GetxController {
 
     try {
       // 비동기 요청
-      var response = await http.get(Uri.parse(url));
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $token'}
+      );
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기
@@ -125,7 +132,10 @@ class HomeVM extends GetxController {
 
     try {
       // 비동기 요청
-      var response = await http.get(Uri.parse(url));
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $token'}
+      );
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기

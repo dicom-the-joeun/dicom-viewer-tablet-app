@@ -198,7 +198,7 @@ class MainView extends StatelessWidget {
                                   onTap: () async {
                                     // 시리즈 리스트 받아오기
                                     var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
-                                    Get.to(()=> ThumbnailView(seriesList: seriesList));
+                                    Get.to(()=> ThumbnailView(seriesList: seriesList, studyKey: study.STUDYKEY,));
                                   }
                                 ),
                                 DataCell(Text(study.PNAME, style: cellTextStyle(),)),
