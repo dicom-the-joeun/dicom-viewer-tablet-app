@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
@@ -11,7 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeVM extends GetxController {
-
   @override
   void onInit() async {
     super.onInit();
@@ -57,45 +55,39 @@ class HomeVM extends GetxController {
     DateTime.now().day,
   );
 
-  /// 검사일자 시작일, 종료일 초기값
-  DateTime startDay = DateTime(2000, 1, 1);
-  DateTime endDay = DateTime.now();
+  // /// 검사일자 시작일, 종료일 초기값
+  // DateTime startDay = DateTime(2000, 1, 1);
+  // DateTime endDay = DateTime.now();
 
-  DateTime focusedDay = DateTime.now();
-  DateTime? rangeStart; 
-  DateTime? rangeEnd; 
+  DateTime rangeStart = DateTime.now();
+  DateTime rangeEnd = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
-  
+
 // 범위 선택
-rangeSelected(DateTime? start, DateTime? end, DateTime focusedDay){
-    this.selectedDay = focusedDay;  
-    this.focusedDay = focusedDay; 
-    this.rangeStart = start;
-    this.rangeEnd = end;
-    update();  
-} 
+  rangeSelected(DateTime start, DateTime end) {
+    rangeStart = start;
+    rangeEnd = end;
+    update();
+  }
 
 // 날짜 선택
-daySelected(DateTime selectedDay, DateTime focusedDay) {
-    this.selectedDay = focusedDay; 
-    this.focusedDay = focusedDay; 
-    update(); 
-}
-
-
+  daySelected(DateTime selectedDay) {
+    selectedDay = this.selectedDay;
+    update();
+  }
 
   /// 검사일자 변경 함수
-  Future<DateTime> updateDatePicker(context, DateTime inputDay) async {
-    DateTime day = (await showDatePicker(
-          context: context,
-          firstDate: DateTime(2000, 1, 1),
-          lastDate: DateTime(2099, 12, 31),
-          currentDate: inputDay,
-        )) ??
-        inputDay;
-    update();
-    return day;
-  }
+  // Future<DateTime> updateDatePicker(context, DateTime inputDay) async {
+  //   DateTime day = (await showDatePicker(
+  //         context: context,
+  //         firstDate: DateTime(2000, 1, 1),
+  //         lastDate: DateTime(2099, 12, 31),
+  //         currentDate: inputDay,
+  //       )) ??
+  //       inputDay;
+  //   update();
+  //   return day;
+  // }
 
   /// 드롭다운 선택 시 선택값 변경 함수
   selectDropDown(String value, List<String> itemList) {
@@ -115,8 +107,8 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
     selectedModality = staticModalityList[0];
     selectedExamStatus = staticExamStatusList[0];
     selectedReportStatus = staticReportStatusList[0];
-    // startDay = DateTime(2000, 1, 1);
-    // endDay = DateTime.now();
+    rangeStart = DateTime.now();
+    rangeEnd = DateTime.now();
     userIDController.text = '';
     userNameController.text = '';
     changeButtonState('전체');
@@ -132,10 +124,8 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
 
     try {
       // 비동기 요청
-      var response = await http.get(
-        Uri.parse(url),
-        headers: {'Authorization': 'Bearer $token'}
-      );
+      var response = await http
+          .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기
@@ -165,14 +155,13 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
     // 시리즈 리스트 초기화
     List<SeriesTab> seriesList = [];
     // endpoint 가져오기
-    String url = '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
+    String url =
+        '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
 
     try {
       // 비동기 요청
-      var response = await http.get(
-        Uri.parse(url),
-        headers: {'Authorization': 'Bearer $token'}
-      );
+      var response = await http
+          .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
         // 응답 결과(리스트형식)을 담기
@@ -184,7 +173,6 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
           // study를 Map형식으로 담아주기
           SeriesTab tempSeries = SeriesTab.fromMap(series);
           seriesList.add(tempSeries);
-
         }
       } else {
         // 200 코드가 아닌 경우 빈 리스트 리턴
@@ -206,7 +194,6 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
       String? equipment,
       String? examStatus,
       String? reportStatus}) {
-
     // 누적되지 않게 리셋
     filterStudies = [];
 
@@ -220,8 +207,8 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
   }
 
   /// 기간조회 컨트롤 함수
-  changeButtonState(String state){
-    switch(state){
+  changeButtonState(String state) {
+    switch (state) {
       case '전체':
         selectedPeriod = '전체';
         isWholeButtonSelected = true;
@@ -244,20 +231,38 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
     update();
   }
 
-  searchStudy(){
-    print(
-      '장비 종류: $selectedModality'
-    );
-    filterStudies = studies.where(
-      (study){
-        bool idCondtion = (study.PID.toLowerCase() == userIDController.text.toLowerCase().trim() || userIDController.text.isEmpty);
-        bool nameCondition = (study.PNAME.toLowerCase() == userNameController.text.toLowerCase().trim() || userNameController.text.isEmpty);
-        bool modalityCondition = ((study.MODALITY == selectedModality) || (selectedModality == staticModalityList[0]));
-        bool examStatusCondition = ((study.EXAMSTATUS == selectedExamStatus) || (selectedExamStatus == staticExamStatusList[0]));
-        bool reportStatusConditon = ((study.REPORTSTATUS == selectedReportStatus) || (selectedReportStatus == staticReportStatusList[0]));
-        bool periodCondition;
-        return idCondtion && nameCondition && modalityCondition && examStatusCondition && reportStatusConditon;
-      }).toList();
+  searchStudy() {
+    print(rangeStart);
+    print(rangeEnd);
+    filterStudies = studies.where((study) {
+      bool idCondtion = (study.PID.toLowerCase() ==
+              userIDController.text.toLowerCase().trim() ||
+          userIDController.text.isEmpty);
+      bool nameCondition = (study.PNAME.toLowerCase() ==
+              userNameController.text.toLowerCase().trim() ||
+          userNameController.text.isEmpty);
+      bool modalityCondition = ((study.MODALITY == selectedModality) ||
+          (selectedModality == staticModalityList[0]));
+      bool examStatusCondition = ((study.EXAMSTATUS == selectedExamStatus) ||
+          (selectedExamStatus == staticExamStatusList[0]));
+      bool reportStatusConditon =
+          ((study.REPORTSTATUS == selectedReportStatus) ||
+              (selectedReportStatus == staticReportStatusList[0]));
+      bool periodCondition = (int.parse(convertDateToString(rangeStart)) <= study.STUDYDATE) && (study.STUDYDATE <= int.parse(convertDateToString(rangeEnd))) ;
+      return idCondtion &&
+          nameCondition &&
+          modalityCondition &&
+          examStatusCondition &&
+          periodCondition &&
+          reportStatusConditon;
+    }).toList();
     update();
+  }
+
+  String convertDateToString(DateTime date) {
+    String year = date.year.toString();
+    String month = date.month < 10 ? '0${date.month}' : '${date.month}';
+    String day = date.day < 10 ? '0${date.day}' : '${date.day}';
+    return '$year$month$day';
   }
 }

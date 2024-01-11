@@ -5,9 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/home_title.dart';
 
-class TableCalendarWidget extends StatelessWidget {
+class TableCalendarWidget extends StatefulWidget {
   const TableCalendarWidget({super.key});
 
+  @override
+  State<TableCalendarWidget> createState() => _TableCalendarWidgetState();
+}
+
+class _TableCalendarWidgetState extends State<TableCalendarWidget> {
   @override
   Widget build(BuildContext context) {
     final homeVM = Get.find<HomeVM>();
@@ -23,33 +28,32 @@ class TableCalendarWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TableCalendar(
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  titleTextStyle: TextStyle(fontSize: 25)
-                ),
-                focusedDay: DateTime.now(),
-                firstDay: DateTime.utc(1990, 1, 1),
-                lastDay: DateTime.utc(2030, 1, 31),
+                headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(fontSize: 25)),
+                focusedDay: homeVM.rangeEnd,
+                firstDay: DateTime.utc(2000, 1, 1),
+                lastDay: DateTime.now(),
                 calendarFormat: homeVM.calendarFormat,
-                selectedDayPredicate: (day) =>
-                    isSameDay(homeVM.selectedDay, day),
+                selectedDayPredicate: (day) {
+                  return isSameDay(day, homeVM.selectedDay);
+                },
+                onRangeSelected: (start, end, focusedDay) {
+                  if (end == null) {
+                    homeVM.rangeStart = start!;
+                    homeVM.rangeEnd = start;
+                  } else {
+                    homeVM.rangeStart = start!;
+                    homeVM.rangeEnd = end;
+                  }
+                  setState(() {});
+                },
                 startingDayOfWeek: StartingDayOfWeek.monday,
                 rangeStartDay: homeVM.rangeStart,
                 rangeEndDay: homeVM.rangeEnd,
-                onFormatChanged: (format) {
-                  if (homeVM.calendarFormat != format){
-                    homeVM.calendarFormat = format;
-                  }
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  homeVM.daySelected(selectedDay, focusedDay);
-                },
-                onRangeSelected: (start, end, focusedDay) {
-                  homeVM.rangeSelected(start, end, focusedDay);
-                },
-                
                 rangeSelectionMode: RangeSelectionMode.toggledOn,
+                onDayLongPressed: (selectedDay, focusedDay) => {},
               ),
               const HomeTitle(title: '검사일자'),
               Row(
@@ -61,8 +65,8 @@ class TableCalendarWidget extends StatelessWidget {
                     },
                     icon: const Icon(Icons.calendar_month_outlined),
                     label: Text(
-                      DateFormat('yyyy.MM.dd').format(homeVM.rangeStart ?? DateTime.now()),
-
+                      DateFormat('yyyy.MM.dd')
+                          .format(homeVM.rangeStart),
                       style: const TextStyle(fontSize: 20),
                     ),
                   ),
@@ -72,8 +76,8 @@ class TableCalendarWidget extends StatelessWidget {
                     },
                     icon: const Icon(Icons.calendar_month_outlined),
                     label: Text(
-                      DateFormat('yyyy.MM.dd').format(homeVM.rangeEnd ?? DateTime.now()),
-
+                      DateFormat('yyyy.MM.dd')
+                          .format(homeVM.rangeEnd),
                       style: const TextStyle(fontSize: 20),
                     ),
                   ),
