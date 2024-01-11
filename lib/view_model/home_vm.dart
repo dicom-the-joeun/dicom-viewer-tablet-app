@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:table_calendar/table_calendar.dart';
 
 class HomeVM extends GetxController {
   List<StudyTab> studies = [];
@@ -48,6 +49,29 @@ class HomeVM extends GetxController {
   /// 검사일자 시작일, 종료일 초기값
   DateTime startDay = DateTime(2000, 1, 1);
   DateTime endDay = DateTime.now();
+
+  DateTime focusedDay = DateTime.now();
+  DateTime? rangeStart; 
+  DateTime? rangeEnd; 
+  CalendarFormat calendarFormat = CalendarFormat.month;
+  
+// 범위 선택
+rangeSelected(DateTime? start, DateTime? end, DateTime focusedDay){
+    this.selectedDay = focusedDay;  
+    this.focusedDay = focusedDay; 
+    this.rangeStart = start;
+    this.rangeEnd = end;
+    update();  
+} 
+
+// 날짜 선택
+daySelected(DateTime selectedDay, DateTime focusedDay) {
+    this.selectedDay = focusedDay; 
+    this.focusedDay = focusedDay; 
+    update(); 
+}
+
+
 
   /// 검사일자 변경 함수
   Future<DateTime> updateDatePicker(context, DateTime inputDay) async {
