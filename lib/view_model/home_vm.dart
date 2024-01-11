@@ -37,18 +37,18 @@ class HomeVM extends GetxController {
   String token = '';
 
   // 드롭다운 리스트 선언
-  final modalityList = staticEquipmentList;
-  final examStatusList = staticVerifyList;
-  final reportStatusList = staticDecipherList;
+  final modalityList = staticModalityList;
+  final examStatusList = staticExamStatusList;
+  final reportStatusList = staticReportStatusList;
 
   /// textField controller
   TextEditingController userIDController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
   /// 드롭다운 선택값 변수 목록
-  String selectedModality = staticEquipmentList[0];
-  String selectedExamStatus = staticVerifyList[0];
-  String selectedReportStatus = staticDecipherList[0];
+  String selectedModality = staticModalityList[0];
+  String selectedExamStatus = staticExamStatusList[0];
+  String selectedReportStatus = staticReportStatusList[0];
 
   /// 캘린더 선택날짜
   DateTime selectedDay = DateTime.utc(
@@ -111,13 +111,15 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
 
   /// 검색 조건 초기화 함수
   resetValues() {
-    selectedModality = '장비 종류';
-    selectedExamStatus = 'Verify';
-    selectedReportStatus = '판독 상태';
-    startDay = DateTime(2000, 1, 1);
-    endDay = DateTime.now();
+    filterStudies = [];
+    selectedModality = staticModalityList[0];
+    selectedExamStatus = staticExamStatusList[0];
+    selectedReportStatus = staticReportStatusList[0];
+    // startDay = DateTime(2000, 1, 1);
+    // endDay = DateTime.now();
     userIDController.text = '';
     userNameController.text = '';
+    changeButtonState('전체');
     update();
   }
 
@@ -221,21 +223,41 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
   changeButtonState(String state){
     switch(state){
       case '전체':
+        selectedPeriod = '전체';
         isWholeButtonSelected = true;
         isDayButtonSelected = false;
         isWeekButtonSelected = false;
         break;
       case '1일':
+        selectedPeriod = '1일';
         isWholeButtonSelected = false;
         isDayButtonSelected = true;
         isWeekButtonSelected = false;
         break;
       case '1주일':
+        selectedPeriod = '1주일';
         isWholeButtonSelected = false;
         isDayButtonSelected = false;
         isWeekButtonSelected = true;
         break;
     }
+    update();
+  }
+
+  searchStudy(){
+    print(
+      '장비 종류: $selectedModality'
+    );
+    filterStudies = studies.where(
+      (study){
+        bool idCondtion = (study.PID.toLowerCase() == userIDController.text.toLowerCase().trim() || userIDController.text.isEmpty);
+        bool nameCondition = (study.PNAME.toLowerCase() == userNameController.text.toLowerCase().trim() || userNameController.text.isEmpty);
+        bool modalityCondition = ((study.MODALITY == selectedModality) || (selectedModality == staticModalityList[0]));
+        bool examStatusCondition = ((study.EXAMSTATUS == selectedExamStatus) || (selectedExamStatus == staticExamStatusList[0]));
+        bool reportStatusConditon = ((study.REPORTSTATUS == selectedReportStatus) || (selectedReportStatus == staticReportStatusList[0]));
+        bool periodCondition;
+        return idCondtion && nameCondition && modalityCondition && examStatusCondition && reportStatusConditon;
+      }).toList();
     update();
   }
 }

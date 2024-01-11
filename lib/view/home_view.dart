@@ -157,7 +157,6 @@ class MainView extends StatelessWidget {
                               labelText: '전체',
                               backgroundColor: homeVM.isWholeButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
                               onPressed: () {
-                                homeVM.selectedPeriod = '전체';
                                 homeVM.changeButtonState('전체');
                               },
                             ),
@@ -165,7 +164,6 @@ class MainView extends StatelessWidget {
                               labelText: '1일',
                               backgroundColor: homeVM.isDayButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
                               onPressed: () {
-                                homeVM.selectedPeriod = '1일';
                                 homeVM.changeButtonState('1일');
                               },
                             ),
@@ -173,7 +171,6 @@ class MainView extends StatelessWidget {
                               labelText: '1주일',
                               backgroundColor: homeVM.isWeekButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
                               onPressed: () {
-                                homeVM.selectedPeriod = '1주일';
                                 homeVM.changeButtonState('1주일');
                               },
                             ),
@@ -183,13 +180,7 @@ class MainView extends StatelessWidget {
                         SearchButton(
                           labelText: '검색',
                           backgroundColor: Colors.red,
-                          onPressed: () => homeVM.filterData(
-                            pid: homeVM.userIDController.text.trim(),
-                            pname: homeVM.userNameController.text.trim(),
-                            reportStatus: homeVM.selectedReportStatus,
-                            equipment: homeVM.selectedModality,
-                            examStatus: homeVM.selectedExamStatus,
-                          ),
+                          onPressed: () => homeVM.searchStudy(),
                         ),
                       ],
                     ),
@@ -215,9 +206,9 @@ class MainView extends StatelessWidget {
                             DataColumn2(label: Text('이미지'), fixedWidth: 90),
                             DataColumn2(label: Text('Verify'),fixedWidth: 90),
                           ],
-                          rows: List.generate(homeVM.studies.length,
+                          rows: List.generate(homeVM.filterStudies.length,
                               (index) {
-                            StudyTab study = homeVM.studies[index];
+                            StudyTab study = homeVM.filterStudies[index];
                             return DataRow(
                               onSelectChanged: (value) async {
                                 // 시리즈 리스트 받아오기
