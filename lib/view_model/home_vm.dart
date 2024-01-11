@@ -11,12 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeVM extends GetxController {
-  List<StudyTab> studies = [];
-  List<StudyTab> seriesList = [];
-  List<StudyTab> filterStudies = [];
-  String token = '';
-
-
 
   @override
   void onInit() async {
@@ -26,6 +20,23 @@ class HomeVM extends GetxController {
     update();
   }
 
+  // 조건검색 시 어떤 기간이 선택되었는지 저장할 변수
+  String selectedPeriod = '전체';
+  // 선택되었는지 확인할 변수
+  bool isWholeButtonSelected = true;
+  bool isDayButtonSelected = false;
+  bool isWeekButtonSelected = false;
+
+  // 스터디 리스트
+  List<StudyTab> studies = [];
+  // 시리즈 리스트
+  List<StudyTab> seriesList = [];
+  // 조건검색된 스터디 리스트
+  List<StudyTab> filterStudies = [];
+  // Access Token
+  String token = '';
+
+  // 드롭다운 리스트 선언
   final modalityList = staticEquipmentList;
   final examStatusList = staticVerifyList;
   final reportStatusList = staticDecipherList;
@@ -204,5 +215,27 @@ daySelected(DateTime selectedDay, DateTime focusedDay) {
     }
 
     update(); // 화면 갱신
+  }
+
+  /// 기간조회 컨트롤 함수
+  changeButtonState(String state){
+    switch(state){
+      case '전체':
+        isWholeButtonSelected = true;
+        isDayButtonSelected = false;
+        isWeekButtonSelected = false;
+        break;
+      case '1일':
+        isWholeButtonSelected = false;
+        isDayButtonSelected = true;
+        isWeekButtonSelected = false;
+        break;
+      case '1주일':
+        isWholeButtonSelected = false;
+        isDayButtonSelected = false;
+        isWeekButtonSelected = true;
+        break;
+    }
+    update();
   }
 }

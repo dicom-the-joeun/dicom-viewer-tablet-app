@@ -151,9 +151,35 @@ class MainView extends StatelessWidget {
                           icon: const Icon(Icons.calendar_month),
                           label: const Text('날짜 선택'),
                         ),
-                        const SearchButton(labelText: '전체'),
-                        const SearchButton(labelText: '1일'),
-                        const SearchButton(labelText: '1주일'),
+                        Row(
+                          children: [
+                            SearchButton(
+                              labelText: '전체',
+                              backgroundColor: homeVM.isWholeButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              onPressed: () {
+                                homeVM.selectedPeriod = '전체';
+                                homeVM.changeButtonState('전체');
+                              },
+                            ),
+                            SearchButton(
+                              labelText: '1일',
+                              backgroundColor: homeVM.isDayButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              onPressed: () {
+                                homeVM.selectedPeriod = '1일';
+                                homeVM.changeButtonState('1일');
+                              },
+                            ),
+                            SearchButton(
+                              labelText: '1주일',
+                              backgroundColor: homeVM.isWeekButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              onPressed: () {
+                                homeVM.selectedPeriod = '1주일';
+                                homeVM.changeButtonState('1주일');
+                              },
+                            ),
+                          ],
+                        ),
+                        
                         SearchButton(
                           labelText: '검색',
                           backgroundColor: Colors.red,
@@ -175,6 +201,7 @@ class MainView extends StatelessWidget {
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.71,
                         child: DataTable2(
+                          showCheckboxColumn: false,
                           columnSpacing: 40,
                           headingTextStyle: headerTextStyle(),
                           columns: const [
@@ -192,15 +219,13 @@ class MainView extends StatelessWidget {
                               (index) {
                             StudyTab study = homeVM.studies[index];
                             return DataRow(
-                              cells: [
-                                DataCell(
-                                  Text(study.PID, style: cellTextStyle(),),
-                                  onTap: () async {
-                                    // 시리즈 리스트 받아오기
+                              onSelectChanged: (value) async {
+                                // 시리즈 리스트 받아오기
                                     var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
                                     Get.to(()=> ThumbnailView(seriesList: seriesList, studyKey: study.STUDYKEY,));
-                                  }
-                                ),
+                              },
+                              cells: [
+                                DataCell(Text(study.PID, style: cellTextStyle(),)),
                                 DataCell(Text(study.PNAME, style: cellTextStyle(),)),
                                 DataCell(Text(study.MODALITY, style: cellTextStyle(),)),
                                 DataCell(Text(study.STUDYDESC!, style: cellTextStyle(),)),

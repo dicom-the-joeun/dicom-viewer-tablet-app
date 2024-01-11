@@ -14,9 +14,9 @@ class SearchButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: (backgroundColor == null)
-                        ? const Color.fromARGB(255, 61, 52, 52)
+                        ? const Color.fromARGB(255, 69, 67, 67)
                         : backgroundColor,
-          foregroundColor: Colors.white
+          foregroundColor: Colors.white,
         ),
         child: Text(
           labelText,
