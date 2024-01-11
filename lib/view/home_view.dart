@@ -68,7 +68,31 @@ class MainView extends StatelessWidget {
                             // homeVM.rangeStart = DateTime.now();
                             // homeVM.rangeEnd = DateTime.now();
                             homeVM.selectedDay = DateTime.now();
-                            Get.dialog(const TableCalendarWidget());
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      content: const TableCalendarWidget(),
+                                      // actionsAlignment: MainAxisAlignment.center,
+                                      actions: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0,0,25,25),
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              minimumSize: const Size(100, 40),
+                                              backgroundColor: const Color.fromARGB(255, 62, 111, 203)
+                                            ),
+                                            onPressed: ()=> Get.back(), 
+                                            child: const Text(
+                                              '확인',
+                                              style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ));
                           },
                           icon: const Icon(Icons.calendar_month),
                           label: const Text('날짜 선택'),
@@ -77,28 +101,33 @@ class MainView extends StatelessWidget {
                           children: [
                             SearchButton(
                               labelText: '전체',
-                              backgroundColor: homeVM.isWholeButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              backgroundColor: homeVM.isWholeButtonSelected
+                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  : null,
                               onPressed: () {
                                 homeVM.changeButtonState('전체');
                               },
                             ),
                             SearchButton(
                               labelText: '1일',
-                              backgroundColor: homeVM.isDayButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              backgroundColor: homeVM.isDayButtonSelected
+                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  : null,
                               onPressed: () {
                                 homeVM.changeButtonState('1일');
                               },
                             ),
                             SearchButton(
                               labelText: '1주일',
-                              backgroundColor: homeVM.isWeekButtonSelected ? const Color.fromARGB(255, 135, 142, 147) : null,
+                              backgroundColor: homeVM.isWeekButtonSelected
+                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  : null,
                               onPressed: () {
                                 homeVM.changeButtonState('1주일');
                               },
                             ),
                           ],
                         ),
-                        
                         SearchButton(
                           labelText: '검색',
                           backgroundColor: Colors.red,
@@ -108,9 +137,7 @@ class MainView extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 10
-                      ),
+                          vertical: 20, horizontal: 10),
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.71,
                         child: DataTable2(
@@ -118,15 +145,17 @@ class MainView extends StatelessWidget {
                           columnSpacing: 40,
                           headingTextStyle: headerTextStyle(),
                           columns: const [
-                            DataColumn2(label: Text('환자 ID'),fixedWidth: 130),
-                            DataColumn2(label: Text('환자 이름'),fixedWidth: 140),
+                            DataColumn2(label: Text('환자 ID'), fixedWidth: 130),
+                            DataColumn2(label: Text('환자 이름'), fixedWidth: 140),
                             DataColumn2(label: Text('검사장비'), fixedWidth: 110),
-                            DataColumn2(label: Text('검사설명'),),
+                            DataColumn2(
+                              label: Text('검사설명'),
+                            ),
                             DataColumn2(label: Text('검사일시'), fixedWidth: 130),
                             DataColumn2(label: Text('판독상태'), fixedWidth: 110),
                             DataColumn2(label: Text('시리즈'), fixedWidth: 90),
                             DataColumn2(label: Text('이미지'), fixedWidth: 90),
-                            DataColumn2(label: Text('Verify'),fixedWidth: 90),
+                            DataColumn2(label: Text('Verify'), fixedWidth: 90),
                           ],
                           rows: List.generate(homeVM.filterStudies.length,
                               (index) {
@@ -134,21 +163,49 @@ class MainView extends StatelessWidget {
                             return DataRow(
                               onSelectChanged: (value) async {
                                 // 시리즈 리스트 받아오기
-                                    var seriesList = await homeVM.getSeriesTabList(study.STUDYKEY);
-                                    Get.to(()=> ThumbnailView(seriesList: seriesList, studyKey: study.STUDYKEY,));
+                                var seriesList = await homeVM
+                                    .getSeriesTabList(study.STUDYKEY);
+                                Get.to(() => ThumbnailView(
+                                    seriesList: seriesList, study: study));
                               },
                               cells: [
-                                DataCell(Text(study.PID, style: cellTextStyle(),)),
-                                DataCell(Text(study.PNAME, style: cellTextStyle(),)),
-                                DataCell(Text(study.MODALITY, style: cellTextStyle(),)),
-                                DataCell(Text(study.STUDYDESC!, style: cellTextStyle(),)),
-                                DataCell(Text(study.STUDYDATE.toString(), style: cellTextStyle(),)),
-                                DataCell(Text(study.REPORTSTATUS.toString(), style: cellTextStyle(),)),
-                                DataCell(Text(study.SERIESCNT.toString(), style: cellTextStyle(),)),
-                                DataCell(Text(study.IMAGECNT.toString(), style: cellTextStyle(),)),
-                                DataCell(Text(study.EXAMSTATUS.toString(), style: cellTextStyle(),)),
+                                DataCell(Text(
+                                  study.PID,
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.PNAME,
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.MODALITY,
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.STUDYDESC!,
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.STUDYDATE.toString(),
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.REPORTSTATUS.toString(),
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.SERIESCNT.toString(),
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.IMAGECNT.toString(),
+                                  style: cellTextStyle(),
+                                )),
+                                DataCell(Text(
+                                  study.EXAMSTATUS.toString(),
+                                  style: cellTextStyle(),
+                                )),
                               ],
-                              
                             );
                           }),
                         ),
@@ -166,14 +223,14 @@ class MainView extends StatelessWidget {
   }
 }
 
-TextStyle cellTextStyle(){
+TextStyle cellTextStyle() {
   return const TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 17,
   );
 }
 
-TextStyle headerTextStyle(){
+TextStyle headerTextStyle() {
   return const TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,

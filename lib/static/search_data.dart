@@ -39,7 +39,7 @@
 
   const List<String> staticExamStatusList = [
     'Verify',
-    'Not requested',
+    'Not Requested',
     'Request completed',
   ];
 

@@ -2,14 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
+import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThumbnailView extends StatelessWidget {
   final List<SeriesTab> seriesList;
-  final int studyKey;
-  const ThumbnailView({super.key, required this.seriesList, required this.studyKey});
+  final StudyTab study;
+  const ThumbnailView(
+      {super.key, required this.seriesList, required this.study});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +21,36 @@ class ThumbnailView extends StatelessWidget {
       init: ThumbnailVM(),
       builder: (thumbnailVM) {
         return Scaffold(
-          appBar: MyAppBar(
-            title: 'STUDY $studyKey'
-          ),
+          appBar: MyAppBar(title: 'Thumbnail'),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '환자 ID: ${study.PID}',
+                        style: seriesTextStyle(),
+                      ),
+                      Text(
+                        '환자 이름: ${study.PNAME}',
+                        style: seriesTextStyle(),
+                      ),
+                      Text('검사 장비 : ${study.MODALITY}', style: seriesTextStyle()),
+                      Text('검사 일자: ${study.STUDYDATE}', style: seriesTextStyle()),
+                    ],
+                  ),
+                ),
                 (thumbnailVM.isLoading.value)
                     ? const Center(child: CircularProgressIndicator())
                     : SingleChildScrollView(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.8,
+                          height: MediaQuery.of(context).size.height * 0.73,
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
@@ -55,30 +74,36 @@ class ThumbnailView extends StatelessWidget {
                                       padding: EdgeInsets.only(top: 20),
                                       width: 400,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Series Num: ${seriesList[index].SERIESKEY}',
                                             style: seriesTextStyle(),
                                           ),
                                           (seriesList[index].SERIESDESC == null)
-                                              ? Text('Series Description: Empty', style: seriesTextStyle(),)
+                                              ? Text(
+                                                  'Series Description: Empty',
+                                                  style: seriesTextStyle(),
+                                                )
                                               : Tooltip(
-                                                message: seriesList[index].SERIESDESC,
-                                                textStyle: const TextStyle(
-                                                  fontSize: 30,
-                                                  color: Colors.black,
-
-                                                ),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    text: 'Series Description: ${seriesList[index].SERIESDESC}',
-                                                    style: seriesTextStyle(),
-                                                    ),
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  message: seriesList[index]
+                                                      .SERIESDESC,
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 30,
+                                                    color: Colors.black,
                                                   ),
-                                              ),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      text:
+                                                          'Series Description: ${seriesList[index].SERIESDESC}',
+                                                      style: seriesTextStyle(),
+                                                    ),
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
                                           (seriesList[index].SCORE == null ||
                                                   seriesList[index]
                                                           .SCORE!

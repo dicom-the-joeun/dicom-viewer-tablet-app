@@ -59,7 +59,7 @@ class HomeVM extends GetxController {
   // DateTime startDay = DateTime(2000, 1, 1);
   // DateTime endDay = DateTime.now();
 
-  DateTime rangeStart = DateTime.now();
+  DateTime rangeStart = DateTime(2000, 1, 1);
   DateTime rangeEnd = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
 
@@ -214,7 +214,7 @@ class HomeVM extends GetxController {
         isWholeButtonSelected = true;
         isDayButtonSelected = false;
         isWeekButtonSelected = false;
-        rangeStart = DateTime(2000,1,1);
+        rangeStart = DateTime(2000, 1, 1);
         rangeEnd = DateTime.now();
         break;
       case '1일':
@@ -241,20 +241,25 @@ class HomeVM extends GetxController {
     print(rangeStart);
     print(rangeEnd);
     filterStudies = studies.where((study) {
-      bool idCondtion = (study.PID.toLowerCase() ==
-              userIDController.text.toLowerCase().trim() ||
+      bool idCondtion = (study.PID
+              .toLowerCase()
+              .contains(userIDController.text.toLowerCase().trim()) ||
           userIDController.text.isEmpty);
-      bool nameCondition = (study.PNAME.toLowerCase() ==
-              userNameController.text.toLowerCase().trim() ||
+      bool nameCondition = (study.PNAME
+              .toLowerCase()
+              .contains(userNameController.text.toLowerCase().trim()) ||
           userNameController.text.isEmpty);
       bool modalityCondition = ((study.MODALITY == selectedModality) ||
           (selectedModality == staticModalityList[0]));
-      bool examStatusCondition = ((study.EXAMSTATUS == selectedExamStatus) ||
-          (selectedExamStatus == staticExamStatusList[0]));
+      bool examStatusCondition =
+          ((study.EXAMSTATUS == convertExamStatus(selectedExamStatus)) ||
+              (selectedExamStatus == staticExamStatusList[0]));
       bool reportStatusConditon =
           ((study.REPORTSTATUS == selectedReportStatus) ||
               (selectedReportStatus == staticReportStatusList[0]));
-      bool periodCondition = (int.parse(convertDateToString(rangeStart)) <= study.STUDYDATE) && (study.STUDYDATE <= int.parse(convertDateToString(rangeEnd))) ;
+      bool periodCondition =
+          (int.parse(convertDateToString(rangeStart)) <= study.STUDYDATE) &&
+              (study.STUDYDATE <= int.parse(convertDateToString(rangeEnd)));
       return idCondtion &&
           nameCondition &&
           modalityCondition &&
@@ -262,6 +267,7 @@ class HomeVM extends GetxController {
           periodCondition &&
           reportStatusConditon;
     }).toList();
+
     update();
   }
 
@@ -270,5 +276,9 @@ class HomeVM extends GetxController {
     String month = date.month < 10 ? '0${date.month}' : '${date.month}';
     String day = date.day < 10 ? '0${date.day}' : '${date.day}';
     return '$year$month$day';
+  }
+
+  String convertExamStatus(String examStatus) {
+    return (examStatus == 'Not Requested') ? '아니오' : '예';
   }
 }
