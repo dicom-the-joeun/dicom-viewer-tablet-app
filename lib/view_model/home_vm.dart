@@ -214,18 +214,24 @@ class HomeVM extends GetxController {
         isWholeButtonSelected = true;
         isDayButtonSelected = false;
         isWeekButtonSelected = false;
+        rangeStart = DateTime(2000,1,1);
+        rangeEnd = DateTime.now();
         break;
       case '1일':
         selectedPeriod = '1일';
         isWholeButtonSelected = false;
         isDayButtonSelected = true;
         isWeekButtonSelected = false;
+        rangeStart = DateTime.now();
+        rangeEnd = DateTime.now();
         break;
       case '1주일':
         selectedPeriod = '1주일';
         isWholeButtonSelected = false;
         isDayButtonSelected = false;
         isWeekButtonSelected = true;
+        rangeStart = DateTime.now().subtract(const Duration(days: 7));
+        rangeEnd = DateTime.now();
         break;
     }
     update();
