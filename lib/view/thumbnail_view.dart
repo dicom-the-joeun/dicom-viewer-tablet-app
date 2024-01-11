@@ -62,11 +62,23 @@ class ThumbnailView extends StatelessWidget {
                                             style: seriesTextStyle(),
                                           ),
                                           (seriesList[index].SERIESDESC == null)
-                                              ? const Text('')
-                                              : Text(
-                                                  'Series Description: ${seriesList[index].SERIESDESC}',
-                                                  style: seriesTextStyle(),
+                                              ? Text('Series Description: Empty', style: seriesTextStyle(),)
+                                              : Tooltip(
+                                                message: seriesList[index].SERIESDESC,
+                                                textStyle: const TextStyle(
+                                                  fontSize: 30,
+                                                  color: Colors.black,
+
                                                 ),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    text: 'Series Description: ${seriesList[index].SERIESDESC}',
+                                                    style: seriesTextStyle(),
+                                                    ),
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  ),
+                                              ),
                                           (seriesList[index].SCORE == null ||
                                                   seriesList[index]
                                                           .SCORE!
