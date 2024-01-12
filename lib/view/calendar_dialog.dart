@@ -19,7 +19,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
     return Dialog(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.4,
-        height: MediaQuery.of(context).size.height * 0.58,
+        height: MediaQuery.of(context).size.height * 0.63,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -27,10 +27,23 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TableCalendar(
+                rowHeight: 50,
+                daysOfWeekHeight: 50,
                 headerStyle: const HeaderStyle(
+                  headerPadding: EdgeInsets.symmetric(vertical: 20),
                     formatButtonVisible: false,
                     titleCentered: true,
                     titleTextStyle: TextStyle(fontSize: 25)),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                  weekendStyle: TextStyle(
+                    color: Color.fromARGB(255, 254, 157, 157),
+                    fontSize: 20,
+                  ),
+                ),
                 focusedDay: homeVM.rangeEnd,
                 firstDay: DateTime.utc(2000, 1, 1),
                 lastDay: DateTime.now(),
@@ -51,15 +64,26 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                 startingDayOfWeek: StartingDayOfWeek.sunday,
                 rangeStartDay: homeVM.rangeStart,
                 rangeEndDay: homeVM.rangeEnd,
-                calendarStyle: CalendarStyle(
+
+                calendarStyle: const CalendarStyle(
+                  defaultTextStyle: TextStyle(
+                    fontSize: 20,
+                  ),
+                  outsideTextStyle: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 20,
+                  ),
                   rangeHighlightColor: Color.fromARGB(255, 146, 176, 235),
-                  weekendTextStyle: TextStyle(color: Color.fromARGB(255, 255, 179, 179)),
+                  weekendTextStyle: TextStyle(
+                    color: Color.fromARGB(255, 254, 157, 157),
+                    fontSize: 20,
+                  ),
                 ),
                 rangeSelectionMode: RangeSelectionMode.toggledOn,
                 onDayLongPressed: (selectedDay, focusedDay) => {},
               ),
-              Spacer(),
-              SizedBox(height: 10,),
+              const Spacer(),
+              const SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -79,9 +103,12 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      'To',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'To',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   ElevatedButton.icon(
@@ -100,14 +127,14 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                   ),
                 ],
               ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 50,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     minimumSize: const Size(140, 50),
-                    backgroundColor: Color.fromARGB(255, 108, 135, 209)),
+                    backgroundColor: const Color.fromARGB(255, 108, 135, 209)),
                 onPressed: () => Get.back(),
                 child: const Text(
                   '확인',
@@ -117,7 +144,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                   ),
                 ),
               ),
-                            SizedBox(height: 20,),
+                            const SizedBox(height: 20,),
             ],
           ),
         ),

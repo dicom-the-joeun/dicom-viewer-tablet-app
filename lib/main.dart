@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   // main 비동기 사용 위해
   WidgetsFlutterBinding.ensureInitialized();
+  
   // portrait 제한
   SystemChrome.setPreferredOrientations(
     [
