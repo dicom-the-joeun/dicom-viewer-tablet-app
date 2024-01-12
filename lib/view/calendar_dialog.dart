@@ -29,6 +29,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
               TableCalendar(
                 rowHeight: 50,
                 daysOfWeekHeight: 50,
+                locale: "ko_KR",
                 headerStyle: const HeaderStyle(
                   headerPadding: EdgeInsets.symmetric(vertical: 20),
                     formatButtonVisible: false,
@@ -83,7 +84,6 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                 onDayLongPressed: (selectedDay, focusedDay) => {},
               ),
               const Spacer(),
-              const SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
