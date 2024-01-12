@@ -68,32 +68,8 @@ class MainView extends StatelessWidget {
                             // homeVM.rangeStart = DateTime.now();
                             // homeVM.rangeEnd = DateTime.now();
                             homeVM.selectedDay = DateTime.now();
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                      content: const TableCalendarWidget(),
-                                      // actionsAlignment: MainAxisAlignment.center,
-                                      actions: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(0,0,25,25),
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(100, 40),
-                                              backgroundColor: const Color.fromARGB(255, 62, 111, 203)
-                                            ),
-                                            onPressed: ()=> Get.back(), 
-                                            child: const Text(
-                                              '확인',
-                                              style: TextStyle(
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ));
-                          },
+                            Get.dialog(const TableCalendarWidget());                          
+                            },
                           icon: const Icon(Icons.calendar_month),
                           label: const Text('날짜 선택'),
                         ),
