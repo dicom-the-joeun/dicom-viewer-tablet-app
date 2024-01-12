@@ -60,6 +60,7 @@ class LoginVM extends GetxController {
     return result;
   }
 
+  // 로그인 성공 여부 초기화
   resetResultString() {
     loginResultString = '';
     update();

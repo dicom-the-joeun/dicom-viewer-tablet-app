@@ -1,7 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:dicom_image_control_app/component/calendar_dialog.dart';
-import 'package:dicom_image_control_app/component/custom_dropdown_button.dart';
-import 'package:dicom_image_control_app/component/custom_textfield.dart';
+import 'package:dicom_image_control_app/view/calendar_dialog.dart';
+import 'package:dicom_image_control_app/component/filter_dropdown_button.dart';
+import 'package:dicom_image_control_app/component/filter_textfield.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/search_button.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
@@ -43,23 +43,23 @@ class MainView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        CustomTextField(
-                          controller: homeVM.userIDController,
+                        FiterTextField(
+                          controller: homeVM.pIdController,
                           labelText: '환자 아이디',
                         ),
-                        CustomTextField(
-                          controller: homeVM.userNameController,
+                        FiterTextField(
+                          controller: homeVM.pNameController,
                           labelText: '환자 이름',
                         ),
-                        CustomDropdownButton(
+                        FilterDropdownButton(
                           itemLists: homeVM.modalityList,
                           boxWidth: 150,
                         ),
-                        CustomDropdownButton(
+                        FilterDropdownButton(
                           itemLists: homeVM.examStatusList,
                           boxWidth: 150,
                         ),
-                        CustomDropdownButton(
+                        FilterDropdownButton(
                           itemLists: homeVM.reportStatusList,
                           boxWidth: 150,
                         ),
@@ -131,7 +131,7 @@ class MainView extends StatelessWidget {
                         SearchButton(
                           labelText: '검색',
                           backgroundColor: Colors.red,
-                          onPressed: () => homeVM.searchStudy(),
+                          onPressed: () => homeVM.filterStudyList(),
                         ),
                       ],
                     ),
@@ -157,9 +157,9 @@ class MainView extends StatelessWidget {
                             DataColumn2(label: Text('이미지'), fixedWidth: 90),
                             DataColumn2(label: Text('Verify'), fixedWidth: 90),
                           ],
-                          rows: List.generate(homeVM.filterStudies.length,
+                          rows: List.generate(homeVM.filteredStudies.length,
                               (index) {
-                            StudyTab study = homeVM.filterStudies[index];
+                            StudyTab study = homeVM.filteredStudies[index];
                             return DataRow(
                               onSelectChanged: (value) async {
                                 // 시리즈 리스트 받아오기

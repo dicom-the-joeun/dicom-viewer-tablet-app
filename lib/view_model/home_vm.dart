@@ -18,78 +18,65 @@ class HomeVM extends GetxController {
     update();
   }
 
-  // 조건검색 시 어떤 기간이 선택되었는지 저장할 변수
+  /// 기간 조회 시 전체, 1일, 1주일 중 어떤 조건이 선택되었는지 저장
   String selectedPeriod = '전체';
-  // 선택되었는지 확인할 변수
+  /// 기간 조회 버튼 선택 여부 저장
   bool isWholeButtonSelected = true;
   bool isDayButtonSelected = false;
   bool isWeekButtonSelected = false;
 
   // 스터디 리스트
   List<StudyTab> studies = [];
-  // 시리즈 리스트
+  // 필터링된 스터디 리스트
+  List<StudyTab> filteredStudies = [];
+  // 시리즈 리스트. ThumbnailView에 넘겨준다.
   List<StudyTab> seriesList = [];
-  // 조건검색된 스터디 리스트
-  List<StudyTab> filterStudies = [];
   // Access Token
   String token = '';
 
-  // 드롭다운 리스트 선언
+  // 드롭다운버튼 리스트 초기화
   final modalityList = staticModalityList;
   final examStatusList = staticExamStatusList;
   final reportStatusList = staticReportStatusList;
 
   /// textField controller
-  TextEditingController userIDController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
+  TextEditingController pIdController = TextEditingController();
+  TextEditingController pNameController = TextEditingController();
 
   /// 드롭다운 선택값 변수 목록
   String selectedModality = staticModalityList[0];
   String selectedExamStatus = staticExamStatusList[0];
   String selectedReportStatus = staticReportStatusList[0];
 
-  /// 캘린더 선택날짜
+  /// 캘린더에 선택된 날짜
   DateTime selectedDay = DateTime.utc(
     DateTime.now().year,
     DateTime.now().month,
     DateTime.now().day,
   );
 
-  // /// 검사일자 시작일, 종료일 초기값
-  // DateTime startDay = DateTime(2000, 1, 1);
-  // DateTime endDay = DateTime.now();
-
+  /// 기간 조회 시작일자
   DateTime rangeStart = DateTime(2000, 1, 1);
+  /// 기간 조회 종료일자
   DateTime rangeEnd = DateTime.now();
+  // 뭔지 아직 모름
   CalendarFormat calendarFormat = CalendarFormat.month;
 
-// 범위 선택
+  /// 날짜 선택 : 캘린더에서 넘겨받은 값을 실제 변수에 저장
+  daySelected(DateTime selectedDay) {
+    selectedDay = this.selectedDay;
+    update();
+  }
+
+  /// 범위 선택 : 캘린더에서 넘겨받은 값을 실제 변수에 저장
   rangeSelected(DateTime start, DateTime end) {
     rangeStart = start;
     rangeEnd = end;
     update();
   }
 
-// 날짜 선택
-  daySelected(DateTime selectedDay) {
-    selectedDay = this.selectedDay;
-    update();
-  }
 
-  /// 검사일자 변경 함수
-  // Future<DateTime> updateDatePicker(context, DateTime inputDay) async {
-  //   DateTime day = (await showDatePicker(
-  //         context: context,
-  //         firstDate: DateTime(2000, 1, 1),
-  //         lastDate: DateTime(2099, 12, 31),
-  //         currentDate: inputDay,
-  //       )) ??
-  //       inputDay;
-  //   update();
-  //   return day;
-  // }
-
-  /// 드롭다운 선택 시 선택값 변경 함수
+  /// 드롭다운버튼 항목 선택 시 선택값 변경 함수
   selectDropDown(String value, List<String> itemList) {
     if (itemList == modalityList) {
       selectedModality = value;
@@ -103,32 +90,29 @@ class HomeVM extends GetxController {
 
   /// 검색 조건 초기화 함수
   resetValues() {
-    filterStudies = [];
+    filteredStudies = [];
     selectedModality = staticModalityList[0];
     selectedExamStatus = staticExamStatusList[0];
     selectedReportStatus = staticReportStatusList[0];
     rangeStart = DateTime.now();
     rangeEnd = DateTime.now();
-    userIDController.text = '';
-    userNameController.text = '';
+    pIdController.text = '';
+    pNameController.text = '';
     changeButtonState('전체');
     update();
   }
 
-  /// 스터디탭 읽어와 리스트 형식으로 리턴
+  /// 스터디탭 리스트 api 요청 및 변환 후 리턴하는 함수
   Future<List<StudyTab>> getStudyTabList() async {
     // 스터디 리스트 초기화
     List<StudyTab> studies = [];
-    // endpoint 가져오기
-    String url = '${dotenv.env['API_ENDPOINT']!}studies/';
 
+    String url = '${dotenv.env['API_ENDPOINT']!}studies/';
     try {
-      // 비동기 요청
       var response = await http
           .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
-        // 응답 결과(리스트형식)을 담기
         String responseBody = utf8.decode(response.bodyBytes);
         List dataConvertedJSON = jsonDecode(responseBody);
 
@@ -139,32 +123,27 @@ class HomeVM extends GetxController {
           studies.add(tempStudy);
         }
       } else {
-        // 200 코드가 아닌 경우 빈 리스트 리턴
-        studies = [];
+        // 요청 실패한 경우
+        debugPrint('스터디탭 리스트 요청 실패');
       }
     } catch (e) {
-      // 예외 처리 및 변환
-      // String errorMessage = "서버 요청 중 오류가 발생했습니다: $e";
-      // return Future.error(errorMessage);
+      debugPrint('스터디탭 리스트 요청 실패 : $e');
     }
 
     return studies;
   }
 
+  /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
   Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {
     // 시리즈 리스트 초기화
     List<SeriesTab> seriesList = [];
-    // endpoint 가져오기
-    String url =
-        '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
+    String url = '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
 
     try {
-      // 비동기 요청
       var response = await http
           .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
-        // 응답 결과(리스트형식)을 담기
         String responseBody = utf8.decode(response.bodyBytes);
         List dataConvertedJSON = jsonDecode(responseBody);
 
@@ -175,38 +154,16 @@ class HomeVM extends GetxController {
           seriesList.add(tempSeries);
         }
       } else {
-        // 200 코드가 아닌 경우 빈 리스트 리턴
-        seriesList = [];
+        debugPrint('시리즈탭 요청 실패');
       }
     } catch (e) {
-      // 예외 처리 및 변환
-      // String errorMessage = "서버 요청 중 오류가 발생했습니다: $e";
-      // return Future.error(errorMessage);
+      debugPrint('시리즈탭 요청 실패 : $e');
     }
 
     return seriesList;
   }
 
-  /// 조건 검색
-  filterData(
-      {String? pid,
-      String? pname,
-      String? equipment,
-      String? examStatus,
-      String? reportStatus}) {
-    // 누적되지 않게 리셋
-    filterStudies = [];
-
-    for (var study in studies) {
-      if (study.PID.toLowerCase() == pid!.trim().toLowerCase()) {
-        filterStudies.add(study);
-      }
-    }
-
-    update(); // 화면 갱신
-  }
-
-  /// 기간조회 컨트롤 함수
+  /// searchButton 컨트롤 함수
   changeButtonState(String state) {
     switch (state) {
       case '전체':
@@ -237,29 +194,28 @@ class HomeVM extends GetxController {
     update();
   }
 
-  searchStudy() {
-    print(rangeStart);
-    print(rangeEnd);
-    filterStudies = studies.where((study) {
+  /// 스터디 조건 검색 함수 : pid, pname, modality, examStatus, reportStatus, period 조건 검색
+  filterStudyList() {
+    filteredStudies = studies.where((study) {
       bool idCondtion = (study.PID
               .toLowerCase()
-              .contains(userIDController.text.toLowerCase().trim()) ||
-          userIDController.text.isEmpty);
+              .contains(pIdController.text.toLowerCase().trim()) ||
+          pIdController.text.isEmpty);
       bool nameCondition = (study.PNAME
               .toLowerCase()
-              .contains(userNameController.text.toLowerCase().trim()) ||
-          userNameController.text.isEmpty);
+              .contains(pNameController.text.toLowerCase().trim()) ||
+          pNameController.text.isEmpty);
       bool modalityCondition = ((study.MODALITY == selectedModality) ||
           (selectedModality == staticModalityList[0]));
       bool examStatusCondition =
-          ((study.EXAMSTATUS == convertExamStatus(selectedExamStatus)) ||
+          ((study.EXAMSTATUS == _convertExamStatus(selectedExamStatus)) ||
               (selectedExamStatus == staticExamStatusList[0]));
       bool reportStatusConditon =
           ((study.REPORTSTATUS == selectedReportStatus) ||
               (selectedReportStatus == staticReportStatusList[0]));
       bool periodCondition =
-          (int.parse(convertDateToString(rangeStart)) <= study.STUDYDATE) &&
-              (study.STUDYDATE <= int.parse(convertDateToString(rangeEnd)));
+          (int.parse(_convertDateToString(rangeStart)) <= study.STUDYDATE) &&
+              (study.STUDYDATE <= int.parse(_convertDateToString(rangeEnd)));
       return idCondtion &&
           nameCondition &&
           modalityCondition &&
@@ -271,14 +227,15 @@ class HomeVM extends GetxController {
     update();
   }
 
-  String convertDateToString(DateTime date) {
+
+  String _convertDateToString(DateTime date) {
     String year = date.year.toString();
     String month = date.month < 10 ? '0${date.month}' : '${date.month}';
     String day = date.day < 10 ? '0${date.day}' : '${date.day}';
     return '$year$month$day';
   }
 
-  String convertExamStatus(String examStatus) {
+  String _convertExamStatus(String examStatus) {
     return (examStatus == 'Not Requested') ? '아니오' : '예';
   }
 }

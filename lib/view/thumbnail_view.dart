@@ -123,7 +123,7 @@ class ThumbnailView extends StatelessWidget {
                                       child: CachedNetworkImage(
                                         fit: BoxFit.fill,
                                         // 요청 url
-                                        imageUrl: thumbnailVM.getThumbnailUrl(
+                                        imageUrl: thumbnailVM.createThumbnailUrl(
                                           seriesList: seriesList,
                                           index: index,
                                         ),

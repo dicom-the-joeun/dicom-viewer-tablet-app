@@ -6,6 +6,7 @@ class LoginTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final String hintText;
+  /// 로그인 시 ID, PW에 사용될 텍스트필드 위젯
   const LoginTextField(
       {super.key,
       required this.controller,
@@ -21,7 +22,6 @@ class LoginTextField extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.4,
         child: TextField(
           controller: controller,
-          // 로그인 결과값 초기화
           onChanged: (value) => loginVM.resetResultString(),
           style: const TextStyle(
             color: Colors.black,

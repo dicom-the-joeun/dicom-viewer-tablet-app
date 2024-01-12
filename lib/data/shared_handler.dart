@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class SharedHandler {
 
-  Future<String> getAccessToken() async {
+  Future<String> _getAccessToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
     // late String token;
@@ -13,7 +13,7 @@ class SharedHandler {
     try {
       return pref.getString('access_token')!;
     } catch (e) {
-      print(e);
+      debugPrint('$e');
       return '';
     }finally{
       print('세이브토큰:  ${pref.getString('access_token')}');
@@ -22,23 +22,24 @@ class SharedHandler {
     // return token;
   }
 
-  setAccessToken(
+  _setAccessToken(
       {required String accessToken,}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       pref.setString('access_token', accessToken);
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }
   }
 
 
-  saveAccessToken() async {
+  _saveAccessToken() async {
     String url = '${dotenv.env['API_ENDPOINT']!}auth/refresh';
     var validStatusCodes = List.generate(100, (i) => 200 + i);
 
-    String refreshToken = await getRefreshToken();
+    String refreshToken = await _getRefreshToken();
     try {
+      debugPrint('access token 재발급 요청');
       var response = await http.get(
         Uri.parse(url),
         headers: {'Authorization': 'Bearer $refreshToken'}
@@ -48,24 +49,23 @@ class SharedHandler {
       if (validStatusCodes.contains(response.statusCode)) {
         // 토큰 값 받아오기
         String accessToken = response.headers['access_token']!;
-        setAccessToken(accessToken: accessToken);
-
+        _setAccessToken(accessToken: accessToken);
+        debugPrint('access token 재발급 성공');
       } else {
-        // 저장못함 ㅠㅠ
-        setAccessToken(accessToken: '');
+        _setAccessToken(accessToken: '');
+        debugPrint('access token 재발급 실패');
       }
     } catch (e) {
-      debugPrint('error: $e');
+      debugPrint('access token 재발급 요청 오류 : $e');
     }
   }
 
-  Future<String> getRefreshToken() async {
+  Future<String> _getRefreshToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-
     try {
-      return pref.getString('refresh_token')!;
+      return pref.getString('refresh_token') ?? '';
     } catch (e) {
-      print(e);
+      debugPrint('저장된 리프레시 토큰 가져오는 중 오류 : $e');
       return '';
     }finally{
       // print('세이브토큰:  ${pref.getString('refresh_token')}');
@@ -76,9 +76,9 @@ class SharedHandler {
 
   Future<String> fetchData() async {
     // Fetch your data here
-    await SharedHandler().saveAccessToken();
+    await SharedHandler()._saveAccessToken();
     // print(token.value);
-    return await SharedHandler().getAccessToken();
+    return await SharedHandler()._getAccessToken();
     
   }
 
