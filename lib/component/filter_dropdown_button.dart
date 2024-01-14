@@ -20,6 +20,9 @@ class FilterDropdownButton extends StatelessWidget {
       child: SizedBox(
         width: boxWidth,
         child: DropdownButton(
+          style: const TextStyle(
+            fontSize: 17,
+          ),
           isExpanded: true,
           // value : 선택된 항목 값
           value: (itemLists == homeVM.modalityList)

@@ -68,7 +68,9 @@ class LoginView extends StatelessWidget {
                         );
                         if (result == true) {
                           Get.to(() => const MainView());
-                        } else {}
+                        } else {
+                          
+                        }
                       },
                       child: const Text(
                         '로그인',
@@ -86,15 +88,15 @@ class LoginView extends StatelessWidget {
                       String a = pref.getString('access_token')!;
                       String r = pref.getString('refresh_token')!;
                       if (a.isEmpty || r.isEmpty) {
-                        print('비어이;ㅆ음');
+                        debugPrint('비어이;ㅆ음');
                       } else {
-                        print('access: $a, refresh: $r');
+                        debugPrint('access: $a, refresh: $r');
                       }
                     } catch (e) {
-                      print('에러: $e');
+                      debugPrint('에러: $e');
                     }
                   },
-                  child: Text('test'),
+                  child: const Text('test'),
                 ),
               ],
             ),

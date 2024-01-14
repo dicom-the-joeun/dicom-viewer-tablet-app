@@ -16,7 +16,7 @@ class SharedHandler {
       debugPrint('$e');
       return '';
     }finally{
-      print('세이브토큰:  ${pref.getString('access_token')}');
+      debugPrint('세이브토큰:  ${pref.getString('access_token')}');
       
     }
     // return token;

@@ -18,6 +18,7 @@ void main() async {
       DeviceOrientation.landscapeRight,
     ],
   );
+  
   // .env 파일 로드
   await dotenv.load();
 

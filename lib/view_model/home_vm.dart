@@ -105,9 +105,10 @@ class HomeVM extends GetxController {
   /// 스터디탭 리스트 api 요청 및 변환 후 리턴하는 함수
   Future<List<StudyTab>> getStudyTabList() async {
     // 스터디 리스트 초기화
-    List<StudyTab> studies = [];
+    List<StudyTab> tempStudies = [];
 
     String url = '${dotenv.env['API_ENDPOINT']!}studies/';
+    
     try {
       var response = await http
           .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
@@ -120,7 +121,7 @@ class HomeVM extends GetxController {
         for (var study in dataConvertedJSON) {
           // study를 Map형식으로 담아주기
           StudyTab tempStudy = StudyTab.fromMap(study);
-          studies.add(tempStudy);
+          tempStudies.add(tempStudy);
         }
       } else {
         // 요청 실패한 경우
@@ -132,6 +133,7 @@ class HomeVM extends GetxController {
 
     return studies;
   }
+
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
   Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {

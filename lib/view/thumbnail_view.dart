@@ -71,7 +71,7 @@ class ThumbnailView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.only(top: 20),
+                                      padding: const EdgeInsets.only(top: 20),
                                       width: 400,
                                       child: Column(
                                         crossAxisAlignment:
@@ -121,7 +121,7 @@ class ThumbnailView extends StatelessWidget {
                                       width: 400,
                                       height: 400,
                                       child: CachedNetworkImage(
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.fitHeight,
                                         // 요청 url
                                         imageUrl: thumbnailVM.createThumbnailUrl(
                                           seriesList: seriesList,

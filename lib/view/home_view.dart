@@ -45,11 +45,11 @@ class MainView extends StatelessWidget {
                       children: [
                         FiterTextField(
                           controller: homeVM.pIdController,
-                          labelText: '환자 아이디',
+                          hintText: 'ID',
                         ),
                         FiterTextField(
                           controller: homeVM.pNameController,
-                          labelText: '환자 이름',
+                          hintText: '이름',
                         ),
                         FilterDropdownButton(
                           itemLists: homeVM.modalityList,

@@ -23,6 +23,7 @@ class LoginVM extends GetxController {
     String url = '${dotenv.env['API_ENDPOINT']!}auth/login';
     //
     var validStatusCodes = List.generate(100, (i) => 200 + i);
+
     try {
       var response = await http.post(
         Uri.parse(url),
@@ -69,14 +70,16 @@ class LoginVM extends GetxController {
   /// 토큰값 sharedPreference에 저장
   saveTokens(
       {required String accessToken, required String refreshToken}) async {
+
     SharedPreferences pref = await SharedPreferences.getInstance();
+    
     try {
       pref.setString('access_token', accessToken);
       pref.setString('refresh_token', refreshToken);
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }finally{
-      print('세이브토큰:  ${pref.getString('access_token')}');
+      debugPrint('세이브토큰:  ${pref.getString('access_token')}');
     }
   }
   
@@ -85,7 +88,7 @@ class LoginVM extends GetxController {
     try {
       pref.setBool('login_state', loginState);
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }
   }
 
