@@ -53,17 +53,3 @@
 - 중요한 의료 정보는 본 앱을 통해 진단하지 말고, 전문의의 진료를 받아 주십시오.
 
 이 앱은 의료 이미지 관리와 뷰잉을 효율적으로 지원하여 의사들이 신속하게 이미지를 검토하고 판독할 수 있도록 합니다.
-
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
