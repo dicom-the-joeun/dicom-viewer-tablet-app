@@ -27,4 +27,6 @@ class ThumbnailVM extends GetxController {
     url = '$url?filepath=$filePath&filename=$fileName';
     return url;
   }
+
+  
 }

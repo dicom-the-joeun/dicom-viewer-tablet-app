@@ -131,7 +131,7 @@ class HomeVM extends GetxController {
       debugPrint('스터디탭 리스트 요청 실패 : $e');
     }
 
-    return studies;
+    return tempStudies;
   }
 
 
