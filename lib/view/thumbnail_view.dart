@@ -70,7 +70,7 @@ class ThumbnailView extends StatelessWidget {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border:
-                                        Border.all(color: Colors.white, width: 3),
+                                        Border.all(color: const Color.fromARGB(255, 247, 111, 101), width: 3),
                                     color: Colors.black,
                                   ),
                                   child: Column(
