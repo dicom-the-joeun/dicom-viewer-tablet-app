@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 
 // ignore: non_constant_identifier_names
-PreferredSizeWidget MyAppBar({required String title, List<Widget>? actions}) =>
+PreferredSizeWidget MyAppBar({required String title, List<Widget>? actions, PreferredSizeWidget? bottom}) =>
     AppBar(
       iconTheme: const IconThemeData(
         size: 30,
@@ -20,4 +21,5 @@ PreferredSizeWidget MyAppBar({required String title, List<Widget>? actions}) =>
         ],
       ),
       actions: actions,
+      bottom: bottom,
     );
