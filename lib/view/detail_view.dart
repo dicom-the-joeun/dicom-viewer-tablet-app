@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import '../view_model/detail_vm.dart';
 
 class DetailView extends StatelessWidget {
-  const DetailView({super.key});
+  final String imageUrl;
+  const DetailView({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +24,14 @@ class DetailView extends StatelessWidget {
               child: Column(
                 children: [
                   ColorFiltered(
-                    colorFilter: detailVM.isConverted ? ColorFilter.mode(Colors.white, BlendMode.difference) : ColorFilter.linearToSrgbGamma(),
+                    colorFilter: detailVM.isConverted ? ColorFilter.mode(Colors.white, BlendMode.difference) : ColorFilter.mode(Colors.transparent, BlendMode.color),
                     child: SizedBox(
                       width: 400,
                       height: 400,
                       child: CachedNetworkImage(
                         fit: BoxFit.fitHeight,
                         // 요청 url
-                        imageUrl: 'http://127.0.0.1:8000/api/dcms/image?filepath=201608%5C%5C22%5C%5CMS0010%5C%5CMR%5C%5C7%5C%5C&filename=MR.1.2.392.200036.9116.4.1.6116.40033.7.4001.1.1152393810.dcm&index=0',
-                        
+                        imageUrl: imageUrl,
                         // 헤더에 토큰 담기
                         httpHeaders: {
                           'accept': 'application/json',

@@ -63,7 +63,10 @@ class ThumbnailView extends StatelessWidget {
                             itemCount: seriesList.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => Get.to(()=> const DetailView()),
+                                onTap: () => Get.to(()=> DetailView(imageUrl: thumbnailVM.createThumbnailUrl(
+                                            seriesList: seriesList,
+                                            index: index,
+                                          ),)),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border:
