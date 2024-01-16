@@ -8,12 +8,16 @@ PreferredSizeWidget MyAppBar({required String title, List<Widget>? actions}) =>
       ),
       toolbarHeight: 70,
       backgroundColor: Colors.black,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-        ),
+      title: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
       actions: actions,
     );

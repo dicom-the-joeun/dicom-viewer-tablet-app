@@ -62,20 +62,6 @@ class HomeVM extends GetxController {
   // 뭔지 아직 모름
   CalendarFormat calendarFormat = CalendarFormat.month;
 
-  /// 날짜 선택 : 캘린더에서 넘겨받은 값을 실제 변수에 저장
-  daySelected(DateTime selectedDay) {
-    selectedDay = this.selectedDay;
-    update();
-  }
-
-  /// 범위 선택 : 캘린더에서 넘겨받은 값을 실제 변수에 저장
-  rangeSelected(DateTime start, DateTime end) {
-    rangeStart = start;
-    rangeEnd = end;
-    update();
-  }
-
-
   /// 드롭다운버튼 항목 선택 시 선택값 변경 함수
   selectDropDown(String value, List<String> itemList) {
     if (itemList == modalityList) {
