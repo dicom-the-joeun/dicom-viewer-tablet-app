@@ -56,6 +56,10 @@ dependencies:
   # Location 설정
   flutter_localizations:
     sdk: flutter
+  # image_filter
+  photofilters: ^3.0.1
+  # path provider
+  path_provider: ^2.1.2
 
 
 dev_dependencies:
