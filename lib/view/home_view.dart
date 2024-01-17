@@ -139,8 +139,18 @@ class MainView extends StatelessWidget {
                             return DataRow(
                               onSelectChanged: (value) async {
                                 // 시리즈 리스트 받아오기
+                                Get.dialog(
+                                  const Center(
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                );
                                 var seriesList = await homeVM
                                     .getSeriesTabList(study.STUDYKEY);
+                                Get.back();
                                 Get.to(() => ThumbnailView(
                                     seriesList: seriesList, study: study));
                               },
