@@ -114,7 +114,8 @@ class MainView extends StatelessWidget {
                         ),
                         SearchButton(
                           labelText: '검색',
-                          backgroundColor: const Color.fromARGB(255, 228, 85, 75),
+                          backgroundColor:
+                              const Color.fromARGB(255, 228, 85, 75),
                           onPressed: () => homeVM.filterStudyList(),
                         ),
                       ],
@@ -146,7 +147,7 @@ class MainView extends StatelessWidget {
                             StudyTab study = homeVM.filteredStudies[index];
                             return DataRow(
                               onSelectChanged: (value) async {
-                                // 시리즈 리스트 받아오기
+                                // 다이얼로그 표시
                                 Get.dialog(
                                   const Center(
                                     child: Column(
@@ -157,27 +158,32 @@ class MainView extends StatelessWidget {
                                           width: 600,
                                           height: 10,
                                           child: LinearProgressIndicator(
-                                            color: Color.fromARGB(255, 228, 85, 75),
+                                            color: Color.fromARGB(
+                                                255, 228, 85, 75),
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                         Text(
                                           'LOADING.....',
-                                            style: TextStyle(
+                                          style: TextStyle(
                                               decoration: TextDecoration.none,
                                               fontSize: 30,
-                                              color: Colors.white
-                                            ),
+                                              color: Colors.white),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
+                                  barrierDismissible: false,
                                 );
                                 var seriesList = await homeVM
-                                    .getSeriesTabList(study.STUDYKEY);
+                                      .getSeriesTabList(study.STUDYKEY);
+                                      // 페이지 이동
                                 Get.back();
-                                Get.to(() => ThumbnailView(
-                                    seriesList: seriesList, study: study));
+                                  Get.to(() => ThumbnailView(
+                                      seriesList: seriesList, study: study));
                               },
                               cells: [
                                 DataCell(Text(
