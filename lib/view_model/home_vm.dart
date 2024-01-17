@@ -21,6 +21,7 @@ class HomeVM extends GetxController {
   /// 기간 조회 시 전체, 1일, 1주일 중 어떤 조건이 선택되었는지 저장
   String selectedPeriod = '전체';
   /// 기간 조회 버튼 선택 여부 저장
+  bool isRangeButtonSelected = false;
   bool isWholeButtonSelected = true;
   bool isDayButtonSelected = false;
   bool isWeekButtonSelected = false;
@@ -154,8 +155,16 @@ class HomeVM extends GetxController {
   /// searchButton 컨트롤 함수
   changeButtonState(String state) {
     switch (state) {
+      case '기간조회':
+        selectedPeriod = '기간조회';
+        isRangeButtonSelected = true;
+        isWholeButtonSelected = false;
+        isDayButtonSelected = false;
+        isWeekButtonSelected = false;
+        break;
       case '전체':
         selectedPeriod = '전체';
+        isRangeButtonSelected = false;
         isWholeButtonSelected = true;
         isDayButtonSelected = false;
         isWeekButtonSelected = false;
@@ -164,6 +173,7 @@ class HomeVM extends GetxController {
         break;
       case '1일':
         selectedPeriod = '1일';
+        isRangeButtonSelected = false;
         isWholeButtonSelected = false;
         isDayButtonSelected = true;
         isWeekButtonSelected = false;
@@ -172,6 +182,7 @@ class HomeVM extends GetxController {
         break;
       case '1주일':
         selectedPeriod = '1주일';
+        isRangeButtonSelected = false;
         isWholeButtonSelected = false;
         isDayButtonSelected = false;
         isWeekButtonSelected = true;

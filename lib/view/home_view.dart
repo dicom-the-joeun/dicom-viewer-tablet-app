@@ -63,22 +63,30 @@ class MainView extends StatelessWidget {
                           itemLists: homeVM.reportStatusList,
                           boxWidth: 150,
                         ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            // homeVM.rangeStart = DateTime.now();
-                            // homeVM.rangeEnd = DateTime.now();
-                            homeVM.selectedDay = DateTime.now();
-                            Get.dialog(const TableCalendarWidget());                          
-                            },
-                          icon: const Icon(Icons.calendar_month),
-                          label: const Text('날짜 선택'),
-                        ),
                         Row(
                           children: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                homeVM.changeButtonState('기간조회');
+                                homeVM.selectedDay = DateTime.now();
+                                Get.dialog(const TableCalendarWidget());
+                              },
+                              icon: const Icon(Icons.calendar_month),
+                              label: const Text(
+                                '날짜 선택',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: homeVM.isRangeButtonSelected
+                                    ? const Color.fromARGB(255, 62, 136, 189)
+                                    : const Color.fromARGB(255, 69, 67, 67),
+                              ),
+                            ),
                             SearchButton(
                               labelText: '전체',
                               backgroundColor: homeVM.isWholeButtonSelected
-                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
                                 homeVM.changeButtonState('전체');
@@ -87,7 +95,7 @@ class MainView extends StatelessWidget {
                             SearchButton(
                               labelText: '1일',
                               backgroundColor: homeVM.isDayButtonSelected
-                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
                                 homeVM.changeButtonState('1일');
@@ -96,7 +104,7 @@ class MainView extends StatelessWidget {
                             SearchButton(
                               labelText: '1주일',
                               backgroundColor: homeVM.isWeekButtonSelected
-                                  ? const Color.fromARGB(255, 135, 142, 147)
+                                  ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
                                 homeVM.changeButtonState('1주일');
@@ -106,7 +114,7 @@ class MainView extends StatelessWidget {
                         ),
                         SearchButton(
                           labelText: '검색',
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color.fromARGB(255, 228, 85, 75),
                           onPressed: () => homeVM.filterStudyList(),
                         ),
                       ],
@@ -141,10 +149,27 @@ class MainView extends StatelessWidget {
                                 // 시리즈 리스트 받아오기
                                 Get.dialog(
                                   const Center(
-                                    child: SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: CircularProgressIndicator(),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 600,
+                                          height: 10,
+                                          child: LinearProgressIndicator(
+                                            color: Color.fromARGB(255, 228, 85, 75),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Text(
+                                          'LOADING.....',
+                                            style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              fontSize: 30,
+                                              color: Colors.white
+                                            ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
