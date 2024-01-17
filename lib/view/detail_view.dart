@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/toolbar_button.dart';
@@ -6,8 +9,8 @@ import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
-
 import '../view_model/detail_vm.dart';
+import 'package:photofilters/photofilters.dart';
 
 class DetailView extends StatelessWidget {
   final String imageUrl;
@@ -48,7 +51,7 @@ class DetailView extends StatelessWidget {
                     height: 700,
                     child: PhotoView.customChild(
                       enableRotation: true, // 회전 기능,
-                      backgroundDecoration: BoxDecoration(color: Colors.black),
+                      backgroundDecoration: const BoxDecoration(color: Colors.black),
                       child: ColorFiltered(
                         colorFilter: detailVM.isConverted
                             ? const ColorFilter.matrix([
@@ -64,6 +67,7 @@ class DetailView extends StatelessWidget {
                                 0.0, 0.0, 0.0, 1.0, 0.0, //
                               ]),
                         child: CachedNetworkImage(
+                          filterQuality: FilterQuality.high,
                           fit: BoxFit.fitHeight,
                           // 요청 url
                           imageUrl: imageUrl,
@@ -72,7 +76,7 @@ class DetailView extends StatelessWidget {
                             'accept': 'application/json',
                             'Authorization': 'Bearer ${thumbVM.token.value}'
                           },
-
+                                              
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) =>
                                   CircularProgressIndicator(
