@@ -60,6 +60,8 @@ dependencies:
   photofilters: ^3.0.1
   # path provider
   path_provider: ^2.1.2
+  # zipOpen
+  archive: ^3.4.10
 
 
 dev_dependencies:
