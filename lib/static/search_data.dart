@@ -50,3 +50,5 @@ const List<String> staticReportStatusList = [
   '예비판독',
   '판독'
 ];
+
+late final String filePath;

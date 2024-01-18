@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/toolbar_button.dart';
@@ -10,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import '../view_model/detail_vm.dart';
-import 'package:photofilters/photofilters.dart';
 
 class DetailView extends StatelessWidget {
   final String imageUrl;
