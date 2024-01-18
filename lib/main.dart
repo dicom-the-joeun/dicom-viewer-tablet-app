@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dicom_image_control_app/static/search_data.dart';
 import 'package:dicom_image_control_app/view/login_view.dart';
 import 'package:dicom_image_control_app/view/home_view.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -19,6 +23,11 @@ void main() async {
     ],
   );
   
+  
+  Directory directory = await getApplicationDocumentsDirectory();
+  print('path: ${directory.path}');
+  filePath = directory.path;
+
   // .env 파일 로드
   await dotenv.load();
 
