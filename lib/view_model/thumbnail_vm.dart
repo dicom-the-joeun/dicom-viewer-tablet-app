@@ -56,9 +56,10 @@ class ThumbnailVM extends GetxController {
       // 2. 응답 받기 (예외처리)
       if (response.statusCode == 200) {
         // 3. 응답에 성공한 경우 (바디에서 파일 받아온다)
-        // 4. 리턴시킨다.
         print('200 성공!');
+        // 내가 원하는 경로에 내가 지정한 파일이름으로 zip파일 저장
         await file.writeAsBytes(response.bodyBytes);
+        // 파일이름 기준으로 그 파일 압축풀기
         await _zipOpen(fileName);
       } else {
         // 실패했다고 알려주고

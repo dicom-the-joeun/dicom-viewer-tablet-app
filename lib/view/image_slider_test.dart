@@ -14,7 +14,7 @@ class ImageSliderTest extends StatefulWidget {
 
 class ImageSliderTestState extends State<ImageSliderTest> {
   List<File> images = [];
-  late Directory directory;
+  // late Directory directory;
   late double gamma;
   late bool isConverted; // 반전 눌렀는지
   int _index = 10;

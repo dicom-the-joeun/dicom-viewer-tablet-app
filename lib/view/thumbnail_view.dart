@@ -5,8 +5,7 @@ import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
-import 'package:dicom_image_control_app/static/search_data.dart';
-import 'package:dicom_image_control_app/view/image_slider_test.dart';
+import 'package:dicom_image_control_app/view/detail_view.dart';
 import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,7 +68,7 @@ class ThumbnailView extends StatelessWidget {
                                 onTap: () async {
                                   // 집파일 받아오기
                                   await thumbnailVM.getSeriesImages(studykey: study.STUDYKEY, serieskey: seriesList[index].SERIESKEY);
-                                  Get.to(() => const ImageSliderTest());
+                                  Get.to(() => DetailView(studyKey: study.STUDYKEY, series: seriesList[index],));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
