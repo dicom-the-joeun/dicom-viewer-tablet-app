@@ -133,6 +133,7 @@ class HomeVM extends GetxController {
           .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
+        debugPrint('시리즈탭 요청 성공!');
         String responseBody = utf8.decode(response.bodyBytes);
         List dataConvertedJSON = jsonDecode(responseBody);
 

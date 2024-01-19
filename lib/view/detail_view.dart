@@ -88,25 +88,27 @@ class DetailView extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('이미지 이동  '),
-                  SizedBox(
-                    width: 500,
-                    child: CupertinoSlider(
-                      value: detailVM.imageIndex.toDouble(),
-                      min: 0,
-                      max: series.IMAGECNT -1,
-                      divisions: series.IMAGECNT,
-                      onChanged: (double value) {
-                        detailVM.imageIndex = value.toInt();
-                        detailVM.update();
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              (series.IMAGECNT != 1)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('이미지 이동  '),
+                        SizedBox(
+                          width: 500,
+                          child: CupertinoSlider(
+                            value: detailVM.imageIndex.toDouble(),
+                            min: 0,
+                            max: series.IMAGECNT - 1,
+                            divisions: series.IMAGECNT,
+                            onChanged: (double value) {
+                              detailVM.imageIndex = value.toInt();
+                              detailVM.update();
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox()
             ],
           ),
         ),

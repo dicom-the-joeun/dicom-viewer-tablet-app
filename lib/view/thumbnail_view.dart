@@ -66,8 +66,39 @@ class ThumbnailView extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
+                                //   Get.dialog(
+                                //   const Center(
+                                //     child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.center,
+                                //       children: [
+                                //         SizedBox(
+                                //           width: 600,
+                                //           height: 10,
+                                //           child: LinearProgressIndicator(
+                                //             color: Color.fromARGB(
+                                //                 255, 228, 85, 75),
+                                //           ),
+                                //         ),
+                                //         SizedBox(
+                                //           height: 10,
+                                //         ),
+                                //         Text(
+                                //           'LOADING.....',
+                                //           style: TextStyle(
+                                //               decoration: TextDecoration.none,
+                                //               fontSize: 30,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                //   // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
+                                //   barrierDismissible: false,
+                                // );
                                   // 집파일 받아오기
                                   await thumbnailVM.getSeriesImages(studykey: study.STUDYKEY, serieskey: seriesList[index].SERIESKEY);
+                                  // Get.back();
                                   Get.to(() => DetailView(studyKey: study.STUDYKEY, series: seriesList[index],));
                                 },
                                 child: Container(
