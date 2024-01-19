@@ -15,6 +15,9 @@ class ThumbnailVM extends GetxController {
   /// access token
   RxString token = ''.obs;
 
+  //로딩할 때 보이는 텍스트
+  RxString loadingName = ''.obs;
+
   /// access token 가져왔는지 판단할 변수
   var isLoading = true.obs;
 
@@ -49,6 +52,8 @@ class ThumbnailVM extends GetxController {
 
     try {
       print('요청보내는중');
+      loadingName.value = '요청보내는 중';
+
       var response = await http.get(
         Uri.parse(url),
         headers: {'Authorization': 'Bearer $token'}
@@ -57,6 +62,7 @@ class ThumbnailVM extends GetxController {
       if (response.statusCode == 200) {
         // 3. 응답에 성공한 경우 (바디에서 파일 받아온다)
         print('200 성공!');
+        loadingName.value = '파일 저장 및 압축 해제 중';
         // 내가 원하는 경로에 내가 지정한 파일이름으로 zip파일 저장
         await file.writeAsBytes(response.bodyBytes);
         // 파일이름 기준으로 그 파일 압축풀기
@@ -109,3 +115,5 @@ class ThumbnailVM extends GetxController {
     }
   }
 }
+
+

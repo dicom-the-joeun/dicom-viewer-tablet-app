@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dicom_image_control_app/component/dialog_text.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
@@ -43,8 +42,10 @@ class ThumbnailView extends StatelessWidget {
                         '환자 이름: ${study.PNAME}',
                         style: seriesTextStyle(),
                       ),
-                      Text('검사 장비 : ${study.MODALITY}', style: seriesTextStyle()),
-                      Text('검사 일자: ${study.STUDYDATE}', style: seriesTextStyle()),
+                      Text('검사 장비 : ${study.MODALITY}',
+                          style: seriesTextStyle()),
+                      Text('검사 일자: ${study.STUDYDATE}',
+                          style: seriesTextStyle()),
                     ],
                   ),
                 ),
@@ -67,48 +68,31 @@ class ThumbnailView extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () async {
                                   Get.dialog(
-                                  const Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 600,
-                                          height: 10,
-                                          child: LinearProgressIndicator(
-                                            color: Color.fromARGB(
-                                                255, 228, 85, 75),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          'LOADING.....',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              fontSize: 30,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
-                                  barrierDismissible: false,
-                                );
+                                    DialogText(loadingName: thumbnailVM.loadingName),
+                                    // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
+                                    barrierDismissible: false,
+                                  );
                                   // 집파일 받아오기
-                                  await thumbnailVM.getSeriesImages(studykey: study.STUDYKEY, serieskey: seriesList[index].SERIESKEY);
+                                  await thumbnailVM.getSeriesImages(
+                                      studykey: study.STUDYKEY,
+                                      serieskey: seriesList[index].SERIESKEY);
                                   // Get.back();
-                                  Get.to(() => DetailView(studyKey: study.STUDYKEY, series: seriesList[index],));
+                                  Get.to(() => DetailView(
+                                        studyKey: study.STUDYKEY,
+                                        series: seriesList[index],
+                                      ));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: const Color.fromARGB(255, 247, 111, 101), width: 3),
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 247, 111, 101),
+                                        width: 3),
                                     color: Colors.black,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(top: 20),
@@ -121,7 +105,8 @@ class ThumbnailView extends StatelessWidget {
                                               'Series Num: ${seriesList[index].SERIESKEY}',
                                               style: seriesTextStyle(),
                                             ),
-                                            (seriesList[index].SERIESDESC == null)
+                                            (seriesList[index].SERIESDESC ==
+                                                    null)
                                                 ? Text(
                                                     'Series Description: Empty',
                                                     style: seriesTextStyle(),
@@ -137,7 +122,8 @@ class ThumbnailView extends StatelessWidget {
                                                       text: TextSpan(
                                                         text:
                                                             'Series Description: ${seriesList[index].SERIESDESC}',
-                                                        style: seriesTextStyle(),
+                                                        style:
+                                                            seriesTextStyle(),
                                                       ),
                                                       maxLines: 2,
                                                       overflow:
@@ -163,7 +149,8 @@ class ThumbnailView extends StatelessWidget {
                                         child: CachedNetworkImage(
                                           fit: BoxFit.fitHeight,
                                           // 요청 url
-                                          imageUrl: thumbnailVM.createThumbnailUrl(
+                                          imageUrl:
+                                              thumbnailVM.createThumbnailUrl(
                                             seriesList: seriesList,
                                             index: index,
                                           ),
@@ -173,12 +160,12 @@ class ThumbnailView extends StatelessWidget {
                                             'Authorization':
                                                 'Bearer ${thumbnailVM.token.value}'
                                           },
-                                
-                                          progressIndicatorBuilder: (context, url,
-                                                  downloadProgress) =>
+
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
                                               CircularProgressIndicator(
-                                                  value:
-                                                      downloadProgress.progress),
+                                                  value: downloadProgress
+                                                      .progress),
                                           errorWidget: (context, url, error) {
                                             return const Icon(Icons.error);
                                           },
