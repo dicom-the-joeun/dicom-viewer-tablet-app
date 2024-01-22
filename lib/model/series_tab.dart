@@ -20,13 +20,16 @@ class SeriesTab {
     required this.HEADERS,
     });
 
-  SeriesTab.fromMap(Map<String, dynamic> res)
-      : SERIESKEY = res['SERIESKEY'],
-        SERIESDESC = res['SERIESDESC'],
-        SCORE = res['SCORE'],
-        IMAGECNT = res['IMAGECNT'],
-        PATH = res['PATH'],
-        FNAME = res['FNAME'],
-        HEADERS = res['HEADERS'];
+  factory SeriesTab.fromMap(Map<String, dynamic> json){
+    return SeriesTab(
+      SERIESKEY : json['SERIESKEY'],
+      SERIESDESC : json['SERIESDESC'],
+      SCORE : json['SCORE'],
+      IMAGECNT : json['IMAGECNT'],
+      PATH : json['PATH'],
+      FNAME : json['FNAME'],
+      HEADERS : json['HEADERS'],
+    );
+  }
 
 } // end
