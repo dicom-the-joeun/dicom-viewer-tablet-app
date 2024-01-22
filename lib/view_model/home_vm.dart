@@ -64,7 +64,7 @@ class HomeVM extends GetxController {
   CalendarFormat calendarFormat = CalendarFormat.month;
 
   /// 드롭다운버튼 항목 선택 시 선택값 변경 함수
-  selectDropDown(String value, List<String> itemList) {
+  changeDropDownValue(String value, List<String> itemList) {
     if (itemList == modalityList) {
       selectedModality = value;
     } else if (itemList == examStatusList) {
@@ -76,7 +76,7 @@ class HomeVM extends GetxController {
   }
 
   /// 검색 조건 초기화 함수
-  resetValues() {
+  resetAllFilters() {
     filteredStudies = [];
     selectedModality = staticModalityList[0];
     selectedExamStatus = staticExamStatusList[0];
@@ -85,7 +85,7 @@ class HomeVM extends GetxController {
     rangeEnd = DateTime.now();
     pIdController.text = '';
     pNameController.text = '';
-    changeButtonState('전체');
+    changeDuration('전체');
     update();
   }
 
@@ -154,7 +154,7 @@ class HomeVM extends GetxController {
   }
 
   /// searchButton 컨트롤 함수
-  changeButtonState(String state) {
+  changeDuration(String state) {
     switch (state) {
       case '기간조회':
         selectedPeriod = '기간조회';
@@ -195,7 +195,7 @@ class HomeVM extends GetxController {
   }
 
   /// 스터디 조건 검색 함수 : pid, pname, modality, examStatus, reportStatus, period 조건 검색
-  filterStudyList() {
+  searchStudyByCondition() {
     filteredStudies = studies.where((study) {
       bool idCondtion = (study.PID
               .toLowerCase()

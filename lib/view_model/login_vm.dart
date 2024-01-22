@@ -10,7 +10,7 @@ class LoginVM extends GetxController {
   TextEditingController pwController = TextEditingController();
   String loginResultString = '';
 
-  // textField
+  /// 로그인 요청 후 성공 여부 리턴하는 함수
   Future<bool> login(String inputID, String inputPassword) async {
     // 로그인 성공 여부
     bool result = false;
@@ -39,7 +39,7 @@ class LoginVM extends GetxController {
         result = true;
         String accessToken = response.headers['access_token']!;
         String refreshToken = response.headers['refresh_token']!;
-        resetResultString();
+        resetResultText();
 
         idController.text = '';
         pwController.text = '';
@@ -61,8 +61,8 @@ class LoginVM extends GetxController {
     return result;
   }
 
-  // 로그인 성공 여부 초기화
-  resetResultString() {
+  /// 로그인 성공 여부 텍스트 초기화
+  resetResultText() {
     loginResultString = '';
     update();
   }
@@ -92,6 +92,7 @@ class LoginVM extends GetxController {
     }
   }
 
+  /// 로그아웃 함수. 토큰 값 초기화
   logout(){
     // 토큰 초기화
     saveTokens(accessToken: '', refreshToken: '');

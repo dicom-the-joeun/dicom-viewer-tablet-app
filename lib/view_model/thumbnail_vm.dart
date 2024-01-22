@@ -30,7 +30,7 @@ class ThumbnailVM extends GetxController {
   }
 
   /// 이미지 url 생성 함수
-  String createThumbnailUrl(
+  String generateThumbnailImageUrl(
       {required List<SeriesTab> seriesList, required int index}) {
     String url = '${dotenv.env['API_ENDPOINT']!}dcms/image';
     String filePath = seriesList[index].PATH;
@@ -40,7 +40,7 @@ class ThumbnailVM extends GetxController {
     return url;
   }
 
-  // 스터디, 시리즈키를 넘겨서 집파일 받아온다.
+  /// 스터디, 시리즈키를 넘겨서 zip파일 앱 내부에 저장하는 함수
   getSeriesImages({required int studykey, required int serieskey}) async {
 
     String fileName = '${studykey}_$serieskey';
@@ -78,15 +78,16 @@ class ThumbnailVM extends GetxController {
     }    
   }
 
-  /// 압축 풀기 함수
-  Future<File> saveFile(String fileName, String body) async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    File file = File('${directory.path}/$fileName');
-    await file.writeAsString(body);
-    return file;
-  }
+  // /// 압축 풀기 함수
+  // Future<File> saveFile(String fileName, String body) async {
+  //   Directory directory = await getApplicationDocumentsDirectory();
+  //   File file = File('${directory.path}/$fileName');
+  //   await file.writeAsString(body);
+  //   return file;
+  // }
 
-  _zipOpen(String zipFileName) async {
+  /// 압축파일 해제 함수
+  Future<void> _zipOpen(String zipFileName) async {
     final zipFilePath = '$filePath/$zipFileName.zip';         //받아온 zip파일의 이름이 들어갈 곳
     final destinationDirectory = '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳
 

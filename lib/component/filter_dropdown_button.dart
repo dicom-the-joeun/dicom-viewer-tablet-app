@@ -38,7 +38,7 @@ class FilterDropdownButton extends StatelessWidget {
             );
           }).toList(),
           onChanged: (value) {
-            homeVM.selectDropDown(value!, itemLists);
+            homeVM.changeDropDownValue(value!, itemLists);
           },
         ),
       ),

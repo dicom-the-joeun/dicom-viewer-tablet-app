@@ -27,7 +27,7 @@ class MainView extends StatelessWidget {
             title: 'PACSPLUS',
             actions: [
               IconButton(
-                onPressed: () => homeVM.resetValues(),
+                onPressed: () => homeVM.resetAllFilters(),
                 icon: const Icon(Icons.refresh),
               ),
             ],
@@ -67,7 +67,7 @@ class MainView extends StatelessWidget {
                           children: [
                             ElevatedButton.icon(
                               onPressed: () {
-                                homeVM.changeButtonState('기간조회');
+                                homeVM.changeDuration('기간조회');
                                 homeVM.selectedDay = DateTime.now();
                                 Get.dialog(const TableCalendarWidget());
                               },
@@ -89,7 +89,7 @@ class MainView extends StatelessWidget {
                                   ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
-                                homeVM.changeButtonState('전체');
+                                homeVM.changeDuration('전체');
                               },
                             ),
                             SearchButton(
@@ -98,7 +98,7 @@ class MainView extends StatelessWidget {
                                   ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
-                                homeVM.changeButtonState('1일');
+                                homeVM.changeDuration('1일');
                               },
                             ),
                             SearchButton(
@@ -107,7 +107,7 @@ class MainView extends StatelessWidget {
                                   ? const Color.fromARGB(255, 62, 136, 189)
                                   : null,
                               onPressed: () {
-                                homeVM.changeButtonState('1주일');
+                                homeVM.changeDuration('1주일');
                               },
                             ),
                           ],
@@ -116,7 +116,7 @@ class MainView extends StatelessWidget {
                           labelText: '검색',
                           backgroundColor:
                               const Color.fromARGB(255, 228, 85, 75),
-                          onPressed: () => homeVM.filterStudyList(),
+                          onPressed: () => homeVM.searchStudyByCondition(),
                         ),
                       ],
                     ),

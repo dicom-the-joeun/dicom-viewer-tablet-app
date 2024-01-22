@@ -22,7 +22,7 @@ class LoginTextField extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.4,
         child: TextField(
           controller: controller,
-          onChanged: (value) => loginVM.resetResultString(),
+          onChanged: (value) => loginVM.resetResultText(),
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

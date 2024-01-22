@@ -150,7 +150,7 @@ class ThumbnailView extends StatelessWidget {
                                           fit: BoxFit.fitHeight,
                                           // 요청 url
                                           imageUrl:
-                                              thumbnailVM.createThumbnailUrl(
+                                              thumbnailVM.generateThumbnailImageUrl(
                                             seriesList: seriesList,
                                             index: index,
                                           ),
