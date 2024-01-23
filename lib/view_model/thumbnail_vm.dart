@@ -40,14 +40,14 @@ class ThumbnailVM extends GetxController {
   }
 
   /// 스터디, 시리즈키를 넘겨서 zip파일 앱 내부에 저장하는 함수
-  getSeriesImages({required int studykey, required int serieskey}) async {
+  getSeriesImages({required int studykey,}) async {
 
-    String fileName = '${studykey}_$serieskey';
+    String fileName = 'study_$studykey';
     File file = File('$filePath/$fileName.zip');
 
     // 1. 요청 보내기 (겟방식, 스터디, 시리즈키 넘기기)
     String url =
-        '${dotenv.env['API_ENDPOINT']!}dcms/image/compressed?studykey=$studykey&serieskey=$serieskey';
+        '${dotenv.env['API_ENDPOINT']!}dcms/images/zip?studykey=$studykey';
 
     try {
       loadingText.value = '다운로드 중.....';
@@ -67,7 +67,7 @@ class ThumbnailVM extends GetxController {
         // 파일이름 기준으로 그 파일 압축풀기
         await _zipOpen(fileName);
       } else {
-        print('실패ㅠㅠ');
+        print('압축 해제 실패');
       }
     } catch (e) {
       debugPrint('캐치에 걸림 $e');
