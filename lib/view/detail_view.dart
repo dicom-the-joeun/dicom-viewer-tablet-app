@@ -76,14 +76,13 @@ class DetailView extends StatelessWidget {
                         SizedBox(
                           width: 300,
                           child: Slider(
-                            
                             thumbColor: Colors.blue,
                             activeColor: Colors.blueAccent,
                             inactiveColor: Colors.grey,
-                            label: detailVM.brightValue.toString(),
+                            label: detailVM.brightValue.toStringAsFixed(2),
                             value: detailVM.brightValue,
-                            min:  -5,
-                            max: 5,
+                            min: !detailVM.isConverted ? 0 : -3,
+                            max: !detailVM.isConverted ? 3 : 0,
                             divisions: 10,
                             onChanged: (double value) {
                               detailVM.brightValue = value;
@@ -105,7 +104,7 @@ class DetailView extends StatelessWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 700,
+                height: 730,
                 child: ClipRRect(
                   child: ColorFiltered(
                     colorFilter: ColorFilter.matrix([
@@ -152,46 +151,6 @@ class DetailView extends StatelessWidget {
                           ],
                         )
                       : const SizedBox())
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Text('밝기 조절  '),
-              //     SizedBox(
-              //       width: 700,
-              //       child: CupertinoSlider(
-              //         value: detailVM.brightValue,
-              //         min: -5,
-              //         max: 5,
-              //         divisions: 100,
-              //         onChanged: (double value) {
-              //           detailVM.brightValue = value;
-              //           detailVM.update();
-              //         },
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // (series.IMAGECNT != 1)
-              //     ? Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Text('이미지 이동  '),
-              //           SizedBox(
-              //             width: 500,
-              //             child: CupertinoSlider(
-              //               value: detailVM.imageIndex.toDouble(),
-              //               min: 0,
-              //               max: series.IMAGECNT - 1,
-              //               divisions: series.IMAGECNT,
-              //               onChanged: (double value) {
-              //                 detailVM.imageIndex = value.toInt();
-              //                 detailVM.update();
-              //               },
-              //             ),
-              //           ),
-              //         ],
-              //       )
-              //     : const SizedBox()
             ],
           ),
         ),
