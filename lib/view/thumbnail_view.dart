@@ -74,8 +74,7 @@ class ThumbnailView extends StatelessWidget {
                                   );
                                   // 집파일 받아오기
                                   await thumbnailVM.getSeriesImages(
-                                      studykey: study.STUDYKEY,
-                                      serieskey: seriesList[index].SERIESKEY);
+                                      studykey: study.STUDYKEY);
                                   Get.back();
                                   Get.to(() => DetailView(
                                         studyKey: study.STUDYKEY,

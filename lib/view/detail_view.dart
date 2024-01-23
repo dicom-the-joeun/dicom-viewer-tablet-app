@@ -123,34 +123,62 @@ class DetailView extends StatelessWidget {
                       backgroundDecoration:
                           const BoxDecoration(color: Colors.black),
                       imageProvider: AssetImage(
-                          '$filePath/${studyKey}_${series.SERIESKEY}/${studyKey}_${series.SERIESKEY}_${detailVM.imageIndex}.png'),
+                          '$filePath/study_$studyKey/${studyKey}_${series.SERIESKEY}_${detailVM.imageIndex}_${detailVM.windowCenterIndex}.png'),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                  height: 100,
-                  child: (series.IMAGECNT != 1)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('이미지 이동  '),
-                            SizedBox(
-                              width: 500,
-                              child: CupertinoSlider(
-                                value: detailVM.imageIndex.toDouble(),
-                                min: 0,
-                                max: series.IMAGECNT - 1,
-                                divisions: series.IMAGECNT,
-                                onChanged: (double value) {
-                                  detailVM.imageIndex = value.toInt();
-                                  detailVM.update();
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-                      : const SizedBox())
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      height: 100,
+                      child: (series.IMAGECNT != 1)
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('이미지 이동  ', style: TextStyle(fontSize: 30),),
+                                SizedBox(
+                                  width: 500,
+                                  child: Slider(
+                                    value: detailVM.imageIndex.toDouble(),
+                                    label: detailVM.imageIndex.toString(),
+                                    min: 1,
+                                    max: series.IMAGECNT.toDouble(),
+                                    divisions: series.IMAGECNT,
+                                    onChanged: (double value) {
+                                      detailVM.imageIndex = value.toInt();
+                                      detailVM.update();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const SizedBox()),
+                  SizedBox(
+                      height: 100,
+                      child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('윈도우 센터  ', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                                SizedBox(
+                                  width: 500,
+                                  child: CupertinoSlider(
+                                    value: detailVM.windowCenterIndex.toDouble(),
+                                    min: 1,
+                                    max: 10,
+                                    divisions: 10,
+                                    onChanged: (double value) {
+                                      detailVM.windowCenterIndex = value.toInt();
+                                      detailVM.update();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+                          ),
+                ],
+              )
             ],
           ),
         ),
