@@ -9,14 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class ThumbnailVM extends GetxController {
   /// access token
   RxString token = ''.obs;
 
   //로딩할 때 보이는 텍스트
-  RxString loadingName = ''.obs;
+  RxString loadingText = ''.obs;
 
   /// access token 가져왔는지 판단할 변수
   var isLoading = true.obs;
@@ -51,8 +50,8 @@ class ThumbnailVM extends GetxController {
         '${dotenv.env['API_ENDPOINT']!}dcms/image/compressed?studykey=$studykey&serieskey=$serieskey';
 
     try {
-      print('요청보내는중');
-      loadingName.value = '요청보내는 중';
+      loadingText.value = '다운로드 중.....';
+      update();
 
       var response = await http.get(
         Uri.parse(url),
@@ -61,32 +60,22 @@ class ThumbnailVM extends GetxController {
       // 2. 응답 받기 (예외처리)
       if (response.statusCode == 200) {
         // 3. 응답에 성공한 경우 (바디에서 파일 받아온다)
-        print('200 성공!');
-        loadingName.value = '파일 저장 및 압축 해제 중';
+        loadingText.value = '압축 해제 중.....';
+        update();
         // 내가 원하는 경로에 내가 지정한 파일이름으로 zip파일 저장
         await file.writeAsBytes(response.bodyBytes);
         // 파일이름 기준으로 그 파일 압축풀기
         await _zipOpen(fileName);
       } else {
-        // 실패했다고 알려주고
         print('실패ㅠㅠ');
-        // return null;
       }
     } catch (e) {
       debugPrint('캐치에 걸림 $e');
-      // return null;
     }    
   }
 
-  // /// 압축 풀기 함수
-  // Future<File> saveFile(String fileName, String body) async {
-  //   Directory directory = await getApplicationDocumentsDirectory();
-  //   File file = File('${directory.path}/$fileName');
-  //   await file.writeAsString(body);
-  //   return file;
-  // }
-
   /// 압축파일 해제 함수
+  ///TODO: 이미 다운로드 받은 이미지일 경우 return하기
   Future<void> _zipOpen(String zipFileName) async {
     final zipFilePath = '$filePath/$zipFileName.zip';         //받아온 zip파일의 이름이 들어갈 곳
     final destinationDirectory = '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳

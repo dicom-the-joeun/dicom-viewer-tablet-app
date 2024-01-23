@@ -1,4 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:dicom_image_control_app/component/loading_dialog.dart';
 import 'package:dicom_image_control_app/view/calendar_dialog.dart';
 import 'package:dicom_image_control_app/component/filter_dropdown_button.dart';
 import 'package:dicom_image_control_app/component/filter_textfield.dart';
@@ -149,32 +150,7 @@ class MainView extends StatelessWidget {
                               onSelectChanged: (value) async {
                                 // 다이얼로그 표시
                                 Get.dialog(
-                                  const Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 600,
-                                          height: 10,
-                                          child: LinearProgressIndicator(
-                                            color: Color.fromARGB(
-                                                255, 228, 85, 75),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          'LOADING.....',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              fontSize: 30,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  LoadingDialog(loadingText: homeVM.loadingText),
                                   // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                   barrierDismissible: false,
                                 );

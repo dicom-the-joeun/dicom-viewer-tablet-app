@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DialogText extends StatelessWidget {
-  final RxString loadingName;
-  const DialogText({super.key, required this.loadingName});
+class LoadingDialog extends StatelessWidget {
+  final RxString loadingText;
+  const LoadingDialog({super.key, required this.loadingText});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,16 @@ class DialogText extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          Obx(() => Text(
-                loadingName.value, // Access the value property of RxString
-                style: const TextStyle(
-                  decoration: TextDecoration.none,
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
-              )),
+          Obx(
+            () => Text(
+              loadingText.value, // Access the value property of RxString
+              style: const TextStyle(
+                decoration: TextDecoration.none,
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

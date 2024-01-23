@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dicom_image_control_app/component/dialog_text.dart';
+import 'package:dicom_image_control_app/component/loading_dialog.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
@@ -68,7 +68,7 @@ class ThumbnailView extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () async {
                                   Get.dialog(
-                                    DialogText(loadingName: thumbnailVM.loadingName),
+                                    LoadingDialog(loadingText: thumbnailVM.loadingText),
                                     // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                     barrierDismissible: false,
                                   );
@@ -76,7 +76,7 @@ class ThumbnailView extends StatelessWidget {
                                   await thumbnailVM.getSeriesImages(
                                       studykey: study.STUDYKEY,
                                       serieskey: seriesList[index].SERIESKEY);
-                                  // Get.back();
+                                  Get.back();
                                   Get.to(() => DetailView(
                                         studyKey: study.STUDYKEY,
                                         series: seriesList[index],

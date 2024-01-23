@@ -20,6 +20,7 @@ class HomeVM extends GetxController {
 
   /// 기간 조회 시 전체, 1일, 1주일 중 어떤 조건이 선택되었는지 저장
   String selectedPeriod = '전체';
+  RxString loadingText = ''.obs;
   /// 기간 조회 버튼 선택 여부 저장
   bool isRangeButtonSelected = false;
   bool isWholeButtonSelected = true;
@@ -124,6 +125,7 @@ class HomeVM extends GetxController {
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
   Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {
+    loadingText.value = 'LOADING.....';
     // 시리즈 리스트 초기화
     List<SeriesTab> seriesList = [];
     String url = '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
@@ -226,7 +228,6 @@ class HomeVM extends GetxController {
 
     update();
   }
-
 
   String _convertDateToString(DateTime date) {
     String year = date.year.toString();
