@@ -10,7 +10,8 @@ class DetailVM extends GetxController{
   bool isConverted = false;
   double brightValue = 1; // 디폴트값
   List<File> images = []; // 이미지 담을 변수
-  int imageIndex = 0;
+  int imageIndex = 1;
+  int windowCenterIndex = 1;
   PhotoViewScaleStateController scaleStateController = PhotoViewScaleStateController();
 
 
