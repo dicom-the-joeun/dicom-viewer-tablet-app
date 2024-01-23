@@ -4,10 +4,12 @@ class ToolbarButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String label;
   final IconData icon;
+  final bool isSelected;
   const ToolbarButton(
       {super.key,
       required this.icon,
       required this.label,
+      required this.isSelected,
       required this.onPressed});
 
   @override
@@ -20,7 +22,7 @@ class ToolbarButton extends StatelessWidget {
         child: AspectRatio(
           aspectRatio: 1/1,
           child: MaterialButton(
-            color: const Color.fromARGB(255, 33, 33, 33),
+            color: !isSelected ? const Color.fromARGB(255, 33, 33, 33) : Colors.white,
             shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0)),
             onPressed: onPressed,
             child: Column(
@@ -29,12 +31,14 @@ class ToolbarButton extends StatelessWidget {
                 Icon(
                   icon,
                   size: 47,
+                  color: !isSelected ? Colors.white : const Color.fromARGB(255, 33, 33, 33),
                 ),
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
+                    color: !isSelected ? Colors.white : const Color.fromARGB(255, 33, 33, 33),
                   ),
                 ),
               ],
