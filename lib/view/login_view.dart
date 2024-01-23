@@ -80,24 +80,6 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    try {
-                      String a = pref.getString('access_token')!;
-                      String r = pref.getString('refresh_token')!;
-                      if (a.isEmpty || r.isEmpty) {
-                        debugPrint('비어이;ㅆ음');
-                      } else {
-                        debugPrint('access: $a, refresh: $r');
-                      }
-                    } catch (e) {
-                      debugPrint('에러: $e');
-                    }
-                  },
-                  child: const Text('test'),
-                ),
               ],
             ),
           ),
