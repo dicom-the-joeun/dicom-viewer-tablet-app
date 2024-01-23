@@ -32,6 +32,11 @@ class LoginVM extends GetxController {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },
         body: data,
+      ).timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {
+          return http.Response('Error', 408);
+        },
       );
 
       // 로그인 성공 시
@@ -49,12 +54,17 @@ class LoginVM extends GetxController {
           accessToken: accessToken,
           refreshToken: refreshToken,
         );
-      } else {
+      } else if (response.statusCode == 408){
+        loginResultString = '';
+        update();
+      }
+      else {
         result = false;
         loginResultString = '아이디나 패스워드를 확인해주세요.';
         update();
       }
     } catch (e) {
+      
       debugPrint('error: $e');
     }
 

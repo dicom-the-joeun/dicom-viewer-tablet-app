@@ -69,7 +69,22 @@ class LoginView extends StatelessWidget {
                         if (result == true) {
                           Get.to(() => const MainView());
                         } else {
-                          
+                          Get.snackbar(
+                              'ERROR', '서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.',
+                              icon: const Padding(
+                                padding: EdgeInsets.only(left: 15),
+                                child: Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                              ),
+                              snackPosition: SnackPosition.BOTTOM,
+                              titleText: const Text('  ERROR', style: TextStyle(fontSize: 25),),
+                              messageText: const Text(
+                                '  서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.', 
+                                style: TextStyle(fontSize: 20),),
+                            );
                         }
                       },
                       child: const Text(
