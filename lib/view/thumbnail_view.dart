@@ -25,7 +25,7 @@ class ThumbnailView extends GetView<ThumbnailVM> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -37,8 +37,6 @@ class ThumbnailView extends GetView<ThumbnailVM> {
                     '환자 이름: ${study.PNAME}',
                     style: seriesTextStyle(),
                   ),
-                  Text('검사 장비 : ${study.MODALITY}', style: seriesTextStyle()),
-                  Text('검사 일자: ${study.STUDYDATE}', style: seriesTextStyle()),
                 ],
               ),
             ),
@@ -82,7 +80,7 @@ class ThumbnailView extends GetView<ThumbnailVM> {
                             }));
                           },
                           child: ThumbnailBox(
-                              seriesList: seriesList, index: index));
+                              seriesList: seriesList, index: index, study: study,));
                     },
                   ),
                 ),
