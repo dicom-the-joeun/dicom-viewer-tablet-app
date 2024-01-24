@@ -5,11 +5,12 @@ import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/view/detail_view.dart';
+import 'package:dicom_image_control_app/view_model/detail_vm.dart';
 import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ThumbnailView extends StatelessWidget {
+class ThumbnailView extends GetView<ThumbnailVM> {
   final List<SeriesTab> seriesList;
   final StudyTab study;
   const ThumbnailView(
@@ -17,45 +18,37 @@ class ThumbnailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ThumbnailVM());
-
-    return GetBuilder<ThumbnailVM>(
-      init: ThumbnailVM(),
-      builder: (thumbnailVM) {
-        return Scaffold(
-          appBar: MyAppBar(title: 'Thumbnail'),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '환자 ID: ${study.PID}',
-                        style: seriesTextStyle(),
-                      ),
-                      Text(
-                        '환자 이름: ${study.PNAME}',
-                        style: seriesTextStyle(),
-                      ),
-                      Text('검사 장비 : ${study.MODALITY}',
-                          style: seriesTextStyle()),
-                      Text('검사 일자: ${study.STUDYDATE}',
-                          style: seriesTextStyle()),
-                    ],
+    return Scaffold(
+      appBar: MyAppBar(title: 'Thumbnail'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '환자 ID: ${study.PID}',
+                    style: seriesTextStyle(),
                   ),
-                ),
-                (thumbnailVM.isLoading.value)
-                    ? const Center(child: CircularProgressIndicator())
-                    : SingleChildScrollView(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.73,
-                          child: GridView.builder(
+                  Text(
+                    '환자 이름: ${study.PNAME}',
+                    style: seriesTextStyle(),
+                  ),
+                  Text('검사 장비 : ${study.MODALITY}', style: seriesTextStyle()),
+                  Text('검사 일자: ${study.STUDYDATE}', style: seriesTextStyle()),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.73,
+                      child: GetBuilder<ThumbnailVM>(
+                        builder: (controller) => GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -68,18 +61,22 @@ class ThumbnailView extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () async {
                                   Get.dialog(
-                                    LoadingDialog(loadingText: thumbnailVM.loadingText),
+                                    LoadingDialog(
+                                            loadingText: controller.loadingText),
                                     // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                     barrierDismissible: false,
                                   );
                                   // 집파일 받아오기
-                                  await thumbnailVM.getSeriesImages(
+                                  await controller.getSeriesImages(
                                       studykey: study.STUDYKEY);
                                   Get.back();
-                                  Get.to(() => DetailView(
-                                        studyKey: study.STUDYKEY,
-                                        series: seriesList[index],
-                                      ));
+                                  Get.to(
+                                    () => DetailView(
+                                      studyKey: study.STUDYKEY,
+                                      series: seriesList[index],
+                                    ),
+                                    binding: BindingsBuilder(() {Get.put(DetailVM());})
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -90,8 +87,7 @@ class ThumbnailView extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(top: 20),
@@ -104,8 +100,7 @@ class ThumbnailView extends StatelessWidget {
                                               'Series Num: ${seriesList[index].SERIESKEY}',
                                               style: seriesTextStyle(),
                                             ),
-                                            (seriesList[index].SERIESDESC ==
-                                                    null)
+                                            (seriesList[index].SERIESDESC == null)
                                                 ? Text(
                                                     'Series Description: Empty',
                                                     style: seriesTextStyle(),
@@ -121,8 +116,7 @@ class ThumbnailView extends StatelessWidget {
                                                       text: TextSpan(
                                                         text:
                                                             'Series Description: ${seriesList[index].SERIESDESC}',
-                                                        style:
-                                                            seriesTextStyle(),
+                                                        style: seriesTextStyle(),
                                                       ),
                                                       maxLines: 2,
                                                       overflow:
@@ -149,7 +143,7 @@ class ThumbnailView extends StatelessWidget {
                                           fit: BoxFit.fitHeight,
                                           // 요청 url
                                           imageUrl:
-                                              thumbnailVM.generateThumbnailImageUrl(
+                                              controller.generateThumbnailImageUrl(
                                             seriesList: seriesList,
                                             index: index,
                                           ),
@@ -157,14 +151,13 @@ class ThumbnailView extends StatelessWidget {
                                           httpHeaders: {
                                             'accept': 'application/json',
                                             'Authorization':
-                                                'Bearer ${thumbnailVM.token.value}'
+                                                'Bearer ${controller.token.value}'
                                           },
-
-                                          progressIndicatorBuilder: (context,
-                                                  url, downloadProgress) =>
+                          
+                                          progressIndicatorBuilder: (context, url,
+                                                  downloadProgress) =>
                                               CircularProgressIndicator(
-                                                  value: downloadProgress
-                                                      .progress),
+                                                  value: downloadProgress.progress),
                                           errorWidget: (context, url, error) {
                                             return const Icon(Icons.error);
                                           },
@@ -179,13 +172,12 @@ class ThumbnailView extends StatelessWidget {
                               );
                             },
                           ),
-                        ),
-                      )
-              ],
-            ),
-          ),
-        );
-      },
+                      ),
+                    ),
+                  )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/view/drawer.dart';
 import 'package:dicom_image_control_app/view/thumbnail_view.dart';
 import 'package:dicom_image_control_app/view_model/home_vm.dart';
+import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -150,16 +151,19 @@ class MainView extends StatelessWidget {
                               onSelectChanged: (value) async {
                                 // 다이얼로그 표시
                                 Get.dialog(
-                                  LoadingDialog(loadingText: homeVM.loadingText),
+                                  LoadingDialog(
+                                      loadingText: homeVM.loadingText),
                                   // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                   barrierDismissible: false,
                                 );
                                 var seriesList = await homeVM
-                                      .getSeriesTabList(study.STUDYKEY);
-                                      // 페이지 이동
+                                    .getSeriesTabList(study.STUDYKEY);
+                                // 페이지 이동
                                 Get.back();
-                                  Get.to(() => ThumbnailView(
-                                      seriesList: seriesList, study: study));
+                                Get.to(
+                                  ()=> ThumbnailView(seriesList: seriesList, study: study),
+                                  binding: BindingsBuilder(() {Get.put(ThumbnailVM());})
+                                );
                               },
                               cells: [
                                 DataCell(Text(
