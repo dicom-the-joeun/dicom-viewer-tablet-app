@@ -44,137 +44,135 @@ class ThumbnailView extends GetView<ThumbnailVM> {
               ),
             ),
             SingleChildScrollView(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.73,
-                      child: GetBuilder<ThumbnailVM>(
-                        builder: (controller) => GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 0,
-                              mainAxisSpacing: 0,
-                              mainAxisExtent: 550,
-                            ),
-                            itemCount: seriesList.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () async {
-                                  Get.dialog(
-                                    LoadingDialog(
-                                            loadingText: controller.loadingText),
-                                    // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
-                                    barrierDismissible: false,
-                                  );
-                                  // 집파일 받아오기
-                                  await controller.getSeriesImages(
-                                      studykey: study.STUDYKEY);
-                                  Get.back();
-                                  Get.to(
-                                    () => DetailView(
-                                      studyKey: study.STUDYKEY,
-                                      series: seriesList[index],
-                                    ),
-                                    binding: BindingsBuilder(() {Get.put(DetailVM());})
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 247, 111, 101),
-                                        width: 3),
-                                    color: Colors.black,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        width: 400,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Series Num: ${seriesList[index].SERIESKEY}',
-                                              style: seriesTextStyle(),
-                                            ),
-                                            (seriesList[index].SERIESDESC == null)
-                                                ? Text(
-                                                    'Series Description: Empty',
-                                                    style: seriesTextStyle(),
-                                                  )
-                                                : Tooltip(
-                                                    message: seriesList[index]
-                                                        .SERIESDESC,
-                                                    textStyle: const TextStyle(
-                                                      fontSize: 30,
-                                                      color: Colors.black,
-                                                    ),
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        text:
-                                                            'Series Description: ${seriesList[index].SERIESDESC}',
-                                                        style: seriesTextStyle(),
-                                                      ),
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                            (seriesList[index].SCORE == null ||
-                                                    seriesList[index]
-                                                            .SCORE!
-                                                            .trim() ==
-                                                        '')
-                                                ? const Text('')
-                                                : Text(
-                                                    'Score: ${seriesList[index].SCORE}',
-                                                    style: seriesTextStyle(),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 400,
-                                        height: 400,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.fitHeight,
-                                          // 요청 url
-                                          imageUrl:
-                                              controller.generateThumbnailImageUrl(
-                                            seriesList: seriesList,
-                                            index: index,
-                                          ),
-                                          // 헤더에 토큰 담기
-                                          httpHeaders: {
-                                            'accept': 'application/json',
-                                            'Authorization':
-                                                'Bearer ${controller.token.value}'
-                                          },
-                          
-                                          progressIndicatorBuilder: (context, url,
-                                                  downloadProgress) =>
-                                              CircularProgressIndicator(
-                                                  value: downloadProgress.progress),
-                                          errorWidget: (context, url, error) {
-                                            return const Icon(Icons.error);
-                                          },
-                                          errorListener: (value) async =>
-                                              // 에러 발생 시 엑세스토큰 다시 가져오기
-                                              await SharedHandler().fetchData(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                      ),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.73,
+                child: GetBuilder<ThumbnailVM>(
+                  builder: (controller) => GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                      mainAxisExtent: 550,
                     ),
-                  )
+                    itemCount: seriesList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (! await controller.isImageDownloaded(study.STUDYKEY)) {
+                            Get.dialog(
+                              LoadingDialog(
+                                  loadingText: controller.loadingText),
+                              // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
+                              barrierDismissible: false,
+                            );
+                            // 집파일 받아오기
+                            await controller.getSeriesImages(
+                                studykey: study.STUDYKEY);
+                            Get.back();
+                          }
+
+                          Get.to(
+                              () => DetailView(
+                                    studyKey: study.STUDYKEY,
+                                    series: seriesList[index],
+                                  ), binding: BindingsBuilder(() {
+                            Get.put(DetailVM());
+                          }));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 247, 111, 101),
+                                width: 3),
+                            color: Colors.black,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(top: 20),
+                                width: 400,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Series Num: ${seriesList[index].SERIESKEY}',
+                                      style: seriesTextStyle(),
+                                    ),
+                                    (seriesList[index].SERIESDESC == null)
+                                        ? Text(
+                                            'Series Description: Empty',
+                                            style: seriesTextStyle(),
+                                          )
+                                        : Tooltip(
+                                            message:
+                                                seriesList[index].SERIESDESC,
+                                            textStyle: const TextStyle(
+                                              fontSize: 30,
+                                              color: Colors.black,
+                                            ),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text:
+                                                    'Series Description: ${seriesList[index].SERIESDESC}',
+                                                style: seriesTextStyle(),
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                    (seriesList[index].SCORE == null ||
+                                            seriesList[index].SCORE!.trim() ==
+                                                '')
+                                        ? const Text('')
+                                        : Text(
+                                            'Score: ${seriesList[index].SCORE}',
+                                            style: seriesTextStyle(),
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 400,
+                                height: 400,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.fitHeight,
+                                  // 요청 url
+                                  imageUrl:
+                                      controller.generateThumbnailImageUrl(
+                                    seriesList: seriesList,
+                                    index: index,
+                                  ),
+                                  // 헤더에 토큰 담기
+                                  httpHeaders: {
+                                    'accept': 'application/json',
+                                    'Authorization':
+                                        'Bearer ${controller.token.value}'
+                                  },
+
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) {
+                                    return const Icon(Icons.error);
+                                  },
+                                  errorListener: (value) async =>
+                                      // 에러 발생 시 엑세스토큰 다시 가져오기
+                                      await SharedHandler().fetchData(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

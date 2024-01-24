@@ -104,6 +104,12 @@ class ThumbnailVM extends GetxController {
       print('지정된 압축 파일이 존재하지 않습니다.');
     }
   }
+
+  Future<bool> isImageDownloaded(int studyKey) async {
+    String path = '$filePath/study_$studyKey';
+    return await Directory(path).exists();
+  }
+
 }
 
 
