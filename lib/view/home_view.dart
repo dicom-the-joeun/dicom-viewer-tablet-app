@@ -118,7 +118,7 @@ class MainView extends StatelessWidget {
                           labelText: '검색',
                           backgroundColor:
                               const Color.fromARGB(255, 228, 85, 75),
-                          onPressed: () => homeVM.searchStudyByCondition(),
+                          onPressed: () => homeVM.searchStudy(),
                         ),
                       ],
                     ),

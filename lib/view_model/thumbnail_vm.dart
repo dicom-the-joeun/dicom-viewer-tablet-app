@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:archive/archive_io.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
-import 'package:dicom_image_control_app/static/search_data.dart';
+import 'package:dicom_image_control_app/data/search_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';

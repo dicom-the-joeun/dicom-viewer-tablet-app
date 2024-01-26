@@ -48,7 +48,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                 focusedDay: homeVM.rangeEnd,
                 firstDay: DateTime.utc(2000, 1, 1),
                 lastDay: DateTime.now(),
-                calendarFormat: homeVM.calendarFormat,
+                calendarFormat: CalendarFormat.month,
                 selectedDayPredicate: (day) {
                   return isSameDay(day, homeVM.selectedDay);
                 },

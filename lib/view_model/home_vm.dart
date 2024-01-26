@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:dicom_image_control_app/data/search_data.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
-import 'package:dicom_image_control_app/static/search_data.dart';
+import 'package:dicom_image_control_app/provider/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -58,8 +59,6 @@ class HomeVM extends GetxController {
   DateTime rangeStart = DateTime(2000, 1, 1);
   /// 기간 조회 종료일자
   DateTime rangeEnd = DateTime.now();
-  // 뭔지 아직 모름
-  CalendarFormat calendarFormat = CalendarFormat.month;
 
   /// 드롭다운버튼 항목 선택 시 선택값 변경 함수
   changeDropDownValue(String value, List<String> itemList) {
@@ -89,68 +88,17 @@ class HomeVM extends GetxController {
 
   /// 스터디탭 리스트 api 요청 및 변환 후 리턴하는 함수
   Future<void> getStudyTabList() async {
-    var handler = SharedHandler();
-    String token = await handler.fetchData();
-
-    List<StudyTab> tempStudies = [];
-
-    String url = '${dotenv.env['API_ENDPOINT']!}studies/';
-    
-    try {
-      var response = await http
-          .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
-
-      if (response.statusCode == 200) {
-        String responseBody = utf8.decode(response.bodyBytes);
-        List dataConvertedJSON = jsonDecode(responseBody);
-
-        // 반복문으로 studies 리스트에 study 객체 담기
-        for (var study in dataConvertedJSON) {
-          // study를 Map형식으로 담아주기
-          StudyTab tempStudy = StudyTab.fromMap(study);
-          tempStudies.add(tempStudy);
-        }
-      } else {
-        // 요청 실패한 경우
-        debugPrint('스터디탭 리스트 요청 실패');
-      }
-    } catch (e) {
-      debugPrint('스터디탭 리스트 요청 실패 : $e');
-    }
-
-    studies = tempStudies;
+    ApiProvider provider = ApiProvider();
+    print('f1');
+    studies = await provider.getStudyTabList();
+    print('f2');
   }
-
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
   Future<void> getSeriesTabList(int studyKey) async {
-    var handler = SharedHandler();
-    String token = await handler.fetchData();
     loadingText.value = 'LOADING.....';
-    // 시리즈 리스트 초기화
-    String url = '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
-
-    try {
-      var response = await http
-          .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
-
-      if (response.statusCode == 200) {
-        debugPrint('시리즈탭 요청 성공!');
-        String responseBody = utf8.decode(response.bodyBytes);
-        List dataConvertedJSON = jsonDecode(responseBody);
-
-        // 반복문으로 studies 리스트에 study 객체 담기
-        for (var series in dataConvertedJSON) {
-          // study를 Map형식으로 담아주기
-          SeriesTab tempSeries = SeriesTab.fromMap(series);
-          seriesList.add(tempSeries);
-        }
-      } else {
-        debugPrint('시리즈탭 요청 실패');
-      }
-    } catch (e) {
-      debugPrint('시리즈탭 요청 실패 : $e');
-    }
+    ApiProvider provider = ApiProvider();
+    seriesList = await provider.getSeriesTabList(studyKey);
   }
 
   /// searchButton 컨트롤 함수
@@ -195,7 +143,7 @@ class HomeVM extends GetxController {
   }
 
   /// 스터디 조건 검색 함수 : pid, pname, modality, examStatus, reportStatus, period 조건 검색
-  searchStudyByCondition() {
+  searchStudy() {
     filteredStudies = studies.where((study) {
       bool idCondtion = (study.PID
               .toLowerCase()
