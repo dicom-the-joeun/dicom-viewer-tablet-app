@@ -39,6 +39,9 @@ dependencies:
   photo_view: ^0.14.0
   # 캘린더
   table_calendar: ^3.0.9
+  # Location 설정
+  flutter_localizations:
+    sdk: flutter
   # GetX
   get: ^4.6.6
   # HTTP 요청
@@ -53,11 +56,6 @@ dependencies:
   cached_network_image: ^3.3.1
   # 컬럼고정 데이터테이블
   data_table_2: ^2.5.10
-  # Location 설정
-  flutter_localizations:
-    sdk: flutter
-  # image_filter
-  photofilters: ^3.0.1
   # path provider
   path_provider: ^2.1.2
   # zipOpen

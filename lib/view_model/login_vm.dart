@@ -49,7 +49,7 @@ class LoginVM extends GetxController {
         idController.text = '';
         pwController.text = '';
 
-        await saveLoginState(true);
+        await _saveLoginState(true);
         await saveTokens(
           accessToken: accessToken,
           refreshToken: refreshToken,
@@ -93,7 +93,7 @@ class LoginVM extends GetxController {
     }
   }
   
-  saveLoginState(bool loginState) async {
+  _saveLoginState(bool loginState) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       pref.setBool('login_state', loginState);
@@ -107,6 +107,6 @@ class LoginVM extends GetxController {
     // 토큰 초기화
     saveTokens(accessToken: '', refreshToken: '');
     // 로그인상태 바꾸기
-    saveLoginState(false);
+    _saveLoginState(false);
   }
 }

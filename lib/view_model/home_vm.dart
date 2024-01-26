@@ -1,14 +1,9 @@
-import 'dart:convert';
 import 'package:dicom_image_control_app/data/search_data.dart';
-import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
 import 'package:dicom_image_control_app/provider/api_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:table_calendar/table_calendar.dart';
 
 class HomeVM extends GetxController {
   @override
@@ -102,45 +97,27 @@ class HomeVM extends GetxController {
   }
 
   /// searchButton 컨트롤 함수
-  changeDuration(String state) {
-    switch (state) {
-      case '기간조회':
-        selectedPeriod = '기간조회';
-        isRangeButtonSelected = true;
-        isWholeButtonSelected = false;
-        isDayButtonSelected = false;
-        isWeekButtonSelected = false;
-        break;
-      case '전체':
-        selectedPeriod = '전체';
-        isRangeButtonSelected = false;
-        isWholeButtonSelected = true;
-        isDayButtonSelected = false;
-        isWeekButtonSelected = false;
-        rangeStart = DateTime(2000, 1, 1);
-        rangeEnd = DateTime.now();
-        break;
-      case '1일':
-        selectedPeriod = '1일';
-        isRangeButtonSelected = false;
-        isWholeButtonSelected = false;
-        isDayButtonSelected = true;
-        isWeekButtonSelected = false;
-        rangeStart = DateTime.now();
-        rangeEnd = DateTime.now();
-        break;
-      case '1주일':
-        selectedPeriod = '1주일';
-        isRangeButtonSelected = false;
-        isWholeButtonSelected = false;
-        isDayButtonSelected = false;
-        isWeekButtonSelected = true;
-        rangeStart = DateTime.now().subtract(const Duration(days: 7));
-        rangeEnd = DateTime.now();
-        break;
-    }
-    update();
+  void changeDuration(String state) {
+  selectedPeriod = state;
+  isRangeButtonSelected = state == '기간조회';
+  isWholeButtonSelected = state == '전체';
+  isDayButtonSelected = state == '1일';
+  isWeekButtonSelected = state == '1주일';
+
+  if (state == '전체') {
+    rangeStart = DateTime(2000, 1, 1);
+    rangeEnd = DateTime.now();
+  } else if (state == '1일') {
+    rangeStart = DateTime.now();
+    rangeEnd = DateTime.now();
+  } else if (state == '1주일') {
+    rangeStart = DateTime.now().subtract(const Duration(days: 7));
+    rangeEnd = DateTime.now();
   }
+
+  update();
+}
+
 
   /// 스터디 조건 검색 함수 : pid, pname, modality, examStatus, reportStatus, period 조건 검색
   searchStudy() {
@@ -171,7 +148,6 @@ class HomeVM extends GetxController {
           periodCondition &&
           reportStatusConditon;
     }).toList();
-
     update();
   }
 

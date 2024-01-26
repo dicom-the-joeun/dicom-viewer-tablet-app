@@ -197,14 +197,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  image:
-    dependency: transitive
-    description:
-      name: image
-      sha256: "8e9d133755c3e84c73288363e6343157c383a0c6c56fc51afcc5d4d7180306d6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.0"
   intl:
     dependency: "direct main"
     description:
@@ -317,14 +309,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
-  petitparser:
-    dependency: transitive
-    description:
-      name: petitparser
-      sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.2"
   photo_view:
     dependency: "direct main"
     description:
@@ -333,14 +317,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.0"
-  photofilters:
-    dependency: "direct main"
-    description:
-      name: photofilters
-      sha256: "757197a7b54b4db36eed3fbdf0afcc8cc3b9058b1242c8f6675426aca1b56d39"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   platform:
     dependency: transitive
     description:
@@ -578,14 +554,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  xml:
-    dependency: transitive
-    description:
-      name: xml
-      sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.5.0"
 sdks:
   dart: ">=3.2.3 <4.0.0"
   flutter: ">=3.16.0"

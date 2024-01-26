@@ -22,7 +22,7 @@ class ApiProvider{
           .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
-        print('스터디탭 리스트 요청 성공');
+        debugPrint('스터디탭 리스트 요청 성공');
         String responseBody = utf8.decode(response.bodyBytes);
         List dataConvertedJSON = jsonDecode(responseBody);
 
