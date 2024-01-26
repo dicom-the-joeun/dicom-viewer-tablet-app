@@ -11,11 +11,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 class HomeVM extends GetxController {
   @override
-  void onInit() async {
+  void onInit(){
     super.onInit();
-    token = await SharedHandler().fetchData();
-    studies = await getStudyTabList();
-    update();
+    getStudyTabList();
   }
 
   /// 기간 조회 시 전체, 1일, 1주일 중 어떤 조건이 선택되었는지 저장
@@ -34,7 +32,6 @@ class HomeVM extends GetxController {
   // 시리즈 리스트. ThumbnailView에 넘겨준다.
   List<StudyTab> seriesList = [];
   // Access Token
-  String token = '';
 
   // 드롭다운버튼 리스트 초기화
   final modalityList = staticModalityList;
@@ -91,8 +88,10 @@ class HomeVM extends GetxController {
   }
 
   /// 스터디탭 리스트 api 요청 및 변환 후 리턴하는 함수
-  Future<List<StudyTab>> getStudyTabList() async {
-    // 스터디 리스트 초기화
+  Future<void> getStudyTabList() async {
+    var handler = SharedHandler();
+    String token = await handler.fetchData();
+
     List<StudyTab> tempStudies = [];
 
     String url = '${dotenv.env['API_ENDPOINT']!}studies/';
@@ -119,12 +118,14 @@ class HomeVM extends GetxController {
       debugPrint('스터디탭 리스트 요청 실패 : $e');
     }
 
-    return tempStudies;
+    studies = tempStudies;
   }
 
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
   Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {
+    var handler = SharedHandler();
+    String token = await handler.fetchData();
     loadingText.value = 'LOADING.....';
     // 시리즈 리스트 초기화
     List<SeriesTab> seriesList = [];
