@@ -156,12 +156,12 @@ class MainView extends StatelessWidget {
                                   // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                   barrierDismissible: false,
                                 );
-                                var seriesList = await homeVM
+                                await homeVM
                                     .getSeriesTabList(study.STUDYKEY);
                                 // 페이지 이동
                                 Get.back();
                                 Get.to(
-                                  ()=> ThumbnailView(seriesList: seriesList, study: study),
+                                  ()=> ThumbnailView(seriesList: homeVM.seriesList, study: study),
                                   binding: BindingsBuilder(() {Get.put(ThumbnailVM());})
                                 );
                               },

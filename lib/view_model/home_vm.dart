@@ -30,7 +30,7 @@ class HomeVM extends GetxController {
   // 필터링된 스터디 리스트
   List<StudyTab> filteredStudies = [];
   // 시리즈 리스트. ThumbnailView에 넘겨준다.
-  List<StudyTab> seriesList = [];
+  List<SeriesTab> seriesList = [];
   // Access Token
 
   // 드롭다운버튼 리스트 초기화
@@ -123,12 +123,11 @@ class HomeVM extends GetxController {
 
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
-  Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {
+  Future<void> getSeriesTabList(int studyKey) async {
     var handler = SharedHandler();
     String token = await handler.fetchData();
     loadingText.value = 'LOADING.....';
     // 시리즈 리스트 초기화
-    List<SeriesTab> seriesList = [];
     String url = '${dotenv.env['API_ENDPOINT']!}dcms/thumbnails?studykey=$studyKey';
 
     try {
@@ -152,8 +151,6 @@ class HomeVM extends GetxController {
     } catch (e) {
       debugPrint('시리즈탭 요청 실패 : $e');
     }
-
-    return seriesList;
   }
 
   /// searchButton 컨트롤 함수
