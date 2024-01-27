@@ -84,9 +84,7 @@ class HomeVM extends GetxController {
   /// 스터디탭 리스트 api 요청 및 변환 후 리턴하는 함수
   Future<void> getStudyTabList() async {
     ApiProvider provider = ApiProvider();
-    print('f1');
     studies = await provider.getStudyTabList();
-    print('f2');
   }
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수

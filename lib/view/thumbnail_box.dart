@@ -220,7 +220,7 @@ class ThumbnailBox extends StatelessWidget {
               },
               errorListener: (value) async =>
                   // 에러 발생 시 엑세스토큰 다시 가져오기
-                  await SharedHandler().fetchData(),
+                  print(value),
             ),
           ),
         ],

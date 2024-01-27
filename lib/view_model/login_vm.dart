@@ -59,7 +59,7 @@ class LoginVM extends GetxController {
         update();
       }
       else {
-        result = false;
+        pwController.text = '';
         loginResultString = '아이디나 패스워드를 확인해주세요.';
         update();
       }
