@@ -6,12 +6,15 @@ class LoginTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final String hintText;
+  final bool? isObsecure;
   /// 로그인 시 ID, PW에 사용될 텍스트필드 위젯
   const LoginTextField(
       {super.key,
       required this.controller,
       required this.icon,
-      required this.hintText});
+      required this.hintText,
+      this.isObsecure,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,7 @@ class LoginTextField extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.4,
         child: TextField(
+          obscureText: isObsecure ?? false,
           controller: controller,
           onChanged: (value) => loginVM.resetResultText(),
           style: const TextStyle(

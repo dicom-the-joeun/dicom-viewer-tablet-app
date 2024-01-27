@@ -34,6 +34,7 @@ class LoginView extends StatelessWidget {
                   controller: loginVM.pwController,
                   icon: Icons.lock,
                   hintText: '비밀번호',
+                  isObsecure: true,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50, 8, 8, 8),
