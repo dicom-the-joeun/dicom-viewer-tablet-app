@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dicom_image_control_app/data/search_data.dart';
 import 'package:dicom_image_control_app/data/shared_handler.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
@@ -47,10 +49,9 @@ class ApiProvider{
   Future<List<SeriesTab>> getSeriesTabList(int studyKey) async {
     var handler = SharedHandler();
     String token = await handler.fetchData();
-
+    // 시리즈 리스트 초기화
     List<SeriesTab> seriesList = [];
     
-    // 시리즈 리스트 초기화
     String url = '${baseUrl}dcms/thumbnails?studykey=$studyKey';
 
     try {
@@ -76,5 +77,35 @@ class ApiProvider{
     }
 
     return seriesList;
+  }
+
+  Future<Map<String, dynamic>> downloadStudyImages(int studyKey) async {
+    var handler = SharedHandler();
+    String token = await handler.fetchData();
+    String fileName = 'study_$studyKey';
+    File file = File('$filePath/$fileName.zip');
+    bool result = false;
+
+    String url = '${baseUrl}dcms/images/${studyKey.toString()}';
+
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $token'}
+      );
+      // 2. 응답 받기 (예외처리)
+      if (response.statusCode == 200) {
+        result = true;
+        // 3. 응답에 성공한 경우 (바디에서 파일 받아온다)
+        // 내가 원하는 경로에 내가 지정한 파일이름으로 zip파일 저장
+        await file.writeAsBytes(response.bodyBytes);
+        // 파일이름 기준으로 그 파일 압축풀기
+      } else {
+        print('압축 해제 실패');
+      }
+    } catch (e) {
+      debugPrint('캐치에 걸림 $e');
+    }  
+    return {"result": result, "fileName": fileName};
   }
 }
