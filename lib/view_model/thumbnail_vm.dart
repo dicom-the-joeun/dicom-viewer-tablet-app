@@ -75,7 +75,6 @@ class ThumbnailVM extends GetxController {
   }
 
   /// 압축파일 해제 함수
-  ///TODO: 이미 다운로드 받은 이미지일 경우 return하기
   Future<void> _zipOpen(String zipFileName) async {
     final zipFilePath = '$filePath/$zipFileName.zip';         //받아온 zip파일의 이름이 들어갈 곳
     final destinationDirectory = '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳
@@ -103,11 +102,6 @@ class ThumbnailVM extends GetxController {
     } else {
       print('지정된 압축 파일이 존재하지 않습니다.');
     }
-  }
-
-  Future<bool> isImageDownloaded(int studyKey) async {
-    String path = '$filePath/study_$studyKey';
-    return await Directory(path).exists();
   }
 
 }
