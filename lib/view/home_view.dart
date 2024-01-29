@@ -156,6 +156,7 @@ class MainView extends StatelessWidget {
                                   // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
                                   barrierDismissible: false,
                                 );
+                                await homeVM.downloadStudyImages(study.STUDYKEY);
                                 await homeVM
                                     .getSeriesTabList(study.STUDYKEY);
                                 // 페이지 이동

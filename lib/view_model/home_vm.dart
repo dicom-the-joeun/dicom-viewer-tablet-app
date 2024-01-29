@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:archive/archive_io.dart';
 import 'package:dicom_image_control_app/data/search_data.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
@@ -94,6 +98,22 @@ class HomeVM extends GetxController {
     seriesList = await provider.getSeriesTabList(studyKey);
   }
 
+  Future<void> downloadStudyImages(int studyKey) async {
+    loadingText.value = 'DOWNLOAD.....';
+    if (! await _isImageDownloaded(studyKey)){
+      ApiProvider provider = ApiProvider();
+    // 이미지 zip파일 절대경로에 저장
+    Map<String, dynamic> result = await provider.downloadStudyImages(studyKey);
+    if(result['result'] == true){
+      await _zipOpen(result['fileName']);
+    }
+    else{
+      // 압축 해제 실패
+    }
+    }
+  }
+
+
   /// searchButton 컨트롤 함수
   void changeDuration(String state) {
   selectedPeriod = state;
@@ -116,6 +136,41 @@ class HomeVM extends GetxController {
   update();
 }
 
+/// 이미 다운로드 받은 이미지일 경우 pass
+  Future<bool> _isImageDownloaded(int studyKey) async {
+    String path = '$filePath/study_$studyKey';
+    return await Directory(path).exists();
+  }
+
+  /// 압축파일 해제 함수
+  Future<void> _zipOpen(String zipFileName) async {
+    final zipFilePath = '$filePath/$zipFileName.zip';         //받아온 zip파일의 이름이 들어갈 곳
+    final destinationDirectory = '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳
+
+    File zipFile = File(zipFilePath); 
+
+    if (zipFile.existsSync()) {
+      List<int> bytes = zipFile.readAsBytesSync();
+      Archive archive = ZipDecoder().decodeBytes(Uint8List.fromList(bytes));
+
+      for (ArchiveFile file in archive) {
+        String fileName = '$destinationDirectory/${file.name}';
+        File outFile = File(fileName);
+        // outFile.createSync(recursive: true);
+        outFile.parent.createSync(recursive: true); // 디렉토리가 없으면 생성
+
+
+        if (file.isFile) {
+          outFile.writeAsBytesSync(file.content as List<int>);
+        } else {
+          Directory(fileName).create(recursive: true);
+        }
+      }
+      print('압축 파일이 성공적으로 해제되었습니다.');
+    } else {
+      print('지정된 압축 파일이 존재하지 않습니다.');
+    }
+  }
 
   /// 스터디 조건 검색 함수 : pid, pname, modality, examStatus, reportStatus, period 조건 검색
   searchStudy() {
