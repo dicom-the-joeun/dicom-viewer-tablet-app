@@ -34,6 +34,8 @@ class ApiProvider{
           StudyTab tempStudy = StudyTab.fromMap(study);
           studies.add(tempStudy);
         }
+      // STUDYKEY를 기준으로 리스트 정렬
+      studies.sort((a, b) => a.STUDYKEY.compareTo(b.STUDYKEY));
       } else {
         // 요청 실패한 경우
         debugPrint('스터디탭 리스트 요청 실패');
@@ -79,7 +81,7 @@ class ApiProvider{
     return seriesList;
   }
 
-  Future<Map<String, dynamic>> downloadStudyImages(int studyKey) async {
+  Future<Map<String, dynamic>> getStudyImagesZipFile(int studyKey) async {
     var handler = SharedHandler();
     String token = await handler.fetchData();
     String fileName = 'study_$studyKey';

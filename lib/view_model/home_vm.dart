@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 class HomeVM extends GetxController {
   @override
-  void onInit(){
+  void onInit() {
     super.onInit();
     getStudyTabList();
   }
@@ -19,6 +19,7 @@ class HomeVM extends GetxController {
   /// 기간 조회 시 전체, 1일, 1주일 중 어떤 조건이 선택되었는지 저장
   String selectedPeriod = '전체';
   RxString loadingText = ''.obs;
+
   /// 기간 조회 버튼 선택 여부 저장
   bool isRangeButtonSelected = false;
   bool isWholeButtonSelected = true;
@@ -56,6 +57,7 @@ class HomeVM extends GetxController {
 
   /// 기간 조회 시작일자
   DateTime rangeStart = DateTime(2000, 1, 1);
+
   /// 기간 조회 종료일자
   DateTime rangeEnd = DateTime.now();
 
@@ -92,51 +94,55 @@ class HomeVM extends GetxController {
   }
 
   /// 시리즈탭 api 요청 및 변환 후 리턴하는 함수
-  Future<void> getSeriesTabList(int studyKey) async {
+  Future<void> _getSeriesTabList(int studyKey) async {
     loadingText.value = 'LOADING.....';
     ApiProvider provider = ApiProvider();
     seriesList = await provider.getSeriesTabList(studyKey);
   }
 
-  Future<void> downloadStudyImages(int studyKey) async {
+  Future<void> _downloadStudyImagesZipFile(int studyKey) async {
     loadingText.value = 'DOWNLOAD.....';
-    if (! await _isImageDownloaded(studyKey)){
+    if (!await _isImageDownloaded(studyKey)) {
       ApiProvider provider = ApiProvider();
-    // 이미지 zip파일 절대경로에 저장
-    Map<String, dynamic> result = await provider.downloadStudyImages(studyKey);
-    if(result['result'] == true){
-      await _zipOpen(result['fileName']);
-    }
-    else{
-      // 압축 해제 실패
-    }
+      // 이미지 zip파일 절대경로에 저장
+      Map<String, dynamic> result =
+          await provider.getStudyImagesZipFile(studyKey);
+      if (result['result'] == true) {
+        await _zipOpen(result['fileName']);
+      } else {
+        // 압축 해제 실패
+      }
     }
   }
 
+  Future<void> selectStudy(int studyKey) async {
+    await _downloadStudyImagesZipFile(studyKey);
+    await _getSeriesTabList(studyKey);
+  }
 
   /// searchButton 컨트롤 함수
   void changeDuration(String state) {
-  selectedPeriod = state;
-  isRangeButtonSelected = state == '기간조회';
-  isWholeButtonSelected = state == '전체';
-  isDayButtonSelected = state == '1일';
-  isWeekButtonSelected = state == '1주일';
+    selectedPeriod = state;
+    isRangeButtonSelected = state == '기간조회';
+    isWholeButtonSelected = state == '전체';
+    isDayButtonSelected = state == '1일';
+    isWeekButtonSelected = state == '1주일';
 
-  if (state == '전체') {
-    rangeStart = DateTime(2000, 1, 1);
-    rangeEnd = DateTime.now();
-  } else if (state == '1일') {
-    rangeStart = DateTime.now();
-    rangeEnd = DateTime.now();
-  } else if (state == '1주일') {
-    rangeStart = DateTime.now().subtract(const Duration(days: 7));
-    rangeEnd = DateTime.now();
+    if (state == '전체') {
+      rangeStart = DateTime(2000, 1, 1);
+      rangeEnd = DateTime.now();
+    } else if (state == '1일') {
+      rangeStart = DateTime.now();
+      rangeEnd = DateTime.now();
+    } else if (state == '1주일') {
+      rangeStart = DateTime.now().subtract(const Duration(days: 7));
+      rangeEnd = DateTime.now();
+    }
+
+    update();
   }
 
-  update();
-}
-
-/// 이미 다운로드 받은 이미지일 경우 pass
+  /// 이미 다운로드 받은 이미지일 경우 pass
   Future<bool> _isImageDownloaded(int studyKey) async {
     String path = '$filePath/study_$studyKey';
     return await Directory(path).exists();
@@ -144,10 +150,11 @@ class HomeVM extends GetxController {
 
   /// 압축파일 해제 함수
   Future<void> _zipOpen(String zipFileName) async {
-    final zipFilePath = '$filePath/$zipFileName.zip';         //받아온 zip파일의 이름이 들어갈 곳
-    final destinationDirectory = '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳
+    final zipFilePath = '$filePath/$zipFileName.zip'; //받아온 zip파일의 이름이 들어갈 곳
+    final destinationDirectory =
+        '$filePath/$zipFileName'; //받아온 zip파일을 압축해제한 파일들이 들어갈 곳
 
-    File zipFile = File(zipFilePath); 
+    File zipFile = File(zipFilePath);
 
     if (zipFile.existsSync()) {
       List<int> bytes = zipFile.readAsBytesSync();
@@ -158,7 +165,6 @@ class HomeVM extends GetxController {
         File outFile = File(fileName);
         // outFile.createSync(recursive: true);
         outFile.parent.createSync(recursive: true); // 디렉토리가 없으면 생성
-
 
         if (file.isFile) {
           outFile.writeAsBytesSync(file.content as List<int>);
