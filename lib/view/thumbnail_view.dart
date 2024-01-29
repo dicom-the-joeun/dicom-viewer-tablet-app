@@ -57,19 +57,6 @@ class ThumbnailView extends GetView<ThumbnailVM> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                           onTap: () {
-                            // if (!await controller
-                            //     .isImageDownloaded(study.STUDYKEY)) {
-                            //   Get.dialog(
-                            //     LoadingDialog(
-                            //         loadingText: controller.loadingText),
-                            //     // barrierDismissible를 false로 설정하여 터치로 닫기 비활성화
-                            //     barrierDismissible: false,
-                            //   );
-                            //   // 집파일 받아오기
-                            //   await controller.getSeriesImages(
-                            //       studykey: study.STUDYKEY);
-                            //   Get.back();
-                            // }
                             Get.to(
                                 () => DetailView(
                                       studyKey: study.STUDYKEY,

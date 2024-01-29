@@ -2,8 +2,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:dicom_image_control_app/data/search_data.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
-import 'package:dicom_image_control_app/view/detail_view.dart';
-import 'package:dicom_image_control_app/view_model/detail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -128,17 +126,8 @@ class ThumbnailBox extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(255, 46, 149, 217)
                                 ),
-                                onPressed: () {
-                                  Get.back();
-                                  Get.to(
-                                      () => DetailView(
-                                          studyKey: study.STUDYKEY,
-                                          series: seriesList[index]),
-                                      binding: BindingsBuilder(() {
-                                    Get.put(DetailVM());
-                                  }));
-                                },
-                                child: Text('이미지 확인', style: cellTextStyle(),),
+                                onPressed: ()=> Get.back(),
+                                child: Text('확인', style: cellTextStyle(),),
                               ),
                             ],
                           ),

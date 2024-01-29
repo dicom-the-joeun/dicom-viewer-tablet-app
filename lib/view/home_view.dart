@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:dicom_image_control_app/component/loading_dialog.dart';
+import 'package:dicom_image_control_app/data/util.dart';
 import 'package:dicom_image_control_app/view/calendar_dialog.dart';
 import 'package:dicom_image_control_app/component/filter_dropdown_button.dart';
 import 'package:dicom_image_control_app/component/filter_textfield.dart';
@@ -182,7 +183,7 @@ class MainView extends StatelessWidget {
                                   style: cellTextStyle(),
                                 )),
                                 DataCell(Text(
-                                  study.STUDYDATE.toString(),
+                                  MyUtil().convertIntDateToString(study.STUDYDATE),
                                   style: cellTextStyle(),
                                 )),
                                 DataCell(Text(
@@ -232,3 +233,4 @@ TextStyle headerTextStyle() {
     fontSize: 20,
   );
 }
+
