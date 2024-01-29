@@ -1,21 +1,21 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:dicom_image_control_app/component/loading_dialog.dart';
 import 'package:dicom_image_control_app/data/util.dart';
-import 'package:dicom_image_control_app/view/calendar_dialog.dart';
+import 'package:dicom_image_control_app/view/home_view/calendar_dialog.dart';
 import 'package:dicom_image_control_app/component/filter_dropdown_button.dart';
 import 'package:dicom_image_control_app/component/filter_textfield.dart';
 import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/search_button.dart';
 import 'package:dicom_image_control_app/model/study_tab.dart';
-import 'package:dicom_image_control_app/view/drawer.dart';
-import 'package:dicom_image_control_app/view/thumbnail_view.dart';
+import 'package:dicom_image_control_app/view/home_view/drawer.dart';
+import 'package:dicom_image_control_app/view/thumbnail_view/thumbnail_view.dart';
 import 'package:dicom_image_control_app/view_model/home_vm.dart';
 import 'package:dicom_image_control_app/view_model/thumbnail_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

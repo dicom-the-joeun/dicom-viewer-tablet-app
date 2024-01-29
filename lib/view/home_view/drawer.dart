@@ -1,4 +1,4 @@
-import 'package:dicom_image_control_app/view/login_view.dart';
+import 'package:dicom_image_control_app/view/login_view/login_view.dart';
 import 'package:dicom_image_control_app/view_model/login_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

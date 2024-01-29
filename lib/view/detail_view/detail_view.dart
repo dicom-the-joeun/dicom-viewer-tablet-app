@@ -2,10 +2,11 @@ import 'package:dicom_image_control_app/component/my_appbar.dart';
 import 'package:dicom_image_control_app/component/toolbar_button.dart';
 import 'package:dicom_image_control_app/model/series_tab.dart';
 import 'package:dicom_image_control_app/data/search_data.dart';
+import 'package:dicom_image_control_app/view/detail_view/_bright_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
-import '../view_model/detail_vm.dart';
+import '../../view_model/detail_vm.dart';
 
 class DetailView extends GetView<DetailVM> {
   final int studyKey;
@@ -21,66 +22,35 @@ class DetailView extends GetView<DetailVM> {
           bottom: AppBar(
             toolbarHeight: 100,
             automaticallyImplyLeading: false,
-            title: GetBuilder<DetailVM>(
-              builder: (_) => Row(
+            title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 500,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ToolbarButton(
-                          icon: Icons.invert_colors,
-                          label: '반전',
-                          isSelected: _.isInvertSelected,
-                          onPressed: () => _.invertColor(),
-                        ),
-                        ToolbarButton(
+                    child: GetBuilder<DetailVM>(
+
+                      builder: (_) => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ToolbarButton(
+                            icon: Icons.invert_colors,
+                            label: '반전',
+                            isSelected: _.isInvertSelected,
+                            onPressed: () => _.invertColor(),
+                          ),
+                          ToolbarButton(
                             icon: Icons.light_mode_rounded,
                             label: '밝기',
                             isSelected: _.isBrightSelected,
-                            onPressed: () => _.clickBrightButton()),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: _.isBrightSelected,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width - 900,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Spacer(),
-                          const Text('밝기 조절  '),
-                          SizedBox(
-                            width: 300,
-                            child: SliderTheme(
-                              data: const SliderThemeData(
-                                trackHeight: 20,
-                              ),
-                              child: Slider(
-                                thumbColor: Colors.blueAccent,
-                                inactiveColor: Colors.grey,
-                                label: _.brightValue.toStringAsFixed(2),
-                                value: _.brightValue,
-                                min: !_.isConverted ? 0 : -5,
-                                max: !_.isConverted ? 5 : 0,
-                                divisions: 10,
-                                onChanged: (double value) {
-                                  _.brightValue = value;
-                                  _.update();
-                                },
-                              ),
-                            ),
+                            onPressed: () => _.clickBrightButton()
                           ),
                         ],
                       ),
                     ),
                   ),
+                  const BrightSlider(),
                 ],
               ),
-            ),
           ),
         ),
         body: Center(

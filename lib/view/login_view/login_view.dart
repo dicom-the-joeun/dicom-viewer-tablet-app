@@ -1,5 +1,5 @@
 import 'package:dicom_image_control_app/component/login_textfield.dart';
-import 'package:dicom_image_control_app/view/home_view.dart';
+import 'package:dicom_image_control_app/view/home_view/home_view.dart';
 import 'package:dicom_image_control_app/view_model/login_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                           loginVM.pwController.text,
                         );
                         if (result == true) {
-                          Get.to(() => const MainView());
+                          Get.to(() => const HomeView());
                         } else {
                           Get.snackbar(
                               'ERROR', '서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.',

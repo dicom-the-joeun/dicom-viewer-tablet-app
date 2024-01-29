@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:dicom_image_control_app/data/search_data.dart';
-import 'package:dicom_image_control_app/view/login_view.dart';
-import 'package:dicom_image_control_app/view/home_view.dart';
+import 'package:dicom_image_control_app/view/login_view/login_view.dart';
+import 'package:dicom_image_control_app/view/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -33,7 +33,7 @@ void main() async {
 
   bool isLogin = await checkLogin();
 
-  Widget initialScreen = (isLogin) ? const MainView() : const LoginView();
+  Widget initialScreen = (isLogin) ? const HomeView() : const LoginView();
 
   runApp(MyApp(initialScreen: initialScreen,));
 }
