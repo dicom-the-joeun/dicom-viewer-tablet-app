@@ -62,13 +62,13 @@ class LoginView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           )),
                       onPressed: () async {
-                        bool result = await loginVM.login(
+                        LoginState result = await loginVM.login(
                           loginVM.idController.text,
                           loginVM.pwController.text,
                         );
-                        if (result == true) {
+                        if (result == LoginState.success) {
                           Get.to(() => const HomeView());
-                        } else {
+                        } else if (result == LoginState.delay) {
                           Get.snackbar(
                               'ERROR', '서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.',
                               icon: const Padding(

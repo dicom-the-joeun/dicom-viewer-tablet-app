@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+enum LoginState {success, fail, delay}
 class LoginVM extends GetxController {
   /// textField controller
   TextEditingController idController = TextEditingController();
@@ -11,9 +13,9 @@ class LoginVM extends GetxController {
   String loginResultString = '';
 
   /// 로그인 요청 후 성공 여부 리턴하는 함수
-  Future<bool> login(String inputID, String inputPassword) async {
+  Future<LoginState> login(String inputID, String inputPassword) async {
     // 로그인 성공 여부
-    bool result = false;
+    var result = LoginState.fail;
     // post body
     Map<String, dynamic> data = {
       'username': inputID.trim(),
@@ -33,7 +35,7 @@ class LoginVM extends GetxController {
         },
         body: data,
       ).timeout(
-        const Duration(seconds: 2),
+        const Duration(seconds: 5),
         onTimeout: () {
           return http.Response('Error', 408);
         },
@@ -41,7 +43,7 @@ class LoginVM extends GetxController {
 
       // 로그인 성공 시
       if (validStatusCodes.contains(response.statusCode)) {
-        result = true;
+        result = LoginState.success;
         String accessToken = response.headers['access_token']!;
         String refreshToken = response.headers['refresh_token']!;
         resetResultText();
@@ -56,6 +58,7 @@ class LoginVM extends GetxController {
         );
       } else if (response.statusCode == 408){
         loginResultString = '';
+        result = LoginState.delay;
         update();
       }
       else {
@@ -64,7 +67,6 @@ class LoginVM extends GetxController {
         update();
       }
     } catch (e) {
-      
       debugPrint('error: $e');
     }
 
