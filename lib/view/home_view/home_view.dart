@@ -26,8 +26,9 @@ class HomeView extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: MyAppBar(
-            title: 'PACSPLUS',
+          appBar: MyHomeAppBar(
+            title: 'DICOM VISION',
+            logoPath: 'assets/images/logo.png',
             actions: [
               IconButton(
                 onPressed: () => homeVM.resetAllFilters(),
